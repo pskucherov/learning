@@ -1,0 +1,14 @@
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+Options All -Indexes
+ErrorDocument 401 /401.php 
+ErrorDocument 403 /403.php 
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php 
+
+RewriteEngine on
+Options +FollowSymlinks
+RewriteBase /index.php
+
+
+RewriteRule ^([0-9]+)/$ /router/?r=$1 [L,QSA]
