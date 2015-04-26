@@ -1,0 +1,7 @@
+({
+    shouldDeps: [
+        {
+            elem: 'wrapper'
+        }
+    ]
+})

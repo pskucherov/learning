@@ -25,3 +25,20 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+libs/
+.DS_Store
+.idea
+.project
+.svn
+npm-debug.log
+
+# bem
+.bem/cache/
+.enb/tmp/
+*bundles*/*/*.*
+!*bundles*/*/*.bemjson.js
+!*bundles*/.bem/*
+*pages*/*/*.*
+!*pages*/*/*.bemjson.js
+!*pages*/.bem/*
