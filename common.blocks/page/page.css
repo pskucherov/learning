@@ -1,0 +1,10 @@
+.page
+{
+    font-family: Tahoma, sans-serif;
+
+    min-height: 100%;
+    margin: 0;
+    padding-top: 100px;
+
+    background: url(page.png) repeat;
+}
