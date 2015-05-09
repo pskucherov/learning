@@ -43,4 +43,4 @@ npm-debug.log
 !*pages*/*/*.bemjson.js
 !*pages*/.bem/*
 
-static/freeze/*
+public/freeze/*

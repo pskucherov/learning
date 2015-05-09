@@ -7,7 +7,7 @@ var fs = require('fs'),
     querystring = require('querystring'),
     Vow = require('vow'),
     pathToBundle = PATH.join('.', 'desktop.bundles', 'index'),
-    pathToStatic = PATH.join('.', 'static');
+    pathToStatic = PATH.join('.', 'public');
 
 // html/css/js кэшируем на день, картинки на год.
 app.use(express.static(pathToBundle, { maxAge: 86400000 }));
