@@ -1,0 +1,14 @@
+{
+  "author": "'Pavel'",
+  "name": "learn",
+  "email": "php_prog@mail.ru",
+  "version": "0.0.0",
+  "ignore": [
+    ".enb/tmp",
+    "node_modules",
+    "libs"
+  ],
+  "dependencies": {
+    "bem-components": "v2.1.0"
+  }
+}
