@@ -1,7 +1,0 @@
-({
-    shouldDeps: [
-        {
-            elem: 'wrapper'
-        }
-    ]
-})
