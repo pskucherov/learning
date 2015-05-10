@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "express": "~4.12.3",
-    "vow": "~0.4.9"
+    "vow": "~0.4.9",
+    "orm": "~2.1.24"
   },
   "devDependencies": {
     "bower": "1.4.1",
