@@ -7,11 +7,15 @@ var fs = require('fs'),
     querystring = require('querystring'),
     Vow = require('vow'),
     pathToBundle = PATH.join('.', 'desktop.bundles', 'index'),
-    pathToStatic = PATH.join('.', 'public');
+    pathToStatic = PATH.join('.', 'public'),
+
+    redirects = require('../../routes/redirects');
 
 // html/css/js кэшируем на день, картинки на год.
 app.use(express.static(pathToBundle, { maxAge: 86400000 }));
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
+
+app.use(redirects);
 
 var bemtreeTemplate = fs.readFileSync(PATH.join(pathToBundle, 'index.bemtree.js'), 'utf-8');
 var BEMHTML = require(PATH.join('../../' + pathToBundle, 'index.bemhtml.js')).BEMHTML;
