@@ -44,3 +44,5 @@ npm-debug.log
 !*pages*/.bem/*
 
 public/freeze/*
+
+common.blocks/app/_ormConnect.js

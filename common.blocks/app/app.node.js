@@ -9,7 +9,7 @@ var fs = require('fs'),
     pathToBundle = PATH.join('.', 'desktop.bundles', 'index'),
     pathToStatic = PATH.join('.', 'public'),
 
-    ormConnect = require('./ormConnect');
+    ormConnect = require('./_ormConnect');
 
     redirects = require('./routes/redirects');
 
@@ -17,9 +17,9 @@ var fs = require('fs'),
 app.use(express.static(pathToBundle, { maxAge: 86400000 }));
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
 
-app.use(redirects);
-
 app.use(ormConnect);
+
+app.use(redirects);
 
 var bemtreeTemplate = fs.readFileSync(PATH.join(pathToBundle, 'index.bemtree.js'), 'utf-8');
 var BEMHTML = require(PATH.join('../../' + pathToBundle, 'index.bemhtml.js')).BEMHTML;
