@@ -1,5 +1,6 @@
 ({
     shouldDeps: [
-        { block: 'app' }
+        { block: 'app' },
+        { block: 'blackboard' }
     ]
 })
