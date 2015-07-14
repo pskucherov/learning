@@ -1,10 +1,12 @@
 .page
 {
-    font-family: Tahoma, sans-serif;
-
+    /* font-family: Tahoma, sans-serif; */
     min-height: 100%;
     margin: 0;
     padding-top: 120px;
 
     background: url(page.png) repeat;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
 }
