@@ -12,16 +12,19 @@ modules.define(
                         this.findBlocks()
                             .bindEvents();
 
-                        this._lastScrollY = 0;
-                        this._pageHeight = this._getPageHeight();
-
                         this._htmlBody = $('html, body');
 
-                        this.landing.setHeightToWrapper(this._pageHeight);
+                        this._syncState();
 
                     }
                 }
 
+            },
+
+            _syncState: function() {
+                this._lastScrollY = 0;
+                this._pageHeight = this._getPageHeight();
+                this.landing.setHeightToWrapper(this._pageHeight);
             },
 
             findBlocks: function() {
@@ -31,30 +34,48 @@ modules.define(
 
             bindEvents: function() {
 
-                this.bindToWin('resize', _.throttle(function(e) {
-                    console.log(e)
-                }, 200, this));
+                this._throttleScroll = _.throttle(this._animateScroll, 500, { 'trailing': false });
+
+                this.bindToWin('resize', _.debounce(function(e) {
+                    this._pageHeight = this._getPageHeight();
+                }, 150, this));
+
 
                 this.bindToWin('scroll mousewheel DOMMouseScroll', function(e) {
 
                     e.preventDefault();
+                    e.stopImmediatePropagation();
 
-                    if (this._animate) {
-                        return;
-                    }
+                    this._throttleScroll(e);
+
+                }, this);
+
+            },
+
+            _animateScroll: function(e) {
+
+                if (this._animate) {
+                    return;
+                }
+
+                var wheelEvent = e.originalEvent,
+                    delta = wheelEvent.deltaY || wheelEvent.detail;
+
+                if (delta) {
 
                     this._animate = true;
 
                     this._htmlBody.stop().animate({
-                        scrollTop: e.currentTarget.scrollY - this._lastScrollY > 0 ?
-                            -this._pageHeight :
-                            this._pageHeight
+
+                        scrollTop: delta <= 0 ?
+                            $(window).scrollTop() - this._pageHeight :
+                            $(window).scrollTop() + this._pageHeight
+
                     }, 500, function() {
                         this._animate = false;
-                        this._lastScrollY = e.currentTarget.scrollY;
                     }.bind(this));
 
-                }, this);
+                }
 
             },
 
@@ -64,4 +85,6 @@ modules.define(
 
         }));
 
-    });
+    }
+
+);
