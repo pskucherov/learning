@@ -22,6 +22,7 @@
             ].join('')
         }
     ],
+    mods: { type: 'index' },
     content: [
         {
             block: 'header'

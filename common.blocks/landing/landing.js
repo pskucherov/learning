@@ -5,27 +5,42 @@ modules.define(
 
     provide(Landing.decl('landing', {
 
-        onSetMod: {
-            js: {
-                inited: function () {
+            onSetMod: {
+                js: {
+                    inited: function () {
 
-                    this.bindToWin('resize', _.throttle(function(e) {
-                        console.log(arguments)
-                    }, 200, this))
 
+                    }
                 }
+            },
+
+            /**
+             * Установить высоту элементов wrapper
+             * @param {Number} height - высота, которую надо установить.
+             * @returns {*}
+             */
+            setHeightToWrapper: function(height) {
+                return this.elem('wrapper').height(height);
+            },
+
+            /**
+             * Получить анкор первого элемента
+             * @returns {*}
+             */
+            getFirstHash: function() {
+                return this.elem('wrapper').attr('id');
             }
+
+
         },
-
-        /**
-         * Установить высоту элементов wrapper
-         * @param {Number} height - высота, которую надо установить.
-         * @returns {*}
-         */
-        setHeightToWrapper: function(height) {
-            return this.elem('wrapper').height(height);
+        {
+            getNextSlide: function(currentHash) {
+                return $('#' + currentHash).next();
+            },
+            getPrevSlide: function(currentHash) {
+                return $('#' + currentHash).prev();
+            }
         }
-
-    }));
+    ));
 
 });
