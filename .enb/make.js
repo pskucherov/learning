@@ -43,6 +43,11 @@ module.exports = function (config) {
                 source: '?.pre.js',
                 target: '?.js'
             }],
+
+            // priv.js
+            [ require('enb-priv-js/techs/priv-js'), { freezeableTechs: ['_?.css', '_?.js'] } ],
+            [ borschikTech, { freeze: true, minify: false, sourceTarget: '?.priv.js', destTarget: '_?.priv.js' } ],
+
             // css
             [require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }],
             // bemhtml
@@ -89,6 +94,7 @@ module.exports = function (config) {
             '_?.node.js',
             '_?.js',
             '_?.bemhtml.js',
+            '_?.priv.js',
             '?.html'
         ]);
     });
@@ -139,6 +145,7 @@ function getDesktops(config) {
         { path: 'libs/bem-components/design/common.blocks', check: false },
         { path: 'libs/bem-components/desktop.blocks', check: false },
         { path: 'libs/bem-components/design/desktop.blocks', check: false },
+        { path: 'libs/bem-priv/build/blocks', check: false },
         'common.blocks',
         'desktop.blocks'
     ].map(function (level) {
