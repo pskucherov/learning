@@ -8,10 +8,11 @@
     "email": "php_prog@mail.ru"
   },
   "dependencies": {
+    "enb-includes": "0.0.1",
     "express": "~4.12.3",
-    "vow": "~0.4.9",
+    "mysql": "~2.6.2",
     "orm": "~2.1.24",
-    "mysql": "~2.6.2"
+    "vow": "~0.4.9"
   },
   "devDependencies": {
     "bower": "1.4.1",

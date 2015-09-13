@@ -66,6 +66,8 @@ function main(data) {
 
     wrapBlocksTryCatch(blocks);
 
+    console.log(JSON.stringify(blocks['i-response'](data), null, 4));
+
     return blocks['i-response'](data);
 
 }
