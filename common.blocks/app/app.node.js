@@ -10,11 +10,19 @@ var fs = require('fs'),
     ormConnect = require('./_ormConnect'),
 
     redirects = require('./routes/redirects'),
-    tests = require('./routes/tests'),
+
+    routes = require('./routes/index'),
+
+    url = require('url'),
+    querystring = require('querystring'),
+
     server;
 
 // html/css/js кэшируем на день, картинки на год.
-app.use(express.static(pathToBundle, { maxAge: 86400000 }));
+//app.use(express.static(pathToBundle, { maxAge: 86400000 }));
+
+app.use(express.static(PATH.join('.', 'desktop.bundles'), { extensions: ['js', 'css'], maxAge: 86400000 }));
+
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
 
 app.use(ormConnect);
@@ -26,25 +34,27 @@ var context = VM.createContext({
     Vow: Vow
 });
 
-app.use(tests, function(req, res) {
+app.use(routes, function(req, res) {
 
-    /*
-    VM.runInContext(res.bemtree, context);
+    res.searchObj = url.parse(req.url, true).query;
 
-    var BEMTREE = context.BEMTREE;
+    var content;
 
-    BEMTREE.apply([{ block: 'blackboard' }]).then(function(bemjson) {
-        if (res.searchObj.json) {
-            return res.end(JSON.stringify(bemjson, null, 4));
-        }
-        res.end(res.BEMHTML.apply(bemjson));
-    });
-    */
+    if (res.html) {
+        content = res.html;
+    } else if (res.priv) {
 
-    res.end(res.html);
+        content = res.priv.main({
+            pageName: res.pageName,
+            searchObj: res.searchObj
+        });
+
+        content = res.BEMHTML.apply(content);
+    }
+
+    res.end(content);
 
 });
-
 
 server = app.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);

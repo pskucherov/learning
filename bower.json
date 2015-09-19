@@ -9,6 +9,7 @@
     "libs"
   ],
   "dependencies": {
-    "bem-components": "v2.1.0"
+    "bem-components": "v2.1.0",
+    "bem-priv": "git://github.com/sbmaxx/bem-priv#1.0.0# Sep 10, 2015"
   }
 }

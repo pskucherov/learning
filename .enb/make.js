@@ -15,6 +15,8 @@ module.exports = function (config) {
                 target: '?.ie.css',
                 sourceSuffixes: ['css', 'ie.css']
             }],
+
+            /*
             // ie8.css
             [require('enb/techs/css'), {
                 target: '?.ie8.css',
@@ -25,6 +27,9 @@ module.exports = function (config) {
                 target: '?.ie9.css',
                 sourceSuffixes: ['css', 'ie9.css']
             }],
+            */
+
+            /*
             // bemtree
             [require('enb-bemxjst/techs/bemtree-old'), { devMode: process.env.BEMTREE_ENV === 'development' }],
             // node.js
@@ -33,16 +38,25 @@ module.exports = function (config) {
                 source: '?.pre.node.js',
                 target: '?.node.js'
             }],
+             */
+
             // browser.js
             [require('enb-diverse-js/techs/browser-js'), { target: '?.browser.js' }],
             [require('enb/techs/file-merge'), {
                 target: '?.pre.js',
                 sources: ['?.browser.bemhtml.js', '?.browser.js']
             }],
+
+
             [require('enb-modules/techs/prepend-modules'), {
                 source: '?.pre.js',
                 target: '?.js'
             }],
+
+            // priv.js
+            [ require('enb-priv-js/techs/priv-js'), { freezeableTechs: ['_?.css', '_?.js'] } ],
+            [ borschikTech, { freeze: true, minify: false, sourceTarget: '?.priv.js', destTarget: '_?.priv.js' } ],
+
             // css
             [require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }],
             // bemhtml
@@ -67,15 +81,17 @@ module.exports = function (config) {
                 filesTarget: '?.bemhtml.files',
                 devMode: process.env.BEMHTML_ENV === 'development'
             }],
+
             // html
-            [require('enb-bemxjst/techs/html-from-bemjson')],
+            //[require('enb-bemxjst/techs/html-from-bemjson')],
+
             // borschik
             [borschikTech, { sourceTarget: '?.css', destTarget: '_?.css', tech: 'cleancss', freeze: true, minify: isProd }],
             [borschikTech, { sourceTarget: '?.ie.css', destTarget: '_?.ie.css', freeze: true, minify: isProd }],
-            [borschikTech, { sourceTarget: '?.ie8.css', destTarget: '_?.ie8.css', freeze: true, minify: isProd }],
-            [borschikTech, { sourceTarget: '?.ie9.css', destTarget: '_?.ie9.css', freeze: true, minify: isProd }],
-            [borschikTech, { sourceTarget: '?.bemtree.js', destTarget: '_?.bemtree.js', freeze: true, minify: isProd }],
-            [borschikTech, { sourceTarget: '?.node.js', destTarget: '_?.node.js', freeze: true, minify: isProd }],
+            //[borschikTech, { sourceTarget: '?.ie8.css', destTarget: '_?.ie8.css', freeze: true, minify: isProd }],
+            //[borschikTech, { sourceTarget: '?.ie9.css', destTarget: '_?.ie9.css', freeze: true, minify: isProd }],
+            //[borschikTech, { sourceTarget: '?.bemtree.js', destTarget: '_?.bemtree.js', freeze: true, minify: isProd }],
+            //[borschikTech, { sourceTarget: '?.node.js', destTarget: '_?.node.js', freeze: true, minify: isProd }],
             [borschikTech, { sourceTarget: '?.js', destTarget: '_?.js', freeze: true, minify: isProd }],
             [borschikTech, { sourceTarget: '?.bemhtml.js', destTarget: '_?.bemhtml.js', freeze: true, minify: isProd }]
         ]);
@@ -83,13 +99,14 @@ module.exports = function (config) {
         nodeConfig.addTargets([
             '_?.css',
             '_?.ie.css',
-            '_?.ie8.css',
-            '_?.ie9.css',
-            '_?.bemtree.js',
-            '_?.node.js',
+            //'_?.ie8.css',
+            //'_?.ie9.css',
+            //'_?.bemtree.js',
+            //'_?.node.js',
             '_?.js',
             '_?.bemhtml.js',
-            '?.html'
+            '_?.priv.js',
+            //'?.html'
         ]);
     });
 
@@ -105,6 +122,7 @@ module.exports = function (config) {
         ]);
     });
 
+    /*
     config.nodes('*touch-pad.bundles/*', function (nodeConfig) {
         nodeConfig.addTechs([
             // essential
@@ -128,6 +146,7 @@ module.exports = function (config) {
             }]
         ]);
     });
+    */
 
 };
 
@@ -139,6 +158,7 @@ function getDesktops(config) {
         { path: 'libs/bem-components/design/common.blocks', check: false },
         { path: 'libs/bem-components/desktop.blocks', check: false },
         { path: 'libs/bem-components/design/desktop.blocks', check: false },
+        { path: 'libs/bem-priv/build/blocks', check: false },
         'common.blocks',
         'desktop.blocks'
     ].map(function (level) {
@@ -146,6 +166,7 @@ function getDesktops(config) {
     });
 }
 
+/*
 function getTouchPads(config) {
     return [
         { path: 'libs/bem-core/common.blocks', check: false },
@@ -179,3 +200,4 @@ function getTouchPhones(config) {
         return config.resolvePath(level);
     });
 }
+*/
