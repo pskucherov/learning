@@ -9,7 +9,7 @@ var express = require('express'),
  */
 router.get(/^\/tests\/?$/, function(req, res, next) {
 
-    var pathToBundle = PATH.join('.', 'desktop.bundles', 'test');
+    var pathToBundle = PATH.join('../../../', 'desktop.bundles', 'test');
 
     //res.searchObj = url.parse(req.url, true).query;
     //res.queryString = querystring.escape(res.searchObj.query);
@@ -28,10 +28,10 @@ router.get(/^\/tests\/?$/, function(req, res, next) {
  */
 router.get(/^\/spage\/?$/, function(req, res, next) {
 
-    var page = 'second-page';
-        pathToBundle = PATH.join('.', 'desktop.bundles', page);
+    var page = 'second-page',
+        pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
 
-    res.BEMHTML = require(PATH.join('../../../' + pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
 
     res.pageName = page;
     res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
@@ -45,10 +45,10 @@ router.get(/^\/spage\/?$/, function(req, res, next) {
  */
 router.get(/^\/tpage\/?$/, function(req, res, next) {
 
-    var page = 'third-page';
-    pathToBundle = PATH.join('.', 'desktop.bundles', page);
+    var page = 'third-page',
+        pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
 
-    res.BEMHTML = require(PATH.join('../../../' + pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
 
     res.pageName = page;
     res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
