@@ -1,9 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     PATH = require('path'),
-    fs = require('fs'),
-    url = require('url'),
-    querystring = require('querystring');
+    fs = require('fs');
 
 
 /**
@@ -25,21 +23,38 @@ router.get(/^\/tests\/?$/, function(req, res, next) {
 
 });
 
-
 /**
  * Страница для проверки ajax-переходов
  */
 router.get(/^\/spage\/?$/, function(req, res, next) {
 
-    var pathToBundle = PATH.join('.', 'desktop.bundles', 'second-page');
+    var page = 'second-page';
+        pathToBundle = PATH.join('.', 'desktop.bundles', page);
 
-    res.BEMHTML = require(PATH.join('../../../' + pathToBundle, '_second-page.bemhtml.js')).BEMHTML;
+    res.BEMHTML = require(PATH.join('../../../' + pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
 
-    res.priv = require(PATH.join(pathToBundle, '_second-page.priv.js'), 'utf-8');
+    res.pageName = page;
+    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
 
     next();
 
 });
 
+/**
+ * Страница для проверки ajax-переходов
+ */
+router.get(/^\/tpage\/?$/, function(req, res, next) {
+
+    var page = 'third-page';
+    pathToBundle = PATH.join('.', 'desktop.bundles', page);
+
+    res.BEMHTML = require(PATH.join('../../../' + pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+
+    res.pageName = page;
+    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
+
+    next();
+
+});
 
 module.exports = router;
