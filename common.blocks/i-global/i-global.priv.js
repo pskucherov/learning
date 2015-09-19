@@ -44,9 +44,9 @@ function wrapBlocksTryCatch(blocks) {
                         return true ?
                             [
                             '<pre>',
-                                'JS Exception: ' + Text.xmlEscape(e.message) + ' in blocks[\'' + i + '\']()',
-                                '\nblocks[\'' + i + '\'] = ' + Text.xmlEscape(b.toString()) + '\n',
-                            Text.xmlEscape(e.stack),
+                                'JS Exception: ' + (e.message) + ' in blocks[\'' + i + '\']()',
+                                '\nblocks[\'' + i + '\'] = ' + (b.toString()) + '\n',
+                                (e.stack),
                             '</pre>'
                             ].join('\n')
                             : '';
@@ -63,14 +63,23 @@ function wrapBlocksTryCatch(blocks) {
 }
 
 function main(data) {
+    blocks['i-global'](data);
 
     wrapBlocksTryCatch(blocks);
 
-    console.log(JSON.stringify(blocks['i-response'](data), null, 4));
-
     return blocks['i-response'](data);
-
 }
+
+/**
+ * Приводим глобальные данные к нормированному виду.
+ *
+ * @param {GlobalData} data
+ */
+blocks['i-global'] = function(data) {
+    var searchObj = data.searchObj;
+
+    data.isAjax = searchObj && (searchObj.format === 'json' || searchObj.ajax === 'yes');
+};
 
 exports.blocks = blocks;
 exports.main = main;

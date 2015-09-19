@@ -13,12 +13,15 @@ var fs = require('fs'),
 
     routes = require('./routes/index'),
 
-    server;
+    url = require('url'),
+    querystring = require('querystring'),
 
+    server;
 
 // html/css/js кэшируем на день, картинки на год.
 //app.use(express.static(pathToBundle, { maxAge: 86400000 }));
 
+app.use(express.static(PATH.join('.', 'desktop.bundles'), { extensions: ['js', 'css'], maxAge: 86400000 }));
 
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
 
@@ -33,29 +36,23 @@ var context = VM.createContext({
 
 app.use(routes, function(req, res) {
 
-    /*
-     VM.runInContext(res.bemtree, context);
+    res.searchObj = url.parse(req.url, true).query;
 
-     var BEMTREE = context.BEMTREE;
-
-
-     BEMTREE.apply([{ block: 'blackboard' }]).then(function(bemjson) {
-     if (res.searchObj.json) {
-     return res.end(JSON.stringify(bemjson, null, 4));
-     }
-     res.end(res.BEMHTML.apply(bemjson));
-     });
-     */
-    var r;
+    var content;
 
     if (res.html) {
-        r = res.html;
+        content = res.html;
     } else if (res.priv) {
-        r =  res.priv.main({ text: 'Hello World!' });
-        r = res.BEMHTML.apply(r);
+
+        content = res.priv.main({
+            pageName: res.pageName,
+            searchObj: res.searchObj
+        });
+
+        content = res.BEMHTML.apply(content);
     }
 
-    res.end(r);
+    res.end(content);
 
 });
 
