@@ -24,11 +24,10 @@ router.get(/^\/tests\/?$/, function(req, res, next) {
 });
 
 /**
- * Страница для проверки ajax-переходов
+ * Главная
  */
-router.get(/^\/spage\/?$/, function(req, res, next) {
-
-    var page = 'second-page',
+router.get(/^\/?$/, function(req, res, next) {
+    var page = 'index',
         pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
 
     res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
@@ -37,24 +36,7 @@ router.get(/^\/spage\/?$/, function(req, res, next) {
     res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
 
     next();
-
 });
 
-/**
- * Страница для проверки ajax-переходов
- */
-router.get(/^\/tpage\/?$/, function(req, res, next) {
-
-    var page = 'third-page',
-        pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
-
-    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
-
-    res.pageName = page;
-    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
-
-    next();
-
-});
 
 module.exports = router;

@@ -7,7 +7,6 @@
         { block: 'header' },
         { block: 'footer' },
 
-        { block: 'second-page' },
-        { block: 'third-page' }
+        { block: 'index' }
     ]
 })
