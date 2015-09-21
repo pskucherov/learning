@@ -27,7 +27,8 @@ blocks['page'] = function (data) {
                         'e[c]+=" i-ua_inlinesvg_"+((v[f]&&v[f].namespaceURI)==w?"yes":"no");',
                         '})(document);'
                     ].join('')
-                }
+                },
+                BEMPRIV.create('vk', this.data).json()
             ],
             content: [
 
@@ -39,7 +40,7 @@ blocks['page'] = function (data) {
                     content: BEMPRIV.create(data.pageName, data).json()
                 },
 
-                { block: 'footer' },
+                BEMPRIV.create('footer', this.data).json(),
 
                 {
                     elem: 'css',

@@ -7,6 +7,7 @@
         { block: 'header' },
         { block: 'footer' },
 
-        { block: 'index' }
+        { block: 'index' },
+        { block: 'vk' }
     ]
 })

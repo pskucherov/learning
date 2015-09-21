@@ -2,6 +2,9 @@ var enbBemTechs = require('enb-bem-techs'),
     borschikTech = require('enb-borschik/techs/borschik'),
     isProd = process.env.YENV !== 'dev';
 
+console.log(process.env.YENV);
+console.log(process.env.YENV !== 'dev');
+
 module.exports = function (config) {
     config.nodes('*.bundles/*', function (nodeConfig) {
         nodeConfig.addTechs([
