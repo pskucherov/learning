@@ -1,0 +1,6 @@
+block vk, elem button-auth {
+    attrs: {
+        id: 'login_button',
+        onclick: 'VK.Auth.login(authInfo);'
+    }
+}
