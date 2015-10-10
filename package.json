@@ -10,8 +10,10 @@
   "dependencies": {
     "enb-includes": "0.0.1",
     "express": "~4.12.3",
+    "lodash": "^3.10.1",
     "mysql": "~2.6.2",
     "orm": "~2.1.24",
+    "vksdk": "phpprog/nodejs-vksdk#017728d43b11336f4b163f285d44906d1915ea77",
     "vow": "~0.4.9"
   },
   "devDependencies": {

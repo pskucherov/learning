@@ -3,6 +3,12 @@ BEMPRIV.decl('vk', {
 
             this.content([
                 {
+                    block: 'link',
+                    url: 'https://oauth.vk.com/authorize?client_id=' + this.params.appId + '&display=page&redirect_uri=http://localhost:3000/verify&scope=friends,email&response_type=code&v=5.37',
+                    content: 'Кнопка'
+                },
+                /*
+                {
                     elem: 'button-auth'
                 },
                 {
@@ -11,6 +17,7 @@ BEMPRIV.decl('vk', {
                     }
                 },
                 this._initOpenApi()
+                */
             ]);
 
         },
