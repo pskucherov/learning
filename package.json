@@ -8,8 +8,10 @@
     "email": "php_prog@mail.ru"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.0",
     "enb-includes": "0.0.1",
     "express": "~4.12.3",
+    "express-session": "^1.11.3",
     "lodash": "^3.10.1",
     "mysql": "~2.6.2",
     "orm": "~2.1.24",

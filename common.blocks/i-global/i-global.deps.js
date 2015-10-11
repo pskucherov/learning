@@ -1,5 +1,6 @@
 ({
     shouldDeps: [
-        { block: 'i-response' }
+        { block: 'i-response' },
+        { mods: { storages: true } }
     ]
 })

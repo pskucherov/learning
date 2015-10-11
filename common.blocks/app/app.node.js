@@ -9,6 +9,10 @@ var fs = require('fs'),
 
     ormConnect = require('./_ormConnect'),
 
+    session = require('express-session'),
+
+    cookieParser = require('cookie-parser'),
+
     redirects = require('./routes/redirects'),
 
     routes = require('./routes/index'),
@@ -24,6 +28,10 @@ var fs = require('fs'),
 app.use(express.static(PATH.join('.', 'desktop.bundles'), { extensions: ['js', 'css'], maxAge: 86400000 }));
 
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
+
+app.use(cookieParser());
+
+app.use(session({ secret: 'nosecret' }));
 
 app.use(ormConnect);
 
@@ -46,7 +54,11 @@ app.use(routes, function(req, res) {
 
         content = res.priv.main({
             pageName: res.pageName,
-            searchObj: res.searchObj
+            searchObj: res.searchObj,
+            cookies: req.cookies,
+            session: req.session,
+            req: req,
+            res: res
         });
 
         content = res.BEMHTML.apply(content);
