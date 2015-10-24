@@ -3,98 +3,64 @@ var express = require('express'),
     PATH = require('path'),
     fs = require('fs'),
     vk = require('../controllers/vk'),
-    User = require('../controllers/user');
+    User = require('../controllers/user'),
+    _ = require('lodash');
 
 /**
  * Страница для gemini-тестов
  */
 router.get(/^\/verify\/?$/, function(req, res) {
 
-    var callBackUrl = req.protocol + '://' + req.headers.host + '/verify';
+    // Коллбэк, куда вернёт вк после авторизации
+    var callBackUrl = req.protocol + '://' + req.headers.host + '/verify',
+        finish = function() {
+            res.redirect('/');
+        };
 
     vk.requestServerToken(function(_o) {
 
+        var email;
 
-        // Here will be server access token
-        console.log(_o, '\n _o.access_token = ' + _o.access_token);
+        // Запрашиваем доступы, которые разрешил пользователь
+        vk.request('account.getAppPermissions', { user_id: _o.user_id }, function(permissions) {
 
+            // Если приложение не установили, не подтвердили права или не авторизовались — выходим
+            if (!permissions || permissions.response <= 0) {
+                finish();
+            }
 
-        User.createUserByVKId(req.models.users, _o.user_id)
-            .then(function() {
+            email = _o.email;
 
-                vk.setToken(_o.access_token);
+            // Создаём или ищем существующего пользователя
+            User.createByVKId(req.models.users, _o.user_id)
+                .then(function (createdUser) {
 
-                vk.setSecureRequests(true);
+                    vk.setToken(_o.access_token);
+                    vk.setSecureRequests(true);
 
-                vk.request('account.getAppPermissions', {'user_id': _o.user_id}, function(q) {
-                    console.log(q);
+                    // Запрашиваем данные пользователя, чтобы сохранить их в БД (если изменились).
+                    vk.request('users.get', { user_id: _o.user_id, fields: 'sex,bdate,photo_50,photo_100,photo_200_orig,photo_200,has_mobile' }, function (userFields) {
+                        if (_.get(userFields, 'response[0].id') !== _o.user_id) {
+                            finish();
+                        }
+
+                        createdUser.email = email;
+
+                        _.defaultsDeep(createdUser, userFields.response[0]);
+
+                        console.log(createdUser);
+                        console.log(_o.user_id);
+                        User.updateFieldsByVKId(req.models.users, _o.user_id, createdUser).then(function() {
+                            finish();
+                        });
+
+                    });
+
                 });
 
-                vk.request('users.get', {'user_id' : _o.user_id, fields: 'email,contacts' }, function(q) {
-                    console.log(q);
-                    res.end(JSON.stringify(q, null, 4));
-                });
-
-            });
+        });
 
     }, req.query.code, callBackUrl);
-
-
-    //vk.setSecureRequests(true);
-
-
-
-    //vk.request('users.get', {'user_id' : 108239190}, function(q) {
-    //    console.log(q);
-    //});
-
-    /**
-     * Request server methods
-     */
-/*
-// Setup server access token for server API methods
-    vk.on('serverTokenReady', function(_o) {
-        // Here will be server access token
-        vk.setToken(_o.access_token);
-
-        vk.setSecureRequests(true);
-
-
-// Request 'users.get' method
-        vk.request('users.get', {'user_id' : 108239190}, function(_o) {
-            console.log(_o);
-        });
-
-
-// Request server API method
-        vk.request('secure.getSMSHistory', {}, function(_dd) {
-            console.log(_dd);
-        });
-
-
-    });
-*/
-
-// Turn on requests with access tokens
-
-
-
-
-    /*
-    vk.on('serverTokenReady', function(_o) {
-        console.log('serverTokenReady');
-        // Here will be server access token
-        res.end(JSON.stringify(_o, null, 4));
-    });
-
-    /*
-    //vk.setSecureRequests(false);
-    vk.request('account.getAppPermissions', {'user_id': 108239190}, function(_o) {
-        console.log(_o);
-        res.end(JSON.stringify(_o, null, 4));
-    });
-    */
-
 
 });
 

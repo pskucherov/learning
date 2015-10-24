@@ -2,10 +2,10 @@ module.exports = function (orm, db) {
 
     db.define("users", {
 
-        id: { type: 'serial', key: true }, // the auto-incrementing primary key
-        vkid: Number,
-        firstname: { type: 'text', defaultValue: '' },
-        lastname: { type: 'text', defaultValue: '' }
+        id: { type: 'serial', key: true },
+        vkid: { type: 'integer', unique: true, size: 8, defaultValue: 0 },
+        first_name: { type: 'text', defaultValue: '', size: 50 },
+        last_name: { type: 'text', defaultValue: '', size: 50 }
 
     });
 
