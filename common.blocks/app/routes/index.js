@@ -3,7 +3,7 @@ var express = require('express'),
     PATH = require('path'),
     fs = require('fs'),
     vk = require('../controllers/vk'),
-    user = require('../controllers/user');
+    User = require('../controllers/user');
 
 /**
  * Страница для gemini-тестов
@@ -19,7 +19,7 @@ router.get(/^\/verify\/?$/, function(req, res) {
         console.log(_o, '\n _o.access_token = ' + _o.access_token);
 
 
-        user.createUserById(req.models.users, _o.user_id)
+        User.createUserByVKId(req.models.users, _o.user_id)
             .then(function() {
 
                 vk.setToken(_o.access_token);

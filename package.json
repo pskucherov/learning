@@ -10,11 +10,14 @@
     "email": "php_prog@mail.ru"
   },
   "dependencies": {
+    "chai": "^3.4.0",
+    "chai-as-promised": "^5.1.0",
     "cookie-parser": "^1.4.0",
     "enb-includes": "0.0.1",
     "express": "~4.12.3",
     "express-session": "^1.11.3",
     "lodash": "^3.10.1",
+    "mocha": "^2.3.3",
     "mysql": "~2.6.2",
     "orm": "~2.1.24",
     "vksdk": "phpprog/nodejs-vksdk#017728d43b11336f4b163f285d44906d1915ea77",
@@ -31,14 +34,13 @@
     "enb-diverse-js": "0.1.0",
     "enb-modules": "0.2.0",
     "enb-stylus": "1.2.3",
-    "enb-priv-js": "~v2.3.1",
-    "mocha": "^2.3.3"
+    "enb-priv-js": "~v2.3.1"
   },
   "scripts": {
     "postinstall": "npm run deps",
     "deps": "bower install --non-interactive",
     "start": "enb make && node app",
-    "test": "./node_modules/mocha/bin/mocha test/unit/*"
+    "test": "./node_modules/mocha/bin/mocha test/unit/* --delay"
   },
   "engines": {
     "node": ">=0.10.0"

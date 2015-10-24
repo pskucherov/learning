@@ -1,5 +1,4 @@
 var vow = require('vow');
-
 /**
  * Объект пользователя
  *
@@ -9,6 +8,17 @@ var vow = require('vow');
 var User = function() {
     this.id = 0;
     return this;
+};
+
+/**
+ * Коды ответов методов.
+ *
+ * @type {{NEW_USER: number, OLD_USER: number}}
+ */
+User.ANSWER = {
+    NEW_USER: 0,
+    OLD_USER: 1,
+    DELETED: 2
 };
 
 /**
@@ -49,31 +59,31 @@ User.prototype.authentication = function(code) {
  * @param userModel - модель таблицы user
  * @param vkid - id анкеты в vk
  * @returns {Deferred} - promise
+ *
+ * @static
  */
-User.prototype.createUserById = function(userModel, vkid) {
+User.createUserByVKId = function(userModel, vkid) {
 
     var deferred = vow.defer();
 
-    userModel.find({ vkid: vkid }, function(err, user) {
+    userModel.find({ vkid: vkid }).limit(1).run(function(err, user) {
 
-        if (err) {
-            defer.reject(err);
-            return;
-        }
+        if (err) throw err;
 
         if (!user.length) {
             userModel.create({ vkid: vkid }, function(err) {
-
-                if (err) {
-                    defer.reject(err);
-                    return;
-                }
-
-                deferred.resolve(vkid);
-
+                if (err) throw err;
+                deferred.resolve({
+                    status: User.ANSWER.NEW_USER,
+                    vkid: vkid
+                });
             });
         } else {
-            deferred.resolve(vkid);
+            deferred.resolve({
+                status: User.ANSWER.OLD_USER,
+                id: user[0].id,
+                vkid: vkid
+            });
         }
 
     });
@@ -82,4 +92,26 @@ User.prototype.createUserById = function(userModel, vkid) {
 
 };
 
-module.exports = new User();
+/**
+ * Удаляет запись из БД.
+ *
+ * @param userModel - модель таблицы user
+ * @param vkid - id анкеты в vk
+ * @returns {Deferred} - promise
+ *
+ * @static
+ */
+User.deleteUserByVKId = function(userModel, vkid) {
+
+    var deferred = vow.defer();
+
+    userModel.find({ vkid: vkid }).remove(function (err) {
+        if (err) throw err;
+        deferred.resolve(User.ANSWER.DELETED);
+    });
+
+    return deferred.promise();
+
+};
+
+module.exports = User;
