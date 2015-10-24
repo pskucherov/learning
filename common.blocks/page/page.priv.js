@@ -27,12 +27,11 @@ blocks['page'] = function (data) {
                         'e[c]+=" i-ua_inlinesvg_"+((v[f]&&v[f].namespaceURI)==w?"yes":"no");',
                         '})(document);'
                     ].join('')
-                },
-                BEMPRIV.create('vk', this.data).json()
+                }
             ],
             content: [
 
-                { block: 'header' },
+                BEMPRIV.create('header', data).json(),
 
                 {
                     block: 'page',

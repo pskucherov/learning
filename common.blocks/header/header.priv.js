@@ -2,12 +2,12 @@ BEMPRIV.decl('header', {
 
     init: function() {
 
-        this.content(
+        this.content([
             {
-                block: 'vk',
-                elem: 'button-auth'
-            }
-        );
+                elem: 'logo'
+            },
+            BEMPRIV.create('vk', this.data).json()
+        ]);
 
     }
 

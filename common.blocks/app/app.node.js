@@ -7,7 +7,7 @@ var fs = require('fs'),
     pathToBundle = PATH.join('.', 'desktop.bundles', 'index'),
     pathToStatic = PATH.join('.', 'public'),
 
-    ormConnect = require('./_ormConnect'),
+    //ormConnect = require('./ormConnect'),
 
     session = require('express-session'),
 
@@ -15,7 +15,11 @@ var fs = require('fs'),
 
     redirects = require('./routes/redirects'),
 
-    routes = require('./routes/index'),
+    user = require('./controllers/user'),
+
+    models   = require('./models/'),
+
+    routes = require('./routes/'),
 
     url = require('url'),
     querystring = require('querystring'),
@@ -33,7 +37,19 @@ app.use(cookieParser());
 
 app.use(session({ secret: 'nosecret' }));
 
-app.use(ormConnect);
+//app.use(ormConnect);
+// По мотивам: https://github.com/dresende/node-orm2/issues/524
+// https://github.com/dresende/node-orm2/blob/master/examples/anontxt/config/environment.js#L12-L21
+app.use(function (req, res, next) {
+    models(function (err, db) {
+        if (err) return next(err);
+
+        req.models = db.models;
+        req.db     = db;
+
+        return next();
+    });
+});
 
 app.use(redirects);
 

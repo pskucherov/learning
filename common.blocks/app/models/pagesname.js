@@ -1,4 +1,4 @@
-module.exports = function (db, cb) {
+module.exports = function (orm, db) {
 
     db.define("pagesname", {
 
@@ -8,7 +8,5 @@ module.exports = function (db, cb) {
         url: {type: 'text' }
 
     });
-
-    return cb();
 
 };

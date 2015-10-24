@@ -1,29 +1,21 @@
-block header {
+block header, elem logo, default: {
 
-    elem logo, default: {
-
-        var title = 'Школьник.com - проект, который помогает детям найти взаимопонимание, похвалу и компромисс у родителей.',
-            content = {
-                block: 'link',
-                url: '/',
-                title: title,
-                content: {
-                    block: 'header',
-                    elem: 'image',
-                    tag: 'img',
-                    attrs: {
-                        src: '/images/header__image.png',
-                        alt: title
-                    }
+    var title = 'Школьник.com - проект, который помогает детям найти взаимопонимание, похвалу и компромисс у родителей.',
+        content = {
+            block: 'link',
+            url: '/',
+            title: title,
+            content: {
+                block: 'header',
+                elem: 'image',
+                tag: 'img',
+                attrs: {
+                    src: '/images/header__image.png',
+                    alt: title
                 }
-            };
+            }
+        };
 
-        applyCtx(content);
-
-    }
-
-    content: {
-        elem: 'logo'
-    }
+    applyCtx(content);
 
 }

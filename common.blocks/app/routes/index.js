@@ -2,35 +2,42 @@ var express = require('express'),
     router = express.Router(),
     PATH = require('path'),
     fs = require('fs'),
-    vk = require('../controllers/vk');
+    vk = require('../controllers/vk'),
+    user = require('../controllers/user');
 
 /**
  * Страница для gemini-тестов
  */
-router.get(/^\/verify\/?$/, function(req, res, next) {
+router.get(/^\/verify\/?$/, function(req, res) {
 
-    console.log('verify');
-
+    var callBackUrl = req.protocol + '://' + req.headers.host + '/verify';
 
     vk.requestServerToken(function(_o) {
+
+
         // Here will be server access token
         console.log(_o, '\n _o.access_token = ' + _o.access_token);
-        vk.setToken(_o.access_token);
-
-        vk.setSecureRequests(true);
-
-        vk.request('account.getAppPermissions', {'user_id': 108239190}, function(q) {
-            console.log(q);
-
-        });
 
 
-        vk.request('users.get', {'user_id' : 108239190, fields: 'email,contacts' }, function(q) {
-            console.log(q);
-            res.end(JSON.stringify(q, null, 4));
-        });
+        user.createUserById(req.models.users, _o.user_id)
+            .then(function() {
 
-    }, req.query.code, 'http://localhost:3000/verify');
+                vk.setToken(_o.access_token);
+
+                vk.setSecureRequests(true);
+
+                vk.request('account.getAppPermissions', {'user_id': _o.user_id}, function(q) {
+                    console.log(q);
+                });
+
+                vk.request('users.get', {'user_id' : _o.user_id, fields: 'email,contacts' }, function(q) {
+                    console.log(q);
+                    res.end(JSON.stringify(q, null, 4));
+                });
+
+            });
+
+    }, req.query.code, callBackUrl);
 
 
     //vk.setSecureRequests(true);
