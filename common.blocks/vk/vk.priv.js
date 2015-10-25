@@ -22,16 +22,16 @@ BEMPRIV.decl('vk', {
                 appId: this.params.appId,
                 redirect_uri: this._callbackUrl(),
                 scope: this._getScope()
-            }
+            },
 
-            /*
+
             {
                 attrs: {
                     id: 'vk_api_transport'
                 }
             },
             this._initOpenApi()
-            */
+
         ]);
 
     },

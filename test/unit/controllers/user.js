@@ -81,7 +81,13 @@ models(function (err, db) {
                         newFields = {
                             vkid: VK_USER_ID,
                             first_name: 'Петр',
-                            last_name: 'Сагайдачный Ё е Ю Я'
+                            last_name: 'Сагайдачный Ё е Ю Я',
+                            sex: 1,
+                            photo_50: 'photo_50',
+                            photo_100: 'photo_100',
+                            photo_200_orig: 'photo_200_orig',
+                            photo_200: 'photo_200',
+                            has_mobile: true
                         };
 
                     User.createByVKId(usersModel, VK_USER_ID)

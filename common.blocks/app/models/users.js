@@ -2,10 +2,60 @@ module.exports = function (orm, db) {
 
     db.define("users", {
 
-        id: { type: 'serial', key: true },
-        vkid: { type: 'integer', unique: true, size: 8, defaultValue: 0 },
-        first_name: { type: 'text', defaultValue: '', size: 50 },
-        last_name: { type: 'text', defaultValue: '', size: 50 }
+        id: {
+            type: 'serial',
+            key: true
+        },
+        vkid: {
+            type: 'integer',
+            unique: true,
+            size: 8,
+            defaultValue: 0
+        },
+        first_name: {
+            type: 'text',
+            size: 50,
+            defaultValue: ''
+        },
+        last_name: {
+            type: 'text',
+            size: 50,
+            defaultValue: ''
+        },
+        sex: {
+            type: 'integer',
+            size: 2,
+            defaultValue: 0
+        },
+        photo_50: {
+            type: 'text',
+            size: 255,
+            defaultValue: ''
+        },
+        photo_100: {
+            type: 'text',
+            size: 255,
+            defaultValue: ''
+        },
+        photo_200_orig: {
+            type: 'text',
+            size: 255,
+            defaultValue: ''
+        },
+        photo_200: {
+            type: 'text',
+            size: 255,
+            defaultValue: ''
+        },
+        has_mobile: {
+            type: 'boolean',
+            defaultValue: 0
+        },
+        access_token: {
+            type: 'text',
+            size: 255,
+            defaultValue: ''
+        }
 
     });
 

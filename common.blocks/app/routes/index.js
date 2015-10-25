@@ -19,7 +19,10 @@ router.get(/^\/verify\/?$/, function(req, res) {
 
     vk.requestServerToken(function(_o) {
 
-        var email;
+        if (!_o.user_id) {
+            finish();
+            return;
+        }
 
         // Запрашиваем доступы, которые разрешил пользователь
         vk.request('account.getAppPermissions', { user_id: _o.user_id }, function(permissions) {
@@ -27,9 +30,8 @@ router.get(/^\/verify\/?$/, function(req, res) {
             // Если приложение не установили, не подтвердили права или не авторизовались — выходим
             if (!permissions || permissions.response <= 0) {
                 finish();
+                return;
             }
-
-            email = _o.email;
 
             // Создаём или ищем существующего пользователя
             User.createByVKId(req.models.users, _o.user_id)
@@ -38,29 +40,28 @@ router.get(/^\/verify\/?$/, function(req, res) {
                     vk.setToken(_o.access_token);
                     vk.setSecureRequests(true);
 
+
                     // Запрашиваем данные пользователя, чтобы сохранить их в БД (если изменились).
                     vk.request('users.get',
                         { user_id: _o.user_id, fields: 'sex,photo_50,photo_100,photo_200_orig,photo_200,has_mobile' },
                         function (userFields) {
 
-                        if (_.get(userFields, 'response[0].id') !== _o.user_id) {
-                            finish();
-                        }
+                            if (_.get(userFields, 'response[0].id') !== _o.user_id) {
+                                finish();
+                                return;
+                            }
 
-                        createdUser.email = email;
+                            createdUser.email = _o.email;
+                            createdUser.access_token = _o.access_token;
 
-                        _.defaultsDeep(createdUser, userFields.response[0]);
+                            _.defaultsDeep(createdUser, userFields.response[0]);
 
-                        console.log(createdUser);
-                        console.log(_o.user_id);
-                        User.updateFieldsByVKId(req.models.users, _o.user_id, createdUser).always(function() {
-                            finish();
+                            User.updateFieldsByVKId(req.models.users, _o.user_id, createdUser).always(function() {
+                                finish();
+                            });
+
                         });
-
-                    });
-
                 });
-
         });
 
     }, req.query.code, callBackUrl);
@@ -97,7 +98,31 @@ router.get(/^\/?$/, function(req, res, next) {
     var page = 'index',
         pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
 
-    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+
+            User.getByVKId(req.models.users, 108239190).then(function (u) {
+
+            console.log(u[0].access_token);
+
+            vk.setToken(u[0].access_token);
+            vk.setSecureRequests(true);
+
+            // Запрашиваем данные пользователя, чтобы сохранить их в БД (если изменились).
+            vk.request('account.getAppPermissions', {},
+
+                function (userFields) {
+
+                    console.log('here');
+                    console.log(JSON.stringify(userFields, null, 4));
+
+                });
+
+            });
+
+
+
+
+
+            res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
 
     res.pageName = page;
     res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
