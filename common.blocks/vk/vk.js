@@ -1,5 +1,3 @@
-window.location.hostname = window.location.host;
-
 window.vkAsyncInit = function() {
     VK.init({
         apiId: 5076733
