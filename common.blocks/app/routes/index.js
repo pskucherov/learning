@@ -39,7 +39,10 @@ router.get(/^\/verify\/?$/, function(req, res) {
                     vk.setSecureRequests(true);
 
                     // Запрашиваем данные пользователя, чтобы сохранить их в БД (если изменились).
-                    vk.request('users.get', { user_id: _o.user_id, fields: 'sex,bdate,photo_50,photo_100,photo_200_orig,photo_200,has_mobile' }, function (userFields) {
+                    vk.request('users.get',
+                        { user_id: _o.user_id, fields: 'sex,photo_50,photo_100,photo_200_orig,photo_200,has_mobile' },
+                        function (userFields) {
+
                         if (_.get(userFields, 'response[0].id') !== _o.user_id) {
                             finish();
                         }
@@ -50,7 +53,7 @@ router.get(/^\/verify\/?$/, function(req, res) {
 
                         console.log(createdUser);
                         console.log(_o.user_id);
-                        User.updateFieldsByVKId(req.models.users, _o.user_id, createdUser).then(function() {
+                        User.updateFieldsByVKId(req.models.users, _o.user_id, createdUser).always(function() {
                             finish();
                         });
 

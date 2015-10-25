@@ -75,27 +75,27 @@ User.createByVKId = function(userModel, vkid) {
 
     var deferred = vow.defer();
 
-    User.getByVKId(userModel, vkid).then(function(user) {
+    User.getByVKId(userModel, vkid).then(
+        // resolve
+        function(user) {
+            deferred.resolve({
+                status: User.ANSWER.OLD_USER,
+                id: user[0].id,
+                vkid: vkid
+            });
+        },
 
-        if (!user.length) {
-
-            userModel.create({ vkid: vkid }, function(err) {
+        // reject
+        function() {
+            userModel.create({ vkid: vkid }, function (err) {
                 if (err) throw err;
                 deferred.resolve({
                     status: User.ANSWER.NEW_USER,
                     vkid: vkid
                 });
             });
-
-        } else {
-            deferred.resolve({
-                status: User.ANSWER.OLD_USER,
-                id: user[0].id,
-                vkid: vkid
-            });
         }
-
-    });
+    );
 
     return deferred.promise();
 
@@ -152,7 +152,7 @@ User.updateFieldsByVKId = function(userModel, vkid, fields) {
             deferred.resolve(User.ANSWER.FIELDS_UPDATED);
         });
 
-    });
+    }, function(err) { deferred.reject(err); });
 
     return deferred.promise();
 
@@ -172,7 +172,12 @@ User.getByVKId = function(userModel, vkid) {
 
     userModel.find({ vkid: vkid }).limit(1).run(function(err, user) {
         if (err) throw err;
-        deferred.resolve(user);
+
+        if (_.isEmpty(user)) {
+            deferred.reject(user);
+        } else {
+            deferred.resolve(user);
+        }
     });
 
     return deferred.promise();

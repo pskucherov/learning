@@ -74,7 +74,7 @@ models(function (err, db) {
                 });
             });
 
-            describe.only('Update methods', function () {
+            describe('Update methods', function () {
 
                 it('should update user fields in model', function () {
                     var deferred = vow.defer(),
@@ -109,6 +109,28 @@ models(function (err, db) {
                         deferred.promise(),
                         newFields,
                         "Fields should be deep equal"
+                    );
+                });
+
+                it('should end, if not update', function () {
+                    var deferred = vow.defer(),
+                        newFields = {
+                            vkid: VK_USER_ID,
+                            first_name: '',
+                            last_name: ''
+                        };
+
+                    User.createByVKId(usersModel, VK_USER_ID)
+                        .then(function () {
+                            var updatedFields = _.cloneDeep(newFields);
+
+                            User.updateFieldsByVKId(usersModel, (VK_USER_ID+1), updatedFields)
+                                .fail(function() { deferred.reject(); });
+                        });
+
+                    return assert.isRejected(
+                        deferred.promise(),
+                        'Should be rejected'
                     );
                 });
 
