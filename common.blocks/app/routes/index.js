@@ -9,13 +9,21 @@ var express = require('express'),
 /**
  * Страница для gemini-тестов
  */
-router.get(/^\/verify\/?$/, function(req, res) {
+router.get(/^\/verify\/?$/, function(req, res, next) {
 
     // Коллбэк, куда вернёт вк после авторизации
     var callBackUrl = req.protocol + '://' + req.headers.host + '/verify',
         finish = function() {
-            res.redirect('/');
-        };
+            //res.redirect('/');
+            next();
+        },
+        page = 'verify';
+    pathToBundle = PATH.join('.', 'desktop.bundles', page);
+
+    res.BEMHTML = require(PATH.join('../../../' + pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+
+    res.pageName = page;
+    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
 
     vk.requestServerToken(function(_o) {
 
