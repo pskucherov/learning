@@ -13,6 +13,7 @@
     "chai": "^3.4.0",
     "chai-as-promised": "^5.1.0",
     "cookie-parser": "^1.4.0",
+    "crypto": "0.0.3",
     "enb-includes": "0.0.1",
     "express": "~4.12.3",
     "express-session": "^1.11.3",

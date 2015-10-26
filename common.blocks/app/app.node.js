@@ -15,7 +15,7 @@ var fs = require('fs'),
 
     redirects = require('./routes/redirects'),
 
-    user = require('./controllers/user'),
+    user = require('./controllers/User'),
 
     models   = require('./models/'),
 

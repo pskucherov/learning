@@ -12,8 +12,7 @@ var assert = chai.assert,
 
 var appDir = './common.blocks/app/',
     models = require(path.resolve(appDir + 'models/')),
-    User = require(path.resolve(appDir + 'controllers/user'));
-
+    User = require(path.resolve(appDir + 'controllers/User'));
 
 models(function (err, db) {
     if (err) throw err;
@@ -87,7 +86,8 @@ models(function (err, db) {
                             photo_100: 'photo_100',
                             photo_200_orig: 'photo_200_orig',
                             photo_200: 'photo_200',
-                            has_mobile: true
+                            has_mobile: true,
+                            access_token: 'access_token'
                         };
 
                     User.createByVKId(usersModel, VK_USER_ID)
@@ -140,6 +140,16 @@ models(function (err, db) {
                     );
                 });
 
+            });
+
+        });
+
+        describe('Auth methods', function () {
+
+            it('should create same sig', function () {
+                var sid = 'expire=1445896013&mid=31152722&secret=oauth&sid=c8fc6beacd7f172b4710fdff8e98111ce8660a07e3a960a1adaef46059ca937aa71ecbd6c65ad1997ba84&sig=09fd6b3559738f36e2679f2f0644db68';
+
+                assert.isTrue(User._authOpenAPIMember(sid));
             });
 
         });
