@@ -1,8 +1,7 @@
 var vow = require('vow'),
     _ = require('lodash'),
     path = require('path'),
-    utils = require('../utils'),
-    crypto = require('crypto');
+    utils = require('../utils');
 
 /**
  * Объект пользователя.
