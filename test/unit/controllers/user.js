@@ -144,16 +144,6 @@ models(function (err, db) {
 
         });
 
-        describe('Auth methods', function () {
-
-            it('should create same sig', function () {
-                var sid = 'expire=1445896013&mid=31152722&secret=oauth&sid=c8fc6beacd7f172b4710fdff8e98111ce8660a07e3a960a1adaef46059ca937aa71ecbd6c65ad1997ba84&sig=09fd6b3559738f36e2679f2f0644db68';
-
-                assert.isTrue(User._authOpenAPIMember(sid));
-            });
-
-        });
-
         run();
 
     });
