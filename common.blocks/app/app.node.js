@@ -7,11 +7,19 @@ var fs = require('fs'),
     pathToBundle = PATH.join('.', 'desktop.bundles', 'index'),
     pathToStatic = PATH.join('.', 'public'),
 
-    ormConnect = require('./_ormConnect'),
+    //ormConnect = require('./ormConnect'),
+
+    session = require('express-session'),
+
+    cookieParser = require('cookie-parser'),
 
     redirects = require('./routes/redirects'),
 
-    routes = require('./routes/index'),
+    user = require('./controllers/User'),
+
+    models   = require('./models/'),
+
+    routes = require('./routes/'),
 
     url = require('url'),
     querystring = require('querystring'),
@@ -25,7 +33,23 @@ app.use(express.static(PATH.join('.', 'desktop.bundles'), { extensions: ['js', '
 
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
 
-app.use(ormConnect);
+app.use(cookieParser());
+
+app.use(session({ secret: 'nosecret' }));
+
+//app.use(ormConnect);
+// По мотивам: https://github.com/dresende/node-orm2/issues/524
+// https://github.com/dresende/node-orm2/blob/master/examples/anontxt/config/environment.js#L12-L21
+app.use(function (req, res, next) {
+    models(function (err, db) {
+        if (err) return next(err);
+
+        req.models = db.models;
+        req.db     = db;
+
+        return next();
+    });
+});
 
 app.use(redirects);
 
@@ -46,7 +70,12 @@ app.use(routes, function(req, res) {
 
         content = res.priv.main({
             pageName: res.pageName,
-            searchObj: res.searchObj
+            searchObj: res.searchObj,
+            cookies: req.cookies,
+            session: req.session,
+            user: res.user,
+            req: req,
+            res: res
         });
 
         content = res.BEMHTML.apply(content);

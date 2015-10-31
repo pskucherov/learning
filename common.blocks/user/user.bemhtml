@@ -1,0 +1,19 @@
+block user, elem info, default: {
+
+    var name = this.ctx.first_name + ' ' || '' + this.ctx.last_name || '',
+        content = {
+            block: 'link',
+            url: '/',
+            title: name,
+            content: {
+                tag: 'img',
+                attrs: {
+                    src: this.ctx.photo_50,
+                    alt: name
+                }
+            }
+        };
+
+    applyCtx(content);
+
+}

@@ -1,6 +1,7 @@
 ({
     shouldDeps: [
         { block: 'link' },
-        { block: 'icon' }
+        { block: 'icon' },
+        { block: 'user' }
     ]
 })

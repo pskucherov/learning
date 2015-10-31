@@ -31,7 +31,7 @@ blocks['page'] = function (data) {
             ],
             content: [
 
-                { block: 'header' },
+                BEMPRIV.create('header', data).json(),
 
                 {
                     block: 'page',
@@ -39,7 +39,7 @@ blocks['page'] = function (data) {
                     content: BEMPRIV.create(data.pageName, data).json()
                 },
 
-                { block: 'footer' },
+                BEMPRIV.create('footer', this.data).json(),
 
                 {
                     elem: 'css',

@@ -1,18 +1,28 @@
 {
   "name": "learn",
-  "description": "BEM project",
-  "version": "0.0.0",
-  "repository": {},
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phpprog/learning.git"
+  },
   "author": {
-    "name": "'Pavel'",
+    "name": "Pavel",
     "email": "php_prog@mail.ru"
   },
   "dependencies": {
+    "chai": "^3.4.0",
+    "chai-as-promised": "^5.1.0",
+    "cookie-parser": "^1.4.0",
+    "crypto": "0.0.3",
     "enb-includes": "0.0.1",
     "express": "~4.12.3",
+    "express-session": "^1.11.3",
+    "lodash": "^3.10.1",
+    "mocha": "^2.3.3",
     "mysql": "~2.6.2",
     "orm": "~2.1.24",
-    "vow": "~0.4.9"
+    "vksdk": "phpprog/nodejs-vksdk#cae012920977c2488307914a729d3563622f21a1",
+    "vow": "^0.4.11"
   },
   "devDependencies": {
     "bower": "1.4.1",
@@ -30,7 +40,8 @@
   "scripts": {
     "postinstall": "npm run deps",
     "deps": "bower install --non-interactive",
-    "start": "enb server"
+    "start": "enb make && node app",
+    "test": "./node_modules/mocha/bin/mocha test/unit/* --delay"
   },
   "engines": {
     "node": ">=0.10.0"
