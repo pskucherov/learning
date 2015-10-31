@@ -1,6 +1,8 @@
 BEMPRIV.decl('vk', {
     init: function () {
 
+        this.js(true);
+
         this.content([
             /*{
                 block: 'link',
@@ -60,16 +62,10 @@ BEMPRIV.decl('vk', {
                     id: 'vk_api_transport'
                 }
             },
-            {
+            /*{
                 block: 'page',
                 elem: 'js',
                 content: '' +
-                    /*'window.vkAsyncInit = function() {' +
-                    'VK.init({' +
-                    'apiId: ' + this.params.appId +
-                    '});' +
-
-                    '};' +*/
                     'setTimeout(function() {' +
                     'var el = document.createElement("script");' +
                     'el.type = "text/javascript";' +
@@ -77,7 +73,7 @@ BEMPRIV.decl('vk', {
                     'el.async = true;' +
                     'document.getElementById("vk_api_transport").appendChild(el);' +
                     '}, 0);'
-            }
+            }*/
         ];
     },
 

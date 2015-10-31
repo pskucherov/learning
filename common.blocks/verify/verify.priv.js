@@ -17,8 +17,8 @@ BEMPRIV.decl('verify', {
                     'window.authInfo = function() {' +
                     "window.location.href = '/';" +
                     '};'
-            }
-
+            },
+            BEMPRIV.create('vk', this.data).json()
         ]);
 
     }
