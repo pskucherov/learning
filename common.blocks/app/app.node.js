@@ -68,16 +68,12 @@ app.use(routes, function(req, res) {
         content = res.html;
     } else if (res.priv) {
 
-
-        console.log(req.cookies);
-        console.log(req.session);
-
-
         content = res.priv.main({
             pageName: res.pageName,
             searchObj: res.searchObj,
             cookies: req.cookies,
             session: req.session,
+            user: res.user,
             req: req,
             res: res
         });

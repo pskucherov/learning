@@ -4,7 +4,18 @@ var express = require('express'),
     fs = require('fs'),
     vk = require('../controllers/vk'),
     User = require('../controllers/user'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    settings = require('../settings');
+
+
+/**
+ * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
+ */
+router.get(/.*/, function(req, res, next) {
+    var sidName = 'vk_app_' + settings.vk.appId;
+
+    res.user = new User(req.models.users, { sid: req.cookies[sidName] || req.session[sidName] }, next);
+});
 
 /**
  * Страница для gemini-тестов
@@ -106,7 +117,7 @@ router.get(/^\/?$/, function(req, res, next) {
     var page = 'index',
         pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
 
-
+    /*
             User.getByVKId(req.models.users, 108239190).then(function (u) {
 
             console.log(u[0].access_token);
@@ -125,12 +136,9 @@ router.get(/^\/?$/, function(req, res, next) {
                 });
 
             });
+    */
 
-
-
-
-
-            res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
 
     res.pageName = page;
     res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');

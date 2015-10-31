@@ -4,6 +4,9 @@
 var path       = require('path');
 
 var settings = {
+    vk: {
+        appId: 5076733
+    },
     database   : {
         database : "learn-demo",
         protocol : "mysql",

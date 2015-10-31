@@ -1,22 +1,48 @@
 var vow = require('vow'),
     _ = require('lodash'),
     path = require('path'),
-    utils = require('../utils');
+    utils = require('../utils'),
+    vk = require('../controllers/vk');
+
 
 /**
  * Объект пользователя.
  * Для создания объекта необходим id или vkid.
  *
- * @param {Number} [id]
- * @param {Number} [vkid]
+ * @param {Model} userModel - модель таблицы user
+ * @param {Object} u - объект, с одним из элементов для создания пользователя.
+ *        {Number} [u.sid]
+ * @param {Function} [cb] - callback, который передаёт управление роутеру
  * @returns {User}
  * @constructor
  */
-var User = function(id, vkid) {
+var User = function(userModel, u, cb) {
+    var vkid,
+        sidParse;
 
-    if (!id && !vkid) throw 'Нельзя создать объект пользователя без id';
+    this.isAuth = false;
 
-    this.id = 0;
+    if (!userModel || !u || !u.sid) {
+        cb && cb();
+        return this;
+    }
+
+    if (u.sid) {
+        sidParse = u.sid.match(/mid=([\d]+)/i) || 0;
+        vkid = sidParse && parseInt(sidParse[1], 10);
+    }
+
+    if (vkid > 0) {
+        User.getByVKId(userModel, vkid)
+            .then(function(user) {
+                !_.isEmpty(user) && _.assign(this, user[0]);
+                this.isAuth = vk.isAuthOpenAPIMember(u.sid || '');
+            }.bind(this))
+            .always(function() {
+                cb && cb();
+            });
+    }
+
     return this;
 };
 
@@ -30,37 +56,6 @@ User.ANSWER = {
     OLD_USER: 1, // Найден старый пользователь и нового создавать не пришлось
     DELETED: 2, // Пользователь удалён
     FIELDS_UPDATED: 3 // Поля данных в записи пользователя успешно изменены
-};
-
-/**
- * Установить id пользователя
- * @param id
- * @returns {User}
- */
-User.prototype.setId = function(id) {
-    this.id = id;
-    return this;
-};
-
-/**
- * Проверяет авторизован ли пользователь.
- *
- * @returns {Boolean}
- */
-User.prototype.isAuthorized = function() {
-    return this.id !== 0;
-};
-
-/**
- * Идентификация пользователя по коду,
- * хранящемуся в кукисах.
- *
- * @param code
- * @returns {User}
- */
-User.prototype.authentication = function(code) {
-    /* здесь будет проверка авторизации по БД */
-    return this;
 };
 
 /**

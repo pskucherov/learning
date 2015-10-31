@@ -8,7 +8,7 @@ var models = [
 
 var orm = require('orm'),
     path = require('path'),
-    settings = require(path.resolve('./common.blocks/app/ormSettings'));
+    settings = require(path.resolve('./common.blocks/app/settings'));
 
 var connection = null;
 

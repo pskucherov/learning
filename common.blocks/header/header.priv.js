@@ -6,7 +6,8 @@ BEMPRIV.decl('header', {
             {
                 elem: 'logo'
             },
-            BEMPRIV.create('vk', this.data).json()
+
+            BEMPRIV.create('user', this.data).json()
         ]);
 
     }

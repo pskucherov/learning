@@ -1,10 +1,6 @@
 BEMPRIV.decl('vk', {
     init: function () {
 
-        this.mods({
-            pos: 'header-right'
-        });
-
         this.content([
             /*{
                 block: 'link',
