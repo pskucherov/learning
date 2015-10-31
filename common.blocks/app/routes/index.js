@@ -3,7 +3,7 @@ var express = require('express'),
     PATH = require('path'),
     fs = require('fs'),
     vk = require('../controllers/vk'),
-    User = require('../controllers/user'),
+    User = require('../controllers/User'),
     _ = require('lodash'),
     settings = require('../settings');
 
@@ -28,10 +28,10 @@ router.get(/^\/verify\/?$/, function(req, res, next) {
             //res.redirect('/');
             next();
         },
-        page = 'verify';
-    pathToBundle = PATH.join('.', 'desktop.bundles', page);
+        page = 'verify',
+	pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
 
-    res.BEMHTML = require(PATH.join('../../../' + pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
 
     res.pageName = page;
     res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
