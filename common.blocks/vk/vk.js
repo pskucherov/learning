@@ -41,7 +41,7 @@ modules.define(
              */
             logout: function () {
                 var cookieName = 'vk_app_' + _.get($('.vk').data('bem'), '.vk.appId', 0);
-                document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                document.cookie = cookieName + '=; domain=.' + window.location.host + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; Path=/;';
                 window.location.href = '/';
             }
         }));
