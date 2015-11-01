@@ -1,5 +1,6 @@
 ({
     shouldDeps: [
-        { block: 'vk' }
+        { block: 'vk' },
+        { block: 'image' }
     ]
 })

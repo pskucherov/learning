@@ -7,8 +7,11 @@
 
     background: url(page.png) repeat;
 
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    /*font-family: 'Open Sans', sans-serif;
+    font-weight: 300;*/
+
+    font: 14px Arial,Helvetica,sans-serif;
+    line-height: 1.3;
 }
 
 .page_type_index

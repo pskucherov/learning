@@ -1,17 +1,26 @@
 block user, elem info, default: {
 
-    var name = this.ctx.first_name + ' ' || '' + this.ctx.last_name || '',
+    var name = this.ctx.first_name || this.ctx.last_name,
         content = {
             block: 'link',
             url: '/',
+            mix: [{ block: 'user', elem: 'info' }],
             title: name,
-            content: {
-                tag: 'img',
-                attrs: {
-                    src: this.ctx.photo_50,
-                    alt: name
+            content: [
+                {
+                    block: 'image',
+                    mix: [
+                        { block: 'user', elem: 'ava' }
+                    ],
+                    alt: name,
+                    url: this.ctx.photo_100
+                },
+                {
+                    block: 'user',
+                    elem: 'nickname',
+                    content: name
                 }
-            }
+            ]
         };
 
     applyCtx(content);

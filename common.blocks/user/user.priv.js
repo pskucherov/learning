@@ -17,8 +17,9 @@ BEMPRIV.decl('user', {
         return {
             elem: 'info',
             first_name: user.first_name,
-            second_name: user.second_name,
-            photo_50: user.photo_50
+            last_name: user.last_name,
+            photo_50: user.photo_50,
+            photo_100: user.photo_100
         }
     }
 
