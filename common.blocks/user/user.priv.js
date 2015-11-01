@@ -3,12 +3,15 @@ BEMPRIV.decl('user', {
     init: function() {
         var user = this.data.user || {};
 
+        this.js(true);
+
         this.mods({
             pos: 'header-right'
         });
 
         this.content([
-                user.isAuth && this._getInfo(user) || BEMPRIV.create('vk', this.data).json()
+            user.isAuth && this._getInfo(user) || '',
+            BEMPRIV.create('vk', this.data).json()
         ]);
 
     },

@@ -3,8 +3,8 @@ block user, elem info, default: {
     var name = this.ctx.first_name || this.ctx.last_name,
         content = {
             block: 'link',
-            url: '/',
             mix: [{ block: 'user', elem: 'info' }],
+            mods: { pseudo: true },
             title: name,
             content: [
                 {
@@ -19,6 +19,9 @@ block user, elem info, default: {
                     block: 'user',
                     elem: 'nickname',
                     content: name
+                },
+                {
+                    block: 'user-menu'
                 }
             ]
         };

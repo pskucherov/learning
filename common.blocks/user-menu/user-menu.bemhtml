@@ -1,0 +1,27 @@
+block user-menu, default: {
+
+    var content = {
+        block: 'user-menu',
+        js: true,
+        mods: { popup: 'yes' },
+        mix: [
+            { block: 'popup', mods: { theme: 'islands', target: 'anchor', autoclosable: true }}
+        ],
+        content: [
+            {
+                elem: 'logout',
+                mix: {
+                    block: 'link',
+                    mix: [
+                        { block: 'user', elem: 'info' }
+                    ],
+                    mods: { pseudo: true }
+                },
+                content: 'Выйти из класса'
+            }
+        ]
+    };
+
+    applyCtx(content);
+
+}

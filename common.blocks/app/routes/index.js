@@ -14,6 +14,7 @@ var express = require('express'),
 router.get(/.*/, function(req, res, next) {
     var sidName = 'vk_app_' + settings.vk.appId;
 
+    res.appId = settings.vk.appId;
     res.user = new User(req.models.users, { sid: req.cookies[sidName] || req.session[sidName] }, next);
 });
 

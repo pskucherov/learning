@@ -1,23 +1,14 @@
 BEMPRIV.decl('vk', {
     init: function () {
 
-        this.js(true);
+        this.js({
+            appId: this.data.appId || 0
+        });
 
         this.content([
-            /*{
-                block: 'link',
-                url: 'https://oauth.vk.com/authorize?client_id=' + this.params.appId + '&display=page&redirect_uri=http://localhost:3000/verify&scope=friends,email&response_type=code&v=5.37',
-                content: {
-                    tag: 'img',
-                    attrs: {
-                        src: '/images/login_with_vkontakte.png'
-                    }
-                }
-            },*/
-
-            {
+            this.data.user.isAuth ? '' : {
                 elem: 'button-auth',
-                appId: this.params.appId,
+                appId: this.data.appId,
                 redirect_uri: this._callbackUrl(),
                 scope: this._getScope()
             },
@@ -61,26 +52,8 @@ BEMPRIV.decl('vk', {
                 attrs: {
                     id: 'vk_api_transport'
                 }
-            },
-            /*{
-                block: 'page',
-                elem: 'js',
-                content: '' +
-                    'setTimeout(function() {' +
-                    'var el = document.createElement("script");' +
-                    'el.type = "text/javascript";' +
-                    'el.src = "//vk.com/js/api/openapi.js";' +
-                    'el.async = true;' +
-                    'document.getElementById("vk_api_transport").appendChild(el);' +
-                    '}, 0);'
-            }*/
+            }
         ];
-    },
-
-    getDefaultParams: function() {
-        return {
-            appId: 5076733
-        };
     }
 
 });

@@ -1,15 +1,15 @@
 modules.define(
     'vk',
     ['i-bem__dom', 'jquery'],
-    function(provide, VKModule, $) {
+    function(provide, BEMDOM, $) {
 
-        provide(VKModule.decl('vk', {
+        provide(BEMDOM.decl('vk', {
             onSetMod: {
                 js: function() {
 
                     window.vkAsyncInit = function () {
                         VK.init({
-                            apiId: 5076733
+                            apiId: this.params.appId
                         });
 
                         VK.Observer.subscribe('auth.sessionChange', function () {
@@ -17,7 +17,7 @@ modules.define(
                         });
 
                         window.checkAuthInfo && VK.Auth.getLoginStatus(window.authInfo);
-                    };
+                    }.bind(this);
 
                     window.authInfo || (window.authInfo = function (response) {
                         // TODO: выпилить или вынести под debug
@@ -33,6 +33,16 @@ modules.define(
                     }, 0);
 
                 }
+            }
+        }, {
+            /**
+             * Выйти из класса
+             * @private
+             */
+            logout: function () {
+                var cookieName = 'vk_app_' + _.get($('.vk').data('bem'), '.vk.appId', 0);
+                document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                window.location.href = '/';
             }
         }));
     }

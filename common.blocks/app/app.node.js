@@ -74,6 +74,7 @@ app.use(routes, function(req, res) {
             cookies: req.cookies,
             session: req.session,
             user: res.user,
+            appId: res.appId || 0,
             req: req,
             res: res
         });
