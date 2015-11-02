@@ -1,0 +1,62 @@
+block landing, elem title, default: {
+    var content = {
+        elem: 'title',
+        content: 'Ты пришёл в первый класс, осмотрелся по сторонам и увидел, что ты можешь прокачиваться в следующих возможностях'
+    };
+    applyCtx(content);
+}
+
+block landing, elem status, default: {
+
+    var content = [],
+        item,
+        k;
+
+    for (k in this.ctx.statuses) {
+        var item = this.ctx.statuses[k].m;
+
+        content.push({
+            block: 'landing',
+            elem: 'status',
+            content: [
+                {
+                    block: 'image',
+                    url: item.img
+                },
+                { tag: 'br' },
+                item.name
+            ]
+        });
+    }
+
+    applyCtx(content);
+
+}
+
+block landing, elem footer, default: {
+
+
+    this.ctx.vkAuth.content = 'Начать';
+    this.ctx.vkAuth.mix = {
+        block: 'landing',
+        elem: 'footer'
+    };
+
+    var content = this.ctx.vkAuth;
+
+
+    {
+
+        mix: {
+            block: 'landing',
+            elem: 'footer'
+        },
+        content: 'Начать'
+        /*content: 'Как только твой рейтинг достигнет отлично по всем из пунктов — ты перейдёшь в другой класс. ' +
+            'Если ты перестанешь ходить в школу, твой рейтинг будет постепенно уменьшаться, ' +
+            'затем тебя оставят на второй год, а после вообще выгонят из школы!!! ' +
+            'И всё придётся начинать с начала.' */
+    };
+
+    applyCtx(content);
+}

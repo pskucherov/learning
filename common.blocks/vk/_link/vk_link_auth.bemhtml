@@ -1,0 +1,8 @@
+block vk, mod link auth, content: {
+    block: 'link',
+    url: 'https://oauth.vk.com/authorize?client_id=' + this.ctx.appId
+        + '&display=page&redirect_uri=' + this.ctx.redirect_uri
+        + '&scope=' + this.ctx.scope
+        + '&response_type=code&v=5.37',
+    content: this.ctx.content
+}

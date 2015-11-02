@@ -27,24 +27,20 @@ blocks['page'] = function (data) {
                         'e[c]+=" i-ua_inlinesvg_"+((v[f]&&v[f].namespaceURI)==w?"yes":"no");',
                         '})(document);'
                     ].join('')
+                },
+                {
+                    elem: 'css',
+                    url: '/' + data.pageName + '/_' + data.pageName + '.css'
                 }
             ],
             content: [
-
                 BEMPRIV.create('header', data).json(),
-
                 {
                     block: 'page',
                     elem: 'content',
                     content: BEMPRIV.create(data.pageName, data).json()
                 },
-
-                BEMPRIV.create('footer', this.data).json(),
-
-                {
-                    elem: 'css',
-                    url: '/' + data.pageName + '/_' + data.pageName + '.css'
-                }
+                BEMPRIV.create('footer', this.data).json()
             ],
             scripts: [
                 {
