@@ -41,6 +41,10 @@ modules.define(
              */
             logout: function () {
                 var cookieName = 'vk_app_' + _.get($('.vk').data('bem'), '.vk.appId', 0);
+
+                // TODO: привести работу с куками в порядок.
+                document.cookie = cookieName + '=; expires=Fri, 31 Dec 9999 23:59:59 GMT; Path=/;';
+                document.cookie = cookieName + '=; domain=' + window.location.host + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; Path=/;';
                 document.cookie = cookieName + '=; domain=.' + window.location.host + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; Path=/;';
                 window.location.href = '/';
             }
