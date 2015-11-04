@@ -41,7 +41,7 @@ npm test
 Кастомная сборка:
 ```sh
 npm install lodash-cli -g
-cd common.blocks/i-lodash/ && lodash include=isEmpty,get,assign,forEach,isUndefined,defaultsDeep -p && mv lodash.custom.min.js i-lodash.js
+cd common.blocks/i-lodash/ && lodash include=isEmpty,get,assign,forEach,isUndefined,defaultsDeep,debounce -p && mv lodash.custom.min.js i-lodash.js
 ```
 
 [issue в orm]: <https://github.com/dresende/node-orm2/issues/524>
