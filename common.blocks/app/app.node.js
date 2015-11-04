@@ -76,7 +76,8 @@ app.use(routes, function(req, res) {
             user: res.user,
             appId: res.appId || 0,
             req: req,
-            res: res
+            res: res,
+            isFemale: res.user.sex == 1
         });
 
         content = res.BEMHTML.apply(content);

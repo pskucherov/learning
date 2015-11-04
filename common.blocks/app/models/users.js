@@ -27,6 +27,16 @@ module.exports = function (orm, db) {
             size: 2,
             defaultValue: 0
         },
+        class: {
+            type: 'integer',
+            size: 2,
+            defaultValue: 1
+        },
+        email: {
+            type: 'text',
+            size: 255,
+            defaultValue: ''
+        },
         photo_50: {
             type: 'text',
             size: 255,
@@ -49,6 +59,11 @@ module.exports = function (orm, db) {
         },
         has_mobile: {
             type: 'boolean',
+            defaultValue: 0
+        },
+        lastvisit: {
+            type: 'integer',
+            size: 8,
             defaultValue: 0
         },
         access_token: {

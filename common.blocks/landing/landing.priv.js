@@ -4,10 +4,13 @@ BEMPRIV.decl('landing', {
         this.js(true);
 
         this.content([
-            { elem: 'title' },
+            {
+                elem: 'title',
+                isFemale: this.data.isFemale
+            },
             {
                 elem: 'status',
-                sex: this.data.user.sex,
+                isFemale: this.data.isFemale,
                 statuses: BEMPRIV.block('statuses').getList()
             },
             //BEMPRIV.create('vk', this.data).initOpenApi().content('Начать').json(),

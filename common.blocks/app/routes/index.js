@@ -73,6 +73,7 @@ router.get(/^\/verify\/?$/, function(req, res, next) {
 
                             createdUser.email = _o.email;
                             createdUser.access_token = _o.access_token;
+                            createdUser.lastvisit = Math.floor(Date.now() / 1000);
 
                             _.defaultsDeep(createdUser, userFields.response[0]);
 

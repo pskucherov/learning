@@ -1,7 +1,9 @@
 block landing, elem title, default: {
     var content = {
         elem: 'title',
-        content: 'Ты пришёл в первый класс, осмотрелся по сторонам и увидел, что ты можешь прокачиваться в следующих возможностях'
+        content: this.ctx.isFemale
+            ? 'Ты пришла в класс, осмотрелась по сторонам и увидела, что ты можешь развиваться в следующих возможностях'
+            : 'Ты пришёл в класс, осмотрелся по сторонам и увидел, что ты можешь прокачиваться в следующих возможностях'
     };
     applyCtx(content);
 }
@@ -12,7 +14,7 @@ block landing, elem status, default: {
         item;
 
     content = this.ctx.statuses.map(function(item, k) {
-        var male = item[this.ctx.sex == 1 ? 'f' : 'm'];
+        var male = item[this.ctx.isFemale ? 'f' : 'm'];
 
         return {
             block: 'landing',

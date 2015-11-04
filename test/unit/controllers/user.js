@@ -87,7 +87,10 @@ models(function (err, db) {
                             photo_200_orig: 'photo_200_orig',
                             photo_200: 'photo_200',
                             has_mobile: true,
-                            access_token: 'access_token'
+                            access_token: 'access_token',
+                            lastvisit: 5,
+                            email: 'qwe@qwe.qwe',
+                            class: 3
                         };
 
                     User.createByVKId(usersModel, VK_USER_ID)
