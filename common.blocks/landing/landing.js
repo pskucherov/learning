@@ -28,7 +28,7 @@ modules.define(
             _onPointerClick: function(e, num) {
                 var popup = this.popups[num];
 
-                if (_.isEmpty(popup) || _.get(e, 'toElement.className') !== 'image') {
+                if (_.isEmpty(popup) || (e.toElement && _.get(e, 'toElement.className') !== 'image')) {
                     return this;
                 }
 

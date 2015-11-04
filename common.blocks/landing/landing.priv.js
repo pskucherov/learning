@@ -7,6 +7,7 @@ BEMPRIV.decl('landing', {
             { elem: 'title' },
             {
                 elem: 'status',
+                sex: this.data.user.sex,
                 statuses: BEMPRIV.block('statuses').getList()
             },
             //BEMPRIV.create('vk', this.data).initOpenApi().content('Начать').json(),

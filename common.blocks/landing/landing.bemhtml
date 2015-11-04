@@ -12,7 +12,7 @@ block landing, elem status, default: {
         item;
 
     content = this.ctx.statuses.map(function(item, k) {
-        var male = item.m;
+        var male = item[this.ctx.sex == 1 ? 'f' : 'm'];
 
         return {
             block: 'landing',
@@ -33,12 +33,11 @@ block landing, elem status, default: {
                 }
             ]
         };
-    });
+    }.bind(this));
 
     applyCtx(content);
 
 }
-
 
 block landing, elem status-descr, content: {
 
