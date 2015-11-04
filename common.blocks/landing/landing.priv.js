@@ -15,7 +15,7 @@ BEMPRIV.decl('landing', {
                 content: BEMPRIV.create('vk', this.data).json()
             }
         ]);
-    },
+    }
 
 }, {
 

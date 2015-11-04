@@ -1,5 +1,6 @@
 ({
     shouldDeps: [
-        { block: 'statuses' }
+        { block: 'statuses' },
+        { block: 'popup', mods: { theme: 'islands', target: 'anchor', autoclosable: true }}
     ]
 })

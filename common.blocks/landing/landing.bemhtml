@@ -8,28 +8,51 @@ block landing, elem title, default: {
 
 block landing, elem status, default: {
 
-    var content = [],
-        item,
-        k;
+    var content,
+        item;
 
-    for (k in this.ctx.statuses) {
-        var item = this.ctx.statuses[k].m;
+    content = this.ctx.statuses.map(function(item, k) {
+        var male = item.m;
 
-        content.push({
+        return {
             block: 'landing',
-            elem: 'status',
+            elem: 'status' + k,
+            mix: { block: 'landing', elem: 'status' },
             content: [
                 {
                     block: 'image',
-                    url: item.img
+                    url: male.img
                 },
                 { tag: 'br' },
-                item.name
+                male.name,
+                {
+                    block: 'landing',
+                    elem: 'status-descr',
+                    num: k,
+                    content: item.descr
+                }
             ]
-        });
-    }
+        };
+    });
 
     applyCtx(content);
 
 }
 
+
+block landing, elem status-descr, content: {
+
+    var content = {
+        block: 'landing',
+        elem: 'status-descr',
+        js: true,
+        mods: { popup: 'yes', item: this.ctx.num },
+        mix: [
+            { block: 'popup', mods: { theme: 'islands', target: 'anchor', autoclosable: true }}
+        ],
+        content: this.ctx.content || 'empty'
+    };
+
+    applyCtx(content);
+
+}
