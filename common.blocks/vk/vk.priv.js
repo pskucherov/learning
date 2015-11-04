@@ -10,7 +10,13 @@ BEMPRIV.decl('vk', {
                 elem: 'button-auth',
                 appId: this.data.appId,
                 redirect_uri: this._callbackUrl(),
-                scope: this._getScope()
+                scope: this._getScope(),
+                content: {
+                    tag: 'img',
+                    attrs: {
+                        src: '/images/login_with_vkontakte.png'
+                    }
+                }
             },
 
             this.initOpenApi()
@@ -54,6 +60,29 @@ BEMPRIV.decl('vk', {
                 }
             }
         ];
+    },
+
+    getContent: function() {
+        return '';
     }
 
 });
+
+/*
+BEMPRIV.decl({ block: 'vk-button', baseBlock: 'vk' }, {
+    getContent: function() {
+        return {
+            tag: 'img',
+            attrs: {
+                src: '/images/login_with_vkontakte.png'
+            }
+        };
+    }
+});
+
+BEMPRIV.decl({ block: 'vk-button-start', baseBlock: 'vk' }, {
+    getContent: function() {
+        return 'Начать';
+    }
+});
+*/

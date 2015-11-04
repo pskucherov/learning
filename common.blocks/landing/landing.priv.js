@@ -9,9 +9,10 @@ BEMPRIV.decl('landing', {
                 elem: 'status',
                 statuses: BEMPRIV.block('statuses').getList()
             },
+            //BEMPRIV.create('vk', this.data).initOpenApi().content('Начать').json(),
             {
                 elem: 'footer',
-                vkAuth: BEMPRIV.create({ block: 'vk', mods: { link: 'auth' }}, this.data).json()
+                content: BEMPRIV.create('vk', this.data).json()
             }
         ]);
     },

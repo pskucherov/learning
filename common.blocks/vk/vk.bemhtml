@@ -1,18 +1,9 @@
 block vk, elem button-auth, content: {
-    //block: 'link',
-    /*url: 'https://oauth.vk.com/authorize?client_id=' + this.ctx.appId
+
+    block: 'link',
+    url: 'https://oauth.vk.com/authorize?client_id=' + this.ctx.appId
         + '&display=page&redirect_uri=' + this.ctx.redirect_uri
         + '&scope=' + this.ctx.scope
-        + '&response_type=code&v=5.37',*/
-    block: 'vk',
-    mods: { link: 'auth' },
-    appId: this.ctx.appId,
-    redirect_uri: this.ctx.redirect_uri,
-    scope: this.ctx.scope,
-    content: {
-        tag: 'img',
-            attrs: {
-            src: '/images/login_with_vkontakte.png'
-        }
-    }
+        + '&response_type=code&v=5.37',
+    content: this.ctx.content
 }

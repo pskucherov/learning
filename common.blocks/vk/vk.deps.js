@@ -1,5 +1,7 @@
 ({
     shouldDeps: [
-        { mods: { link: 'auth' } }
+        { elems: ['auth']},
+        { mods: { link: 'auth' } },
+        { block: 'link' }
     ]
 })

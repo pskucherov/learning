@@ -33,30 +33,3 @@ block landing, elem status, default: {
 
 }
 
-block landing, elem footer, default: {
-
-
-    this.ctx.vkAuth.content = 'Начать';
-    this.ctx.vkAuth.mix = {
-        block: 'landing',
-        elem: 'footer'
-    };
-
-    var content = this.ctx.vkAuth;
-
-
-    {
-
-        mix: {
-            block: 'landing',
-            elem: 'footer'
-        },
-        content: 'Начать'
-        /*content: 'Как только твой рейтинг достигнет отлично по всем из пунктов — ты перейдёшь в другой класс. ' +
-            'Если ты перестанешь ходить в школу, твой рейтинг будет постепенно уменьшаться, ' +
-            'затем тебя оставят на второй год, а после вообще выгонят из школы!!! ' +
-            'И всё придётся начинать с начала.' */
-    };
-
-    applyCtx(content);
-}
