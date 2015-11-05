@@ -3,7 +3,8 @@
 
 var models = [
         'users',
-        'pagesname'
+        'pagesname',
+        'subjects'
     ];
 
 var orm = require('orm'),
