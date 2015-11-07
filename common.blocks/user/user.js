@@ -25,7 +25,7 @@ modules.define(
             _onLogout: function() {
                 debugger;
                 VK && VK.Auth.logout(function() {
-                    window.location.href = '/';
+                    window.location.href = '/logout';
                 });
             }
         }, {

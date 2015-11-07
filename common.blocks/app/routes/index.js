@@ -5,22 +5,29 @@ var express = require('express'),
     vk = require('../controllers/vk'),
     User = require('../controllers/User'),
     _ = require('lodash'),
-    settings = require('../settings');
+    settings = require('../settings'),
+    cookieName = 'vk_app_' + settings.vk.appId;
 
 
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
  */
 router.get(/.*/, function(req, res, next) {
-    var sidName = 'vk_app_' + settings.vk.appId;
-
     res.appId = settings.vk.appId;
-    res.user = new User(req.models.users, { sid: req.cookies[sidName] || req.session[sidName] }, next);
+    res.user = new User(req.models.users, { sid: req.cookies[cookieName] || req.session[cookieName] }, next);
 });
 
 /**
- * Страница для gemini-тестов
+ * Удаляем куку и редиректим на главную.
  */
+router.get(/^\/logout\/?$/, function(req, res, next) {
+    res.clearCookie(cookieName, { path: '/', domain: req.headers.host });
+    res.clearCookie(cookieName, { path: '/', domain: '.' + req.headers.host });
+    res.clearCookie(cookieName, { path: '/', domain: req.headers.hostname });
+    res.clearCookie(cookieName, { path: '/', domain: '.' + req.headers.hostname });
+    res.redirect('/');
+});
+
 router.get(/^\/verify\/?$/, function(req, res, next) {
 
     // Коллбэк, куда вернёт вк после авторизации
