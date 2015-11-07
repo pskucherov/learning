@@ -1,5 +1,7 @@
 BEMPRIV.decl('header', {
 
+
+
     init: function() {
 
         this.content([
@@ -8,6 +10,10 @@ BEMPRIV.decl('header', {
             },
             BEMPRIV.create('user', this.data).json(),
 
+            this.data.user.isAuth && {
+                elem: 'state',
+                content: BEMPRIV.create('landing', this.data).getStatuses({ size: 's' })
+            } || ''
             /*
             Пока без класса, только прокачка
             this.data.user.isAuth ? {

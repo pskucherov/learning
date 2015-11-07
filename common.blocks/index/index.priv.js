@@ -1,7 +1,9 @@
 BEMPRIV.decl('index', {
     init: function() {
 
-        this.content(BEMPRIV.create('landing', this.data).json());
+        this.content(
+            !this.data.user.isAuth && BEMPRIV.create('landing', this.data).json() || ''
+        );
 
     }
 });

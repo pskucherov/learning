@@ -23,6 +23,7 @@ block landing, elem status, default: {
             content: [
                 {
                     block: 'image',
+                    mix: { block: 'landing', elem: 'thumb' },
                     url: male.img
                 },
                 { tag: 'br' },
