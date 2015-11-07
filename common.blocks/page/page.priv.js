@@ -30,7 +30,7 @@ blocks['page'] = function (data) {
                 },
                 {
                     elem: 'css',
-                    url: '/' + data.pageName + '/_' + data.pageName + '.css'
+                    url: '/index/_index.css'
                 }
             ],
             content: [
@@ -45,7 +45,7 @@ blocks['page'] = function (data) {
             scripts: [
                 {
                     elem: 'js',
-                    url: '/' + data.pageName + '/_' + data.pageName + '.js',
+                    url: '/index/_index.js',
                     mix: {
                         block: 'page',
                         elem: 'script'
