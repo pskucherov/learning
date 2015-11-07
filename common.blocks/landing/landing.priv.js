@@ -30,6 +30,7 @@ BEMPRIV.decl('landing', {
         return mods ? {
             block: 'landing',
             mods: mods,
+            js: true,
             content: content
         } : content;
     }

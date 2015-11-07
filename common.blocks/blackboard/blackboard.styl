@@ -1,34 +1,36 @@
 .blackboard
-{
+  width: 552px;
+  height: 250px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+
+
+  &__top
     width: 552px;
+    height: 16px;
+    background: url('header.jpg') no-repeat;
 
-    &__top
-    {
+  &__body
+  {
       width: 552px;
-      height: 16px;
-      background: url('header.jpg') no-repeat;
-    }
+      height: auto;
+      background: url('body.jpg') repeat-y;
+  }
 
-    &__body
-    {
-        width: 552px;
-        height: auto;
-        background: url('body.jpg') repeat-y;
-    }
+  &__text
+  {
+      padding: 10px 25px;
+      color: #fff;
+  }
 
-    &__text
-    {
-        padding: 10px 25px;
-        color: #fff;
-    }
-
-    &__bottom
-    {
-      width: 552px;
-      height: 40px;
-      background: url('bottom.jpg') repeat-y;
-    }
-
-}
-
+  &__bottom
+  {
+    width: 552px;
+    height: 40px;
+    background: url('bottom.jpg') repeat-y;
+  }
 

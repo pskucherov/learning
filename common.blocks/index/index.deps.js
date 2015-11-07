@@ -1,5 +1,6 @@
 ({
     shouldDeps: [
-        { block: 'landing' }
+        { block: 'landing' },
+        { block: 's-brain' }
     ]
 })
