@@ -11,6 +11,7 @@ BEMPRIV.decl('landing', {
             {
                 elem: 'status',
                 isFemale: this.data.isFemale,
+                progress: this.data.isAuth ? JSON.parse(this.data.user.statuses || '') : 0,
                 statuses: BEMPRIV.block('statuses').getList()
             },
             //BEMPRIV.create('vk', this.data).initOpenApi().content('Начать').json(),

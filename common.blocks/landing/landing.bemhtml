@@ -26,6 +26,10 @@ block landing, elem status, default: {
                     url: male.img
                 },
                 { tag: 'br' },
+                {
+                    elem: 'progress',
+                    val: this.ctx.progress !== 0 ? 1 : Math.floor(Math.random() * 100) + 1
+                },
                 male.name,
                 {
                     block: 'landing',
@@ -56,4 +60,18 @@ block landing, elem status-descr, content: {
 
     applyCtx(content);
 
+}
+
+block landing, elem progress, content: {
+    var content = {
+        block: 'progressbar',
+        mods: {
+            theme: 'islands',
+            color: this.ctx.val < 25 ? 'red'
+                : this.ctx.val >= 75 ? 'green' : ''
+        },
+        val: this.ctx.val
+    };
+
+    return content;
 }
