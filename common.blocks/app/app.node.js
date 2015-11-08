@@ -7,8 +7,6 @@ var fs = require('fs'),
     pathToBundle = PATH.join('.', 'desktop.bundles', 'index'),
     pathToStatic = PATH.join('.', 'public'),
 
-    //ormConnect = require('./ormConnect'),
-
     session = require('express-session'),
 
     cookieParser = require('cookie-parser'),
@@ -37,7 +35,6 @@ app.use(cookieParser());
 
 app.use(session({ secret: 'nosecret' }));
 
-//app.use(ormConnect);
 // По мотивам: https://github.com/dresende/node-orm2/issues/524
 // https://github.com/dresende/node-orm2/blob/master/examples/anontxt/config/environment.js#L12-L21
 app.use(function (req, res, next) {

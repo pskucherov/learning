@@ -1,11 +1,17 @@
+var fs = require('fs'),
+    path = require('path'),
+    _setting = path.resolve('./common.blocks/app/_settings.js');
+
+if (fs.existsSync(_setting)) {
+    return require(_setting);
+}
+
 // По мотивам: https://github.com/dresende/node-orm2/issues/524
 // https://github.com/dresende/node-orm2/blob/master/examples/anontxt/config/settings.js
-
-var path       = require('path');
-
 var settings = {
     vk: {
-        appId: 5076733
+        appId: 5076733,
+        appSecret: 'bEvkKDmoH9jk0pb1kE4s'
     },
     database   : {
         database : "learn-demo",
