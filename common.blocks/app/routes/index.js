@@ -30,8 +30,9 @@ router.get(/^\/logout\/?$/, function(req, res, next) {
 
 router.get(/^\/verify\/?$/, function(req, res, next) {
 
+    var protocol = req.headers.host.indexOf('.com') === -1 ? 'http' : 'https';
     // Коллбэк, куда вернёт вк после авторизации
-    var callBackUrl = req.protocol + '://' + req.headers.host + '/verify',
+    var callBackUrl = protocol + '://' + req.headers.host + '/verify',
         finish = function() {
             //res.redirect('/');
             next();
