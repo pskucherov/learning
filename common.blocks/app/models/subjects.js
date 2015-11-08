@@ -54,7 +54,7 @@ module.exports = function (orm, db) {
         });
 
     b.hasOne('subj', s, { autoFetch: true, reverse:  'test' });
-    
+
     db.sync(function (err) {
         if (err) throw err;
 

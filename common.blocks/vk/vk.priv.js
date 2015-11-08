@@ -32,7 +32,9 @@ BEMPRIV.decl('vk', {
      * @private
      */
     _callbackUrl: function() {
-        return this.data.req.protocol + '://' + this.data.req.headers.host + '/verify'
+        // Т.к. https реализован через nginx, нода думает что это http и ставит в this.data.req.protocol  неправильный протокол.
+        var protocol = this.data.req.headers.host.indexOf('.com') === -1 ? 'http' : 'https';
+        return protocol + '://' + this.data.req.headers.host + '/verify'
     },
 
     /**
