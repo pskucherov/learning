@@ -3,7 +3,8 @@ var fs = require('fs'),
     _setting = path.resolve('./common.blocks/app/_settings.js');
 
 if (fs.existsSync(_setting)) {
-    return require(_setting);
+    module.exports = require(_setting);
+    return;
 }
 
 // По мотивам: https://github.com/dresende/node-orm2/issues/524
