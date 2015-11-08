@@ -53,31 +53,6 @@ module.exports = function (orm, db) {
             }
         });
 
-    b.hasOne('subj', s, { autoFetch: true, reverse:  'test' });
+    b.hasOne('subj', s, { reverse:  'test' });
 
-    db.sync(function (err) {
-        if (err) throw err;
-
-        s.create([
-            {name: 'Английский язык'},
-            {name: 'Биология'},
-            {name: 'География'},
-            {name: 'ИЗО'},
-            {name: 'Информатика'},
-            {name: 'История'},
-            {name: 'Литература'},
-            {name: 'Математика'},
-            {name: 'Музыка'},
-            {name: 'Немецкий язык'},
-            {name: 'ОБЖ'},
-            {name: 'Обществознание'},
-            {name: 'Окружающий мир'},
-            {name: 'ОРКСЭ'},
-            {name: 'Русский язык'},
-            {name: 'Технология'},
-            {name: 'Физика'},
-            {name: 'Физкультура'},
-            {name: 'Химия'}
-        ], function (err) {});
-    });
 };
