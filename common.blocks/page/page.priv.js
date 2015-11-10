@@ -50,6 +50,22 @@ blocks['page'] = function (data) {
                         block: 'page',
                         elem: 'script'
                     }
+                },
+                {
+                    elem: 'js',
+                    url: '/socket.io/socket.io.js',
+                    mix: {
+                        block: 'page',
+                        elem: 'script'
+                    }
+                },
+                {
+                    elem: 'js',
+                    mix: {
+                        block: 'page',
+                        elem: 'script'
+                    },
+                    content: 'var socket = io();'
                 }
             ]
         };

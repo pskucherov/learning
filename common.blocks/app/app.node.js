@@ -22,6 +22,9 @@ var fs = require('fs'),
     url = require('url'),
     querystring = require('querystring'),
 
+    http = require('http').Server(app),
+    io = require('socket.io')(http),
+
     server;
 
 // html/css/js кэшируем на день, картинки на год.
@@ -84,6 +87,6 @@ app.use(routes, function(req, res) {
 
 });
 
-server = app.listen(3000, function() {
+server = http.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
 });
