@@ -77,6 +77,7 @@ app.use(routes, function(req, res) {
             appId: res.appId || 0,
             req: req,
             res: res,
+            isAuth: res.user.isAuth,
             isFemale: res.user.sex == 1
         });
 

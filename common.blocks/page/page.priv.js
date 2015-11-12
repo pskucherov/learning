@@ -40,18 +40,10 @@ blocks['page'] = function (data) {
                     elem: 'content',
                     content: BEMPRIV.create(data.pageName, data).json()
                 },
-                BEMPRIV.create('footer', this.data).json()
+                BEMPRIV.create('footer', data).json()
             ],
             scripts: [
-                {
-                    elem: 'js',
-                    url: '/index/_index.js',
-                    mix: {
-                        block: 'page',
-                        elem: 'script'
-                    }
-                },
-                {
+                data.isAuth ? [{
                     elem: 'js',
                     url: '/socket.io/socket.io.js',
                     mix: {
@@ -65,7 +57,15 @@ blocks['page'] = function (data) {
                         block: 'page',
                         elem: 'script'
                     },
-                    content: 'var socket = io();'
+                    content: 'window.socket = io();'
+                }] : '',
+                {
+                    elem: 'js',
+                    url: '/index/_index.js',
+                    mix: {
+                        block: 'page',
+                        elem: 'script'
+                    }
                 }
             ]
         };
