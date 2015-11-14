@@ -1,3 +1,5 @@
+block('blackboard').js()(true);
+
 block('blackboard')(
     content()(function() {
         return [

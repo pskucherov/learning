@@ -1,0 +1,3 @@
+block('s-brain').elem('title')(
+    tag()('h1')
+);

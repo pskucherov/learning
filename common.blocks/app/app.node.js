@@ -25,6 +25,8 @@ var fs = require('fs'),
     http = require('http').Server(app),
     io = require('socket.io')(http),
 
+    _ = require('lodash'),
+
     server;
 
 // html/css/js кэшируем на день, картинки на год.
@@ -64,9 +66,25 @@ app.use(routes, function(req, res) {
 
     var content;
 
+    io.on('connection', function(socket){
+
+        console.log('connected');
+
+        setInterval(function() {
+            req.models['brain-tests'].find().orderRaw('rand()').limit(1).run(function(err, data) {
+                !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
+            });
+        }, 5000);
+
+    });
+
+
+
     if (res.html) {
         content = res.html;
     } else if (res.priv) {
+
+        //res.user.isAuth = true;
 
         content = res.priv.main({
             pageName: res.pageName,
