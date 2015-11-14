@@ -38,12 +38,12 @@ router.get(/^\/verify\/?$/, function(req, res, next) {
             next();
         },
         page = 'verify',
-	pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
+        pathToBundle = PATH.join('../../../', 'desktop.bundles', 'index');
 
-    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+    res.BEMHTML = require(PATH.join(pathToBundle, '_index.bemhtml.js')).BEMHTML;
 
     res.pageName = page;
-    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
+    res.priv = require(PATH.join(pathToBundle, '_index.priv.js'), 'utf-8');
 
     vk.requestServerToken(function(_o) {
 

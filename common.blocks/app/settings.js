@@ -17,7 +17,7 @@ var settings = {
     database   : {
         database : 'learn-demo',
         protocol : 'mysql',
-        host     : 'localhost',
+        host     : '127.0.0.1',
         port     : 3306,         // optional, defaults to database default
         user     : 'root',
         password : '',

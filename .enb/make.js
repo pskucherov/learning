@@ -9,6 +9,7 @@ module.exports = function (config) {
 
     var mask = /.*.bundles\/[^(index)]/;
 
+    /*
     config.nodes('*.bundles/*');
 
     config.nodeMask(mask, function (nodeConfig) {
@@ -55,6 +56,7 @@ module.exports = function (config) {
             '_?.priv.js'
         ]);
     });
+    */
 
     config.nodeMask(mask, function (nodeConfig) {
         nodeConfig.addTechs([
@@ -80,7 +82,7 @@ module.exports = function (config) {
             [require('enb-diverse-js/techs/browser-js'), { target: '?.browser.js' }],
             [require('enb/techs/file-merge'), {
                 target: '?.pre.js',
-                sources: ['?.browser.bemhtml.js', '?.browser.js']
+                sources: ['?.bemhtml.js', '?.browser.js']
             }],
 
 

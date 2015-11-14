@@ -53,6 +53,6 @@ module.exports = function (orm, db) {
             }
         });
 
-    b.hasOne('subj', s, { reverse:  'test' });
+    b.hasOne('subj', s, { reverse: 'test', autoFetch: true });
 
 };

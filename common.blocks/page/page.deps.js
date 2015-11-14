@@ -8,6 +8,7 @@
         { block: 'footer' },
 
         { block: 'index' },
-        { block: 'verify' }
+        { block: 'verify' },
+        { block: 'i-vow' }
     ]
 })

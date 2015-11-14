@@ -59,6 +59,16 @@ blocks['page'] = function (data) {
                     },
                     content: 'window.socket = io();'
                 }] : '',
+                // Для локалхоста берём jquery не из CDN,
+                // т.к. может не быть соединения.
+                data.req.headers.host.indexOf('.com') === -1 ? {
+                    elem: 'js',
+                    url: '/js/jquery.min.js',
+                    mix: {
+                        block: 'page',
+                        elem: 'script'
+                    }
+                } : '',
                 {
                     elem: 'js',
                     url: '/index/_index.js',
