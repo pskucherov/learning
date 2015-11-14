@@ -15,12 +15,12 @@ var settings = {
         appSecret: 'bEvkKDmoH9jk0pb1kE4s'
     },
     database   : {
-        database : "learn-demo",
-        protocol : "mysql",
-        host     : "77.120.103.67",
+        database : 'learn-demo',
+        protocol : 'mysql',
+        host     : 'localhost',
         port     : 3306,         // optional, defaults to database default
-        user     : "learn-user",
-        password : "jRb5xXuj",
+        user     : 'root',
+        password : '',
         query    : {
             pool     : true|false,   // optional, false by default
             debug    : true||false,   // optional, false by default
