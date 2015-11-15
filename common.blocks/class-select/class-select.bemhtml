@@ -1,0 +1,24 @@
+block('class-select').js()(true);
+
+block('class-select')(
+    content()(function() {
+        return {
+            block: 'radio-group',
+            mods: { theme: 'islands', size: 'm', type: 'button' },
+            name: 'radio-button',
+            options : [
+                { val: 1, text : '1 класс' },
+                { val: 2, text : '2 класс' },
+                { val: 3, text : '3 класс' },
+                { val: 4, text : '4 класс' },
+                { val: 5, text : '5 класс' },
+                { val: 6, text : '6 класс' },
+                { val: 7, text : '7 класс' },
+                { val: 8, text : '8 класс' },
+                { val: 9, text : '9 класс' },
+                { val: 10, text : '10 класс' },
+                { val: 11, text : '11 класс' }
+            ]
+        };
+    })
+);

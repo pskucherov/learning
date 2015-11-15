@@ -5,6 +5,9 @@ BEMPRIV.decl('s-brain', {
 
         this.content([
             {
+                block: 'class-select'
+            },
+            {
                 block: 'blackboard',
                 content: [
                     {
