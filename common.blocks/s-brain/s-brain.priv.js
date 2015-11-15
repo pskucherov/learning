@@ -13,7 +13,13 @@ BEMPRIV.decl('s-brain', {
                     },
                     {
                         block: 's-brain',
-                        elem: 'question'
+                        elem: 'question',
+                        content: {
+                            block : 'spin',
+                            mods : {
+                                theme: 'islands', size: 'xl', visible: true
+                            }
+                        }
                     },
                     {
                         block: 's-brain',

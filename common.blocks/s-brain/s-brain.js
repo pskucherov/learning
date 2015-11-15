@@ -23,7 +23,7 @@ modules.define(
                         this
                             ._setTitle(data.subj.name + ', ' + data.class + ' класс')
                             ._setQuestion(data.question)
-                            ._setAnswers(this._parseAnswers(data.answers));
+                            ._setAnswers(data.answers);
                     }.bind(this));
 
                 }
@@ -32,7 +32,13 @@ modules.define(
             _clearBoard: function() {
                 this
                     ._setTitle('')
-                    ._setQuestion('');
+                    ._setQuestion(BEMHTML.apply({
+                        block: 'spin',
+                        mods: {
+                            theme: 'islands', size: 'xl', visible: true
+                        }
+                    }))
+                    ._setAnswers('');
             },
 
             /**
@@ -52,7 +58,18 @@ modules.define(
              * @private
              */
             _parseAnswers: function(answers) {
-                return answers.split('||');
+                var bemJson = answers.split('||').map(function(answer, i) {
+                    return {
+                        block: 's-brain',
+                        elem: 'answer',
+                        mods: {
+                            num: i
+                        },
+                        content: answer
+                    }
+                });
+
+                return BEMHTML.apply(bemJson);
             },
 
             /**
@@ -72,18 +89,7 @@ modules.define(
              * @returns {*}
              */
             _setAnswers: function(answers) {
-                var bemJson = answers.map(function(answer, i) {
-                    return {
-                        block: 's-brain',
-                        elem: 'answer',
-                        mods: {
-                            num: i
-                        },
-                        content: answer
-                    }
-                });
-
-                this.elem('answers').html(BEMHTML.apply(bemJson));
+                this.elem('answers').html(answers ? this._parseAnswers(answers) : '');
                 return this;
             },
 

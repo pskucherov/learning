@@ -18,7 +18,7 @@ BEMPRIV.decl('statuses', {
                     'Чем больше ты дашь правильных ответов, тем выше твой рейтинг.',
                 defVal: 60
             },
-            {
+            /* {
                 name: 's-cool',
                 m: { name: 'Крутой', img: p + 'borschik:include:./gangster14_b.png' },
                 f: { name: 'Крутышка', img: p + 'borschik:include:./koroleva12_b.png' },
@@ -43,7 +43,7 @@ BEMPRIV.decl('statuses', {
                     'Чем больше ты будешь правильно выполнять обязанности учителя,' +
                     'пока его нет в классе — тем выше твой рейтинг',
                 defVal: 90
-            }
+            } */
         ];
     },
     listLength: 3
