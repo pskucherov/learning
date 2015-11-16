@@ -71,10 +71,32 @@ app.use(routes, function(req, res) {
         console.log('connected');
 
         setInterval(function() {
-            req.models['brain-tests'].find().orderRaw('rand()').limit(1).run(function(err, data) {
+            getTest();
+        }, 5000);
+
+
+        socket.on('class-select:change', function(classNum){
+            getTest(classNum);
+            console.log(classNum);
+        });
+
+        function getTest(classNum) {
+            var find = {};
+
+            if (!classNum) {
+                classNum = req.cookies['classNum'];
+            }
+
+            if (classNum) {
+                classNum = parseInt(classNum, 10);
+                classNum >= 1 && classNum <= 11 && (find.class = classNum);
+                console.log(classNum);
+            }
+
+            req.models['brain-tests'].find(find).orderRaw('rand()').limit(1).run(function(err, data) {
                 !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
             });
-        }, 5000);
+        }
 
     });
 
@@ -84,7 +106,7 @@ app.use(routes, function(req, res) {
         content = res.html;
     } else if (res.priv) {
 
-        //res.user.isAuth = true;
+        res.user.isAuth = true;
 
         content = res.priv.main({
             pageName: res.pageName,

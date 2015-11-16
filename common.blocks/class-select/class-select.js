@@ -22,8 +22,9 @@ modules.define(
             },
 
             _onChange: function(e, classNum) {
-                console.log('_onChange');
-                console.log(arguments);
+                $.cookie('classNum', classNum);
+                window.socket.emit('class-select:change', classNum);
+                return this;
             }
 
         }));
