@@ -66,42 +66,6 @@ app.use(routes, function(req, res) {
 
     var content;
 
-    io.on('connection', function(socket){
-
-        console.log('connected');
-
-        setInterval(function() {
-            getTest();
-        }, 5000);
-
-
-        socket.on('class-select:change', function(classNum){
-            getTest(classNum);
-            console.log(classNum);
-        });
-
-        function getTest(classNum) {
-            var find = {};
-
-            if (!classNum) {
-                classNum = req.cookies['classNum'];
-            }
-
-            if (classNum) {
-                classNum = parseInt(classNum, 10);
-                classNum >= 1 && classNum <= 11 && (find.class = classNum);
-                console.log(classNum);
-            }
-
-            req.models['brain-tests'].find(find).orderRaw('rand()').limit(1).run(function(err, data) {
-                !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
-            });
-        }
-
-    });
-
-
-
     if (res.html) {
         content = res.html;
     } else if (res.priv) {
@@ -130,4 +94,52 @@ app.use(routes, function(req, res) {
 
 server = http.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
+});
+
+
+
+
+
+io.on('connection', function(socket){
+
+    var cookie = {};
+    console.log('connected');
+
+    var interval = setInterval(function() {
+        getTest();
+    }, 5000);
+
+    (function(interval) {
+        socket.on('disconnect', function () {
+            console.log('disconnected');
+            clearInterval(interval);
+        });
+    })(interval);
+
+    socket.on('class-select:change', function(classNum){
+        cookie['classNum'] = classNum;
+        getTest(classNum);
+        console.log(classNum);
+    });
+
+    function getTest(classNum) {
+        var find = {};
+
+        if (!classNum) {
+            classNum = cookie['classNum'];
+        }
+
+        if (classNum) {
+            classNum = parseInt(classNum, 10);
+            classNum >= 1 && classNum <= 11 && (find.class = classNum);
+            console.log(classNum);
+        }
+
+        models(function (err, db) {
+            db.models['brain-tests'].find(find).orderRaw('rand()').limit(1).run(function (err, data) {
+                !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
+            });
+        });
+    }
+
 });
