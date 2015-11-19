@@ -102,23 +102,28 @@ server = http.listen(3000, function() {
 
 io.on('connection', function(socket){
 
-    var cookie = {};
+    var cookie = {},
+        interval;
     console.log('connected');
 
-    var interval = setInterval(function() {
-        getTest();
-    }, 5000);
-
-    (function(interval) {
-        socket.on('disconnect', function () {
-            console.log('disconnected');
-            clearInterval(interval);
-        });
-    })(interval);
-
     socket.on('class-select:change', function(classNum){
+
+        if (!interval) {
+            interval = setInterval(function () {
+                console.log(cookie);
+                getTest(cookie.classNum);
+            }, 5000);
+
+            (function(interval) {
+                socket.on('disconnect', function () {
+                    console.log('disconnected');
+                    clearInterval(interval);
+                });
+            })(interval);
+        }
+
         cookie['classNum'] = classNum;
-        getTest(classNum);
+        //getTest(classNum);
         console.log(classNum);
     });
 

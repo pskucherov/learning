@@ -5,7 +5,8 @@ BEMPRIV.decl('s-brain', {
 
         this.content([
             {
-                block: 'class-select'
+                block: 'class-select',
+                val: this.data.cookies.classNum
             },
             {
                 block: 'blackboard',

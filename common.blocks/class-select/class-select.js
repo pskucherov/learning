@@ -16,14 +16,22 @@ modules.define(
                         }, this);
                     }.bind(this));
 
-                    this.on('change', _.debounce(this._onChange.bind(this), 400));
+
+                    this
+                        ._sendCurrentClass()
+                        .on('change', _.debounce(this._onChange.bind(this), 400));
 
                 }
             },
 
+            _sendCurrentClass: function() {
+                window.socket.emit('class-select:change', $.cookie('classNum'));
+                return this;
+            },
+
             _onChange: function(e, classNum) {
                 $.cookie('classNum', classNum);
-                window.socket.emit('class-select:change', classNum);
+                this._sendCurrentClass();
                 return this;
             }
 
