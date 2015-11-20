@@ -109,6 +109,7 @@ io.on('connection', function(socket){
     socket.on('class-select:change', function(classNum){
 
         if (!interval) {
+            getTest(cookie.classNum);
             interval = setInterval(function () {
                 console.log(cookie);
                 getTest(cookie.classNum);

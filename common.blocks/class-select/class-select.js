@@ -25,7 +25,7 @@ modules.define(
             },
 
             _sendCurrentClass: function() {
-                window.socket.emit('class-select:change', $.cookie('classNum'));
+                window.socket.emit('class-select:change', $.cookie('classNum') || 1);
                 return this;
             },
 

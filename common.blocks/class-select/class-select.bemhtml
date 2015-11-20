@@ -6,7 +6,7 @@ block('class-select')(
             block: 'radio-group',
             mods: { theme: 'islands', size: 'm', type: 'button' },
             name: 'radio-button',
-            val: parseInt(this.ctx.val, 10),
+            val: parseInt(this.ctx.val, 10) || 1,
             options : [
                 { val: 1, text : '1 класс' },
                 { val: 2, text : '2 класс' },
