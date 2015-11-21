@@ -108,6 +108,8 @@ models(function (err, db) {
 
         socket.on('class-select:change', function (classNum) {
 
+            cookie['classNum'] = classNum;
+
             if (!interval) {
                 getTest(cookie.classNum);
                 interval = setInterval(function () {
@@ -122,7 +124,6 @@ models(function (err, db) {
                 })(interval);
             }
 
-            cookie['classNum'] = classNum;
         });
 
         socket.on('s-braint:checkAnswer', function (data) {
