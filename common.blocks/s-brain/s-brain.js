@@ -7,29 +7,46 @@ modules.define(
             onSetMod: {
                 js: function() {
 
+                    this._clearBoard();
 
-                    console.log('s - brain - js');
-
-                    //this.board = this.findBlockInside('blackboard');
-                    //this.trigger('changeTitle');
-
+                    /**
+                     *  Получает новый вопрос и добавляет его на доску
+                     */
                     window.socket.on('s-brain:question', function (data) {
                         if (_.isEmpty(data)) {
                             this._clearBoard();
                             return;
                         }
 
-                        console.log(data);
                         this
                             ._setTitle(data.subj.name + ', ' + data.class + ' класс')
+                            ._setQuestionId(data.id)
                             ._setQuestion(data.question)
                             ._setAnswers(data.answers);
                     }.bind(this));
+
+                    /**
+                     * Получение данных от сервера,
+                     * это был правильный ответ на вопрос или нет.
+                     *
+                     * @params {Boolean} isRight
+                     */
+                    window.socket.on('s-brain:setAnswer', _.debounce(function(isRight) {
+
+                        console.log('is right ' + isRight);
+
+                    }.bind(this), 1000, {
+                        'leading': true,
+                        'trailing': false
+                    }));
+
 
                 }
             },
 
             _clearBoard: function() {
+
+                this.currentQuestionId = 0;
                 this
                     ._setTitle('')
                     ._setQuestion(BEMHTML.apply({
@@ -39,6 +56,21 @@ modules.define(
                         }
                     }))
                     ._setAnswers('');
+
+                return this;
+
+            },
+
+            /**
+             * Устанавливает id текущего вопроса
+             *
+             * @param {Number} id
+             * @returns {_setQuestionId}
+             * @private
+             */
+            _setQuestionId: function(id) {
+                this.currentQuestionId = id;
+                return this;
             },
 
             /**
@@ -103,32 +135,37 @@ modules.define(
              * @returns {_onPointerClick}
              * @private
              */
-            _onPointerClick: function(e, num) {
-                var popup = this.popups[num];
+            _onPointerClick: function(e) {
 
-                if (_.isEmpty(popup) || (e.toElement && _.get(e, 'toElement.className') !== 'image')) {
-                    return this;
-                }
-
-                if (popup.getMod('visible') && e.type === 'pointerclick') {
-                    popup.setMod('visible', false);
-                } else {
-                    this._hidePopups();
-                    popup.setAnchor(this.elem('status' + num));
-                    popup.setMod('visible', true);
-                }
-
+                var answerNum = this.getMod(e.currentTarget, 'num');
+                this._checkAnswer(answerNum);
 
                 return this;
+            },
+
+            /**
+             * Отправляет на сервер данные об ответе
+             *
+             * @param {Number} num - номер ответа
+             * @returns {_checkAnswer}
+             * @private
+             */
+            _checkAnswer: function(num) {
+
+                window.socket.emit('s-braint:checkAnswer', {
+                    id: this.currentQuestionId,
+                    num: parseInt(num, 10) || -1
+                });
+
+                return this;
+
             }
 
         }, {
             live: function() {
 
-                this.liveBindTo('status', 'mouseout', function() {
-                    timer = setTimeout(function() {
-                        this._hidePopups();
-                    }.bind(this), 250);
+                this.liveBindTo('answer', 'click', function(e) {
+                    this._onPointerClick(e);
                 });
 
                 return false;

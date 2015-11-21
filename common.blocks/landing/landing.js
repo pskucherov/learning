@@ -64,6 +64,7 @@ modules.define(
                 var timer;
 
                 // 3 = BEMPRIV.block('statuses').listLength
+                // TODO: порефакторить на $(e.currentTarget)
                 for (var i = 0; i <= 3; i++) {
                     (function(i) {
                         this.liveBindTo('status' + i, 'mouseover pointerclick', function (e) {

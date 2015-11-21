@@ -97,55 +97,69 @@ server = http.listen(3000, function() {
 });
 
 
+models(function (err, db) {
 
 
+    io.on('connection', function (socket) {
 
-io.on('connection', function(socket){
+        var cookie = {},
+            interval;
+        console.log('connected');
 
-    var cookie = {},
-        interval;
-    console.log('connected');
+        socket.on('class-select:change', function (classNum) {
 
-    socket.on('class-select:change', function(classNum){
-
-        if (!interval) {
-            getTest(cookie.classNum);
-            interval = setInterval(function () {
-                console.log(cookie);
+            if (!interval) {
                 getTest(cookie.classNum);
-            }, 5000);
+                interval = setInterval(function () {
+                    getTest(cookie.classNum);
+                }, 5000);
 
-            (function(interval) {
-                socket.on('disconnect', function () {
-                    console.log('disconnected');
-                    clearInterval(interval);
-                });
-            })(interval);
-        }
+                (function (interval) {
+                    socket.on('disconnect', function () {
+                        console.log('disconnected');
+                        clearInterval(interval);
+                    });
+                })(interval);
+            }
 
-        cookie['classNum'] = classNum;
-        //getTest(classNum);
-        console.log(classNum);
-    });
+            cookie['classNum'] = classNum;
+        });
 
-    function getTest(classNum) {
-        var find = {};
+        socket.on('s-braint:checkAnswer', function (data) {
 
-        if (!classNum) {
-            classNum = cookie['classNum'];
-        }
+            db.models['brain-tests'].find({
+                id: parseInt(data.id, 10),
+                rightanswernum: parseInt(data.num, 10)
+            }).limit(1).run(function (err, data) {
+                var isRight = false;
 
-        if (classNum) {
-            classNum = parseInt(classNum, 10);
-            classNum >= 1 && classNum <= 11 && (find.class = classNum);
-            console.log(classNum);
-        }
+                if (!_.isEmpty(data)) {
+                    isRight = true;
+                }
 
-        models(function (err, db) {
+                io.emit('s-brain:setAnswer', isRight);
+            });
+
+        });
+
+        function getTest(classNum) {
+            var find = {};
+
+            if (!classNum) {
+                classNum = cookie['classNum'];
+            }
+
+            if (classNum) {
+                classNum = parseInt(classNum, 10);
+                classNum >= 1 && classNum <= 11 && (find.class = classNum);
+            }
+
             db.models['brain-tests'].find(find).orderRaw('rand()').limit(1).run(function (err, data) {
                 !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
             });
-        });
-    }
+
+        }
+
+    });
 
 });
