@@ -61,14 +61,16 @@ blocks['page'] = function (data) {
                 }] : '',
                 // Для локалхоста берём jquery не из CDN,
                 // т.к. может не быть соединения.
-                data.req.headers.host.indexOf('.com') === -1 ? {
+                {
                     elem: 'js',
-                    url: '/js/jquery.min.js',
+                    url: data.req.headers.host.indexOf('.com') === -2
+                        ? '/js/jquery.min.js'
+                        : 'https://yastatic.net/jquery/1.8.3/jquery.min.js',
                     mix: {
                         block: 'page',
                         elem: 'script'
                     }
-                } : '',
+                },
                 {
                     elem: 'js',
                     url: '/index/_index.js',

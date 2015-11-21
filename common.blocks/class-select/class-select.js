@@ -10,7 +10,7 @@ modules.define(
                     this.buttons = this.findBlocksInside('radio');
 
                     this.buttons.length && this.buttons.forEach(function(item, k) {
-                        item.on({ modName: 'checked', modVal: true}, function() {
+                        item.on({ modName: 'checked', modVal: true }, function() {
                             var classNum = k + 1;
                             this.emit('change', classNum);
                         }, this);

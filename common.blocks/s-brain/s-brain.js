@@ -205,9 +205,13 @@ modules.define(
         }, {
             live: function() {
 
-                this.liveBindTo('answer', 'click', function(e) {
-                    this._onPointerClick(e);
-                });
+                this
+                    .liveBindTo('answer', 'click', function(e) {
+                        this._onPointerClick(e);
+                    })
+                    .liveInitOnBlockInsideEvent('change', 'class-select', function() {
+                        this._clearBoard();
+                    });
 
                 return false;
             }
