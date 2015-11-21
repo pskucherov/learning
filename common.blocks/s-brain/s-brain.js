@@ -8,13 +8,16 @@ modules.define(
                 js: function() {
 
                     this._clearBoard();
+                    this._answerSelected = false;
 
                     /**
                      *  Получает новый вопрос и добавляет его на доску
                      */
                     window.socket.on('s-brain:question', function (data) {
+
+                        this._clearBoard();
+                        
                         if (_.isEmpty(data)) {
-                            this._clearBoard();
                             return;
                         }
 
@@ -47,6 +50,8 @@ modules.define(
             _clearBoard: function() {
 
                 this.currentQuestionId = 0;
+                this._answerSelected = false;
+
                 this
                     ._setTitle('')
                     ._setQuestion(BEMHTML.apply({
@@ -79,7 +84,7 @@ modules.define(
              * @returns {*}
              */
             _setTitle: function(title) {
-                this.elem('title').html(title);
+                this.findElem('title').html(title);
                 return this;
             },
 
@@ -110,7 +115,7 @@ modules.define(
              * @returns {*}
              */
             _setQuestion: function(question) {
-                this.elem('question').html(question);
+                this.findElem('question').html(question);
                 return this;
             },
 
@@ -121,7 +126,7 @@ modules.define(
              * @returns {*}
              */
             _setAnswers: function(answers) {
-                this.elem('answers').html(answers ? this._parseAnswers(answers) : '');
+                this.findElem('answers').html(answers ? this._parseAnswers(answers) : '');
                 return this;
             },
 
@@ -137,8 +142,35 @@ modules.define(
              */
             _onPointerClick: function(e) {
 
+                if (this._answerSelected) {
+                    return this;
+                }
+
                 var answerNum = this.getMod(e.currentTarget, 'num');
-                this._checkAnswer(answerNum);
+
+                this
+                    ._freezeAnser(answerNum)
+                    ._checkAnswer(answerNum);
+
+                return this;
+            },
+
+            /**
+             * Зафризить ответ, чтобы его было нельзя поменять.
+             *
+             * @param num
+             * @returns {_freezeAnser}
+             * @private
+             */
+            _freezeAnser: function(num) {
+                var answers = this.findElem('answer'),
+                    answer = this.findElem('answer', 'num', num);
+
+                this._answerSelected = true;
+
+                this
+                    .setMod(answers, 'freeze', 'yes')
+                    .setMod(answer, 'selected', 'yes');
 
                 return this;
             },
