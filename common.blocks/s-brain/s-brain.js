@@ -193,9 +193,11 @@ modules.define(
              */
             _checkAnswer: function(num) {
 
+                var num = parseInt(num, 10);
+
                 window.socket.emit('s-braint:checkAnswer', {
                     id: this.currentQuestionId,
-                    num: parseInt(num, 10) || -1
+                    num: typeof num === 'number' ? num : -1
                 });
 
                 return this;
