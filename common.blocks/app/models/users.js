@@ -72,6 +72,8 @@ module.exports = function (orm, db) {
             defaultValue: ''
         }
 
+    }, {
+        timestamp: true
     });
 
 };

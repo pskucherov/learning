@@ -8,6 +8,7 @@ var models = [
     ];
 
 var orm = require('orm'),
+    modts = require('orm-timestamps'),
     path = require('path'),
     settings = require(path.resolve('./common.blocks/app/settings'));
 
@@ -27,6 +28,16 @@ module.exports = function (cb) {
 
     orm.connect(settings.database, function (err, db) {
         if (err) return cb(err);
+
+        db.use(modts, {
+            createdProperty: 'created_at',
+            modifiedProperty: 'modified_at',
+            expireProperty: false,
+            dbtype: { type: 'date', time: true },
+            now: function() { return new Date(); },
+            expire: function() { var d = new Date(); return d.setMinutes(d.getMinutes() + 60); },
+            persist: true
+        });
 
         connection = db;
         db.settings.set('instance.returnAllErrors', true);
