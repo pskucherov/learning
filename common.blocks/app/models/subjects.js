@@ -62,11 +62,15 @@ module.exports = function (orm, db) {
             size: 4,
             index: true
         },
-
         answerId: {
             type: 'integer',
             size: 4
+        },
+
+        answer: {
+            type: 'boolean'
         }
+
     }, {
         timestamp: {
             modifiedProperty: false

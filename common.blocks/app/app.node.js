@@ -126,17 +126,25 @@ models(function (err, db) {
 
         });
 
-        socket.on('s-braint:checkAnswer', function (data) {
+        socket.on('s-braint:checkAnswer', function (answerData) {
 
             db.models['brain-tests'].find({
-                id: parseInt(data.id, 10),
-                rightanswernum: parseInt(data.num, 10)
+                id: parseInt(answerData.id, 10),
+                rightanswernum: parseInt(answerData.num, 10)
             }).limit(1).run(function (err, data) {
                 var isRight = false;
 
                 if (!_.isEmpty(data)) {
                     isRight = true;
                 }
+
+                db.models['brain-tests-answers'].create({
+                    userId: 123,
+                    answerId: answerData.id,
+                    answer: isRight
+                }, function (err) {
+                    if (err) throw err;
+                });
 
                 io.emit('s-brain:setAnswer', isRight);
             });
