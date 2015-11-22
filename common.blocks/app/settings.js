@@ -9,10 +9,12 @@ if (fs.existsSync(_setting)) {
 
 // По мотивам: https://github.com/dresende/node-orm2/issues/524
 // https://github.com/dresende/node-orm2/blob/master/examples/anontxt/config/settings.js
-var settings = {
+var appId = 5076733,
+    settings = {
     vk: {
-        appId: 5076733,
-        appSecret: 'bEvkKDmoH9jk0pb1kE4s'
+        appId: appId,
+        appSecret: 'bEvkKDmoH9jk0pb1kE4s',
+        cookieName: 'vk_app_' + appId
     },
     database   : {
         database : 'learn-demo',

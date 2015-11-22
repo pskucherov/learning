@@ -16,7 +16,8 @@ var fs = require('fs'),
 
     redirects = require('./routes/redirects'),
 
-    user = require('./controllers/User'),
+    User = require('./controllers/User'),
+    settings = require('./settings'),
 
     models   = require('./models/'),
 
@@ -83,12 +84,6 @@ app.use(routes, function(req, res) {
 
         //res.user.isAuth = true;
 
-        console.log('session');
-        console.log(req.session);
-        console.log('cookie');
-        console.log(req.cookies);
-        console.log('end');
-
         _.assign(req.session, req.cookies);
 
         content = res.priv.main({
@@ -117,77 +112,86 @@ server = http.listen(3000, function() {
 
 
 models(function (err, db) {
-    
+
     sessionSockets.on('connection', function (err, socket, session) {
-
-        console.log(session);
-
-        var cookie = {},
-            interval;
         console.log('connected');
 
-        socket.on('class-select:change', function (classNum) {
+        var sid = session && session[settings.vk.cookieName];
 
-            cookie['classNum'] = classNum;
+        if (!sid) {
+            return;
+        }
 
-            if (!interval) {
-                getTest(cookie.classNum);
-                interval = setInterval(function () {
+        var user = new User(db.models['users'], { sid: sid }, function() {
+            //console.log(session);
+
+            var cookie = {},
+                interval;
+
+            socket.on('class-select:change', function (classNum) {
+
+                cookie['classNum'] = classNum;
+
+                if (!interval) {
                     getTest(cookie.classNum);
-                }, 5000);
+                    interval = setInterval(function () {
+                        getTest(cookie.classNum);
+                    }, 5000);
 
-                (function (interval) {
-                    socket.on('disconnect', function () {
-                        console.log('disconnected');
-                        clearInterval(interval);
-                    });
-                })(interval);
-            }
-
-        });
-
-        socket.on('s-braint:checkAnswer', function (answerData) {
-
-            db.models['brain-tests'].find({
-                id: parseInt(answerData.id, 10),
-                rightanswernum: parseInt(answerData.num, 10)
-            }).limit(1).run(function (err, data) {
-                var isRight = false;
-
-                if (!_.isEmpty(data)) {
-                    isRight = true;
+                    (function (interval) {
+                        socket.on('disconnect', function () {
+                            console.log('disconnected');
+                            clearInterval(interval);
+                        });
+                    })(interval);
                 }
 
-                db.models['brain-tests-answers'].create({
-                    userId: 123,
-                    answerId: answerData.id,
-                    answer: isRight
-                }, function (err) {
-                    if (err) throw err;
+            });
+
+            socket.on('s-braint:checkAnswer', function (answerData) {
+
+                db.models['brain-tests'].find({
+                    id: parseInt(answerData.id, 10),
+                    rightanswernum: parseInt(answerData.num, 10)
+                }).limit(1).run(function (err, data) {
+                    var isRight = false;
+
+                    if (!_.isEmpty(data)) {
+                        isRight = true;
+                    }
+
+                    db.models['brain-tests-answers'].create({
+                        userId: user.id,
+                        answerId: answerData.id,
+                        answer: isRight
+                    }, function (err) {
+                        if (err) throw err;
+                    });
+
+                    io.emit('s-brain:setAnswer', isRight);
                 });
 
-                io.emit('s-brain:setAnswer', isRight);
             });
+
+            function getTest(classNum) {
+                var find = {};
+
+                if (!classNum) {
+                    classNum = cookie['classNum'];
+                }
+
+                if (classNum) {
+                    classNum = parseInt(classNum, 10);
+                    classNum >= 1 && classNum <= 11 && (find.class = classNum);
+                }
+
+                db.models['brain-tests'].find(find).orderRaw('rand()').limit(1).run(function (err, data) {
+                    !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
+                });
+
+            }
 
         });
-
-        function getTest(classNum) {
-            var find = {};
-
-            if (!classNum) {
-                classNum = cookie['classNum'];
-            }
-
-            if (classNum) {
-                classNum = parseInt(classNum, 10);
-                classNum >= 1 && classNum <= 11 && (find.class = classNum);
-            }
-
-            db.models['brain-tests'].find(find).orderRaw('rand()').limit(1).run(function (err, data) {
-                !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
-            });
-
-        }
 
     });
 

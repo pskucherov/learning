@@ -6,7 +6,7 @@ var express = require('express'),
     User = require('../controllers/User'),
     _ = require('lodash'),
     settings = require('../settings'),
-    cookieName = 'vk_app_' + settings.vk.appId;
+    cookieName = settings.vk.cookieName;
 
 
 /**
