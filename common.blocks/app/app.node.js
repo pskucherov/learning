@@ -8,8 +8,11 @@ var fs = require('fs'),
     pathToStatic = PATH.join('.', 'public'),
 
     session = require('express-session'),
+    _SECRET = 'nosecret',
+    mySession = new session.MemoryStore(),
 
     cookieParser = require('cookie-parser'),
+    myCookieParser = cookieParser(_SECRET),
 
     redirects = require('./routes/redirects'),
 
@@ -25,6 +28,9 @@ var fs = require('fs'),
     http = require('http').Server(app),
     io = require('socket.io')(http),
 
+    SessionSockets = require('session.socket.io'),
+    sessionSockets,
+
     _ = require('lodash'),
 
     server;
@@ -36,9 +42,14 @@ app.use(express.static(PATH.join('.', 'desktop.bundles'), { extensions: ['js', '
 
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
 
-app.use(cookieParser());
+app.use(myCookieParser);
 
-app.use(session({ secret: 'nosecret' }));
+app.use(session({ secret: _SECRET, store: mySession }));
+
+
+sessionSockets = new SessionSockets(io, mySession, myCookieParser);
+
+
 
 // По мотивам: https://github.com/dresende/node-orm2/issues/524
 // https://github.com/dresende/node-orm2/blob/master/examples/anontxt/config/environment.js#L12-L21
@@ -72,6 +83,14 @@ app.use(routes, function(req, res) {
 
         //res.user.isAuth = true;
 
+        console.log('session');
+        console.log(req.session);
+        console.log('cookie');
+        console.log(req.cookies);
+        console.log('end');
+
+        _.assign(req.session, req.cookies);
+
         content = res.priv.main({
             pageName: res.pageName,
             searchObj: res.searchObj,
@@ -98,9 +117,10 @@ server = http.listen(3000, function() {
 
 
 models(function (err, db) {
+    
+    sessionSockets.on('connection', function (err, socket, session) {
 
-
-    io.on('connection', function (socket) {
+        console.log(session);
 
         var cookie = {},
             interval;

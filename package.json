@@ -22,6 +22,7 @@
     "mysql": "~2.6.2",
     "orm": "~2.1.24",
     "orm-timestamps": "^0.5.2",
+    "session.socket.io": "^0.2.1",
     "socket.io": "^1.3.7",
     "vksdk": "phpprog/nodejs-vksdk#aabd6d14b7b",
     "vow": "^0.4.11"
