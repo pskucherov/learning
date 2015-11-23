@@ -208,7 +208,7 @@ modules.define(
             live: function() {
 
                 this
-                    .liveBindTo('answer', 'click', function(e) {
+                    .liveBindTo('answer', 'pointerclick', function(e) {
                         this._onPointerClick(e);
                     })
                     .liveInitOnBlockInsideEvent('change', 'class-select', function() {
