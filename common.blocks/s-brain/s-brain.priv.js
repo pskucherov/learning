@@ -9,6 +9,12 @@ BEMPRIV.decl('s-brain', {
                 val: this.data.cookies.classNum
             },
             {
+                block : 'button',
+                mix: { block: 's-brain', elem: 'next-question' },
+                mods : { theme : 'islands', size : 'm', type : 'link' },
+                text : 'Следующий вопрос'
+            },
+            {
                 block: 'blackboard',
                 content: [
                     {

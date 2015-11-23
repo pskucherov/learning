@@ -11,6 +11,10 @@
         },
         {
             block: 'class-select'
+        },
+        {
+            block : 'button',
+            mods : { theme : 'islands', size : 'm', type : 'link' }
         }
     ]
 })

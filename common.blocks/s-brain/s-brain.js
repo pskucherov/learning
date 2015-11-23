@@ -141,11 +141,10 @@ modules.define(
              *
              * @param e
              * @param num
-             * @returns {_onPointerClick}
+             * @returns {_onAnswerClick}
              * @private
              */
-            _onPointerClick: function(e) {
-
+            _onAnswerClick: function(e) {
                 if (Boolean(this._answerNum)) {
                     return this;
                 }
@@ -202,6 +201,18 @@ modules.define(
 
                 return this;
 
+            },
+
+            /**
+             * Получить следующий вопрос
+             *
+             * @returns {_onNextButtonClick}
+             * @private
+             */
+            _onNextButtonClick: function() {
+                this._clearBoard();
+                window.socket.emit('s-braint:nextQuestion');
+                return this;
             }
 
         }, {
@@ -209,7 +220,10 @@ modules.define(
 
                 this
                     .liveBindTo('answer', 'pointerclick', function(e) {
-                        this._onPointerClick(e);
+                        this._onAnswerClick(e);
+                    })
+                    .liveBindTo('next-question', 'pointerclick', function(e) {
+                        this._onNextButtonClick(e);
                     })
                     .liveInitOnBlockInsideEvent('change', 'class-select', function() {
                         this._clearBoard();

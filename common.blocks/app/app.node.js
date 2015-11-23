@@ -116,6 +116,10 @@ models(function (err, db) {
     sessionSockets.on('connection', function (err, socket, session) {
         console.log('connected');
 
+        socket.on('disconnect', function () {
+            console.log('disconnected');
+        });
+
         var sid = session && session[settings.vk.cookieName];
 
         if (!sid) {
@@ -129,23 +133,12 @@ models(function (err, db) {
                 interval;
 
             socket.on('class-select:change', function (classNum) {
-
                 cookie['classNum'] = classNum;
+                getTest(cookie.classNum);
+            });
 
-                if (!interval) {
-                    getTest(cookie.classNum);
-                    interval = setInterval(function () {
-                        getTest(cookie.classNum);
-                    }, 5000);
-
-                    (function (interval) {
-                        socket.on('disconnect', function () {
-                            console.log('disconnected');
-                            clearInterval(interval);
-                        });
-                    })(interval);
-                }
-
+            socket.on('s-braint:nextQuestion', function () {
+                getTest(cookie.classNum);
             });
 
             socket.on('s-braint:checkAnswer', function (answerData) {
