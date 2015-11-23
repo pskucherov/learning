@@ -82,7 +82,7 @@ app.use(routes, function(req, res) {
         content = res.html;
     } else if (res.priv) {
 
-        //res.user.isAuth = true;
+        res.user.isAuth = true;
 
         _.assign(req.session, req.cookies);
 

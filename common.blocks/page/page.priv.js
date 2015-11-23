@@ -63,7 +63,7 @@ blocks['page'] = function (data) {
                 // т.к. может не быть соединения.
                 {
                     elem: 'js',
-                    url: data.req.headers.host.indexOf('.com') === -2
+                    url: data.req.headers.host.indexOf('.com') === -1
                         ? '/js/jquery.min.js'
                         : 'https://yastatic.net/jquery/1.8.3/jquery.min.js',
                     mix: {
