@@ -21,14 +21,16 @@ modules.define(
              * При клике на статус переключаем видимость попапа.
              *
              * @param e
-             * @param num
              * @returns {_onPointerClick}
              * @private
              */
-            _onPointerClick: function(e, num) {
-                var popup = this.popups[num];
+            _onPointerClick: function(e) {
+                var num = this.getMod($(e.currentTarget), 'num'),
+                    currentElem = this.findElem('status', 'num', num),
+                    popup = this.popups[num];
 
-                if (_.isEmpty(popup) || (e.toElement && _.get(e, 'toElement.className') !== 'image')) {
+                if (_.isEmpty(popup) ||
+                    (e.target && _.get(e, 'target.className').indexOf('image') === -1)) {
                     return this;
                 }
 
@@ -36,10 +38,9 @@ modules.define(
                     popup.setMod('visible', false);
                 } else {
                     this._hidePopups();
-                    popup.setAnchor(this.elem('status' + num));
+                    popup.setAnchor(currentElem);
                     popup.setMod('visible', true);
                 }
-
 
                 return this;
             },
@@ -63,17 +64,12 @@ modules.define(
 
                 var timer;
 
-                // 3 = BEMPRIV.block('statuses').listLength
-                // TODO: порефакторить на $(e.currentTarget)
-                for (var i = 0; i <= 3; i++) {
-                    (function(i) {
-                        this.liveBindTo('status' + i, 'mouseover pointerclick', function (e) {
-                            clearTimeout(timer);
-                            this._onPointerClick(e, i);
-                        });
-                    }).call(this, i);
-                }
+                this.liveBindTo('status', 'mouseover pointerclick', function (e) {
+                    clearTimeout(timer);
+                    this._onPointerClick(e);
+                });
 
+                // Чтобы попап сам скрывался после того, как пользователь убрал курсор
                 this.liveBindTo('status', 'mouseout', function() {
                     timer = setTimeout(function() {
                         this._hidePopups();

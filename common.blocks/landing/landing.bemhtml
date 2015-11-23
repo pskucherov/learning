@@ -18,8 +18,8 @@ block landing, elem status, default: {
 
         return {
             block: 'landing',
-            elem: 'status' + k,
-            mix: { block: 'landing', elem: 'status' },
+            elem: 'status',
+            elemMods: { num: k },
             content: [
                 {
                     block: 'image',
