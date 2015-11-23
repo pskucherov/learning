@@ -11,7 +11,7 @@ BEMPRIV.decl('s-brain', {
             {
                 block : 'button',
                 mix: { block: 's-brain', elem: 'next-question' },
-                mods : { theme : 'islands', size : 'm', type : 'link' },
+                mods : { theme : 'islands', size : 'l' },
                 text : 'Следующий вопрос'
             },
             {

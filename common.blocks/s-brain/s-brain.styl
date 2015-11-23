@@ -8,21 +8,23 @@
   &__title
     font-size 36px
     color #f8a10b
-    margin 0 auto
+    margin 10px auto
     text-align center
 
   &__title:first-letter
     text-transform uppercase
 
   &__question
-    padding 10px
-    font-size 22px
+    padding 10px 5px
+    margin-top 10px
+    font-size 20px
 
   &__answer
     cursor pointer
-    padding 5px 0 5px 25px
-    margin 15px 0
-    font-size 18px
+    padding 10px 15px
+    margin 5px 0 0 20px
+    font-size 16px
+    display inline-block
 
   &__answer:last-child
     margin-bottom 0
@@ -31,7 +33,7 @@
     text-transform uppercase
 
   &__answer:hover
-    color #EE732F
+    color #d5ff09
 
   & &__answer_freeze_yes
   & &__answer_freeze_yes:hover
@@ -39,7 +41,7 @@
     cursor default
 
   & &__answer&__answer_selected_yes
-    color #EE732F
+    color #d5ff09
     text-decoration underline
 
   & &__answer&__answer_is_right

@@ -3,13 +3,13 @@
         {
             block: 'radio-group',
             mods: {
-                theme: 'islands', size: 'm', type: 'button'
+                theme: 'islands', size: 'l', type: 'button'
             }
         },
         {
             block: 'checkbox-group',
             mods: {
-                theme: 'islands', size: 'm', type: 'button'
+                theme: 'islands', size: 'l', type: 'button'
             }
         },
         {

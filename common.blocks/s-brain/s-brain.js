@@ -22,7 +22,7 @@ modules.define(
                         }
 
                         this
-                            ._setTitle(data.subj.name + ', ' + data.class + ' класс')
+                            ._setTitle(data.subj.name) // + ', ' + data.class + ' класс')
                             ._setQuestionId(data.id)
                             ._setQuestion(data.question)
                             ._setAnswers(data.answers);
@@ -101,13 +101,15 @@ modules.define(
             _parseAnswers: function(answers) {
                 var bemJson = answers.split('||').map(function(answer, i) {
                     return {
-                        block: 's-brain',
-                        elem: 'answer',
-                        mods: {
-                            num: i
-                        },
-                        content: answer
-                    }
+                        content: {
+                            block: 's-brain',
+                            elem: 'answer',
+                            mods: {
+                                num: i
+                            },
+                            content: answer
+                        }
+                    };
                 });
 
                 return BEMHTML.apply(bemJson);

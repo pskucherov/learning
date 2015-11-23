@@ -4,7 +4,7 @@ block('class-select')(
     content()(function() {
         return {
             block: 'radio-group',
-            mods: { theme: 'islands', size: 'm', type: 'button' },
+            mods: { theme: 'islands', size: 'l', type: 'button' },
             name: 'radio-button',
             val: parseInt(this.ctx.val, 10) || 1,
             options : [
