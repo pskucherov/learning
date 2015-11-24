@@ -28,6 +28,37 @@ modules.define(
                             ._setAnswers(data.answers);
                     }.bind(this));
 
+
+                    window.socket.on('s-brain:question-end', function (data) {
+
+                        this._clearBoard();
+
+                        if (_.isEmpty(data)) {
+                            return;
+                        }
+
+                        this
+                            ._setTitle('Победа!')
+                            ._setQuestion(BEMHTML.apply([
+                                { tag: 'br'},
+                                { content: 'Всего вопросов: ' + (data.rightAnswers + data.falseAnswers) },
+                                { tag: 'br'},
+                                {
+                                    block: 's-brain',
+                                    elem: 'answer',
+                                    mods: { is: 'right', freeze: 'yes' },
+                                    content: 'Правильных ответов: ' + data.rightAnswers
+                                },
+                                { tag: 'br'},
+                                {
+                                    block: 's-brain',
+                                    elem: 'answer',
+                                    mods: { is: 'false', freeze: 'yes' },
+                                    content: 'Надо исправить: ' + data.falseAnswers
+                                }
+                            ]))
+                    }.bind(this));
+
                     /**
                      * Получение данных от сервера,
                      * это был правильный ответ на вопрос или нет.
@@ -147,7 +178,7 @@ modules.define(
              * @private
              */
             _onAnswerClick: function(e) {
-                if (Boolean(this._answerNum)) {
+                if (Boolean(this._answerNum) || this.hasMod(e.currentTarget, 'freeze')) {
                     return this;
                 }
 
