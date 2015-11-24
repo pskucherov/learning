@@ -32,6 +32,8 @@ var fs = require('fs'),
     SessionSockets = require('session.socket.io'),
     sessionSockets,
 
+    orm = require('orm'),
+
     _ = require('lodash'),
 
     server;
@@ -82,7 +84,7 @@ app.use(routes, function(req, res) {
         content = res.html;
     } else if (res.priv) {
 
-        res.user.isAuth = true;
+        //res.user.isAuth = true;
 
         _.assign(req.session, req.cookies);
 
@@ -155,7 +157,7 @@ models(function (err, db) {
 
                     db.models['brain-tests-answers'].create({
                         userId: user.id,
-                        answerId: answerData.id,
+                        questionId: answerData.id,
                         answer: isRight
                     }, function (err) {
                         if (err) throw err;
@@ -178,7 +180,9 @@ models(function (err, db) {
                     classNum >= 1 && classNum <= 11 && (find.class = classNum);
                 }
 
-                db.models['brain-tests'].find(find).orderRaw('rand()').limit(1).run(function (err, data) {
+                db.models['brain-tests'].find(find)
+                    .where('id NOT IN (SELECT questionId FROM `brain-tests-answers` WHERE userId = ?)', [user.id])
+                    .orderRaw('rand()').limit(1).run(function (err, data) {
                     !_.isEmpty(data) && io.emit('s-brain:question', data[0]);
                 });
 

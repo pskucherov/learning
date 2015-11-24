@@ -62,7 +62,8 @@ module.exports = function (orm, db) {
             size: 4,
             index: true
         },
-        answerId: {
+
+        questionId: {
             type: 'integer',
             size: 4
         },
