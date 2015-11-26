@@ -37,11 +37,11 @@ modules.define(
                 // TODO: есть ещё вариант поиграться с прозрачностью,
                 // чтобы +1 появлялся и скрывался в одном положении, но пока так.
                 plusPoint.animate({ top: 0 }, 300, function() {
-                    setTimeout(function() {
-                        plusPoint.animate({ top: -30 }, 400, function() {
+                    //setTimeout(function() {
+                        plusPoint.animate({ top: -20 }, 400, function() {
                             plusPoint.css('visibility', 'hidden');
                         });
-                    }, 100);
+                   // }, 100);
                 });
 
                 return this;
