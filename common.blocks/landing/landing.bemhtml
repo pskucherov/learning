@@ -13,7 +13,12 @@ block landing, elem status, default: {
     var content,
         item;
 
-    content = this.ctx.statuses.map(function(item, k) {
+    content = [{
+        block: 'landing',
+        elem: 'plus-point'
+    }];
+
+    content.push(this.ctx.statuses.map(function(item, k) {
         var male = item[this.ctx.isFemale ? 'f' : 'm'];
 
         return {
@@ -40,7 +45,7 @@ block landing, elem status, default: {
                 }
             ]
         };
-    }.bind(this));
+    }.bind(this)));
 
     applyCtx(content);
 
@@ -76,3 +81,5 @@ block landing, elem progress, content: {
 
     return content;
 }
+
+block landing, elem plus-point, content: '+1'

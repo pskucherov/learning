@@ -12,7 +12,39 @@ modules.define(
                             return item;
                         });
 
+                    BEMDOM.blocks['s-brain'].on('up', this._showPlusPoint, this);
+
                 }
+            },
+
+            /**
+             * Анимашка значка +1 для статуса
+             * Сдвигаем статус в нужное положение, относительно статуса
+             * и производим анимацию показа и скрывания
+             *
+             * @param e
+             * @param statusNum
+             * @returns {_showPlusPoint}
+             * @private
+             */
+            _showPlusPoint: function(e, statusNum) {
+                var status = this.elem('status', 'num', statusNum),
+                    plusPoint = this.elem('plus-point'),
+                    calcOffset =  status.position().left + status.width() - 20;
+
+                plusPoint.css({ top: 10, left: calcOffset, visibility: 'visible' });
+
+                // TODO: есть ещё вариант поиграться с прозрачностью,
+                // чтобы +1 появлялся и скрывался в одном положении, но пока так.
+                plusPoint.animate({ top: 0 }, 300, function() {
+                    setTimeout(function() {
+                        plusPoint.animate({ top: -30 }, 400, function() {
+                            plusPoint.css('visibility', 'hidden');
+                        });
+                    }, 100);
+                });
+
+                return this;
             },
 
             /**
@@ -64,19 +96,20 @@ modules.define(
 
                 var timer;
 
-                this.liveBindTo('status', 'mouseover pointerclick', function (e) {
-                    clearTimeout(timer);
-                    this._onPointerClick(e);
-                });
+                this
+                    .liveBindTo('status', 'mouseover pointerclick', function (e) {
+                        clearTimeout(timer);
+                        this._onPointerClick(e);
+                    })
 
-                // Чтобы попап сам скрывался после того, как пользователь убрал курсор
-                this.liveBindTo('status', 'mouseout', function() {
-                    timer = setTimeout(function() {
-                        this._hidePopups();
-                    }.bind(this), 250);
-                });
+                    // Чтобы попап сам скрывался после того, как пользователь убрал курсор
+                    .liveBindTo('status', 'mouseout', function() {
+                        timer = setTimeout(function() {
+                            this._hidePopups();
+                        }.bind(this), 250);
+                    });
 
-                return this.__base.apply(this, arguments);
+                return false;
             }
         }));
     }

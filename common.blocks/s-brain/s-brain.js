@@ -73,6 +73,11 @@ modules.define(
                         }
 
                         this.setMod(answer, 'is', isRight ? 'right' : 'false');
+
+                        if (isRight) {
+                            // 0 - номер статуса для данной ситуации
+                            this.emit('up', 0);
+                        }
                     }.bind(this), 1000, {
                         'leading': true,
                         'trailing': false
