@@ -32,8 +32,14 @@ modules.define(
                     plusPoint = this.elem('plus-point'),
                     calcOffset =  status.position().left + status.width() - 20;
 
-                plusPoint.css({ top: 10, left: calcOffset, visibility: 'visible' });
+                    plusPoint.css({top: 10, left: calcOffset, visibility: 'visible'});
+                    plusPoint.css({top: -20, left: calcOffset});
 
+                    setTimeout(function () {
+                        plusPoint.css({top: 10, visibility: 'hidden'});
+                    }, 1500);
+
+                /*
                 // TODO: есть ещё вариант поиграться с прозрачностью,
                 // чтобы +1 появлялся и скрывался в одном положении, но пока так.
                 plusPoint.animate({ top: 0 }, 300, function() {
@@ -43,6 +49,7 @@ modules.define(
                         });
                    // }, 100);
                 });
+                */
 
                 return this;
             },
