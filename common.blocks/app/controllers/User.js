@@ -47,6 +47,26 @@ var User = function(userModel, u, cb) {
 };
 
 /**
+ * Отправляет данные об рейтинге на клиент
+ *
+ * @param ratingModel
+ * @param io
+ * @returns {User}
+ */
+User.prototype.calcRating = function(ratingModel, io) {
+    ratingModel.count({ userId: this.id, answer: 1 }, function (err, rightAnswers) {
+        ratingModel.count({ userId: this.id }, function (err, answers) {
+            io.emit('user:rating', {
+                countAnswers: answers,
+                rightAnswers: rightAnswers
+            });
+        });
+    });
+
+    return this;
+};
+
+/**
  * Коды ответов методов.
  *
  * @type {{NEW_USER: number, OLD_USER: number}}
