@@ -108,6 +108,10 @@ models(function (err, db) {
                                         return val;
                                     });
                                     delete fields.id;
+
+                                    // Удаляем автосгенерированные поля таблицы
+                                    delete fields.created_at;
+                                    delete fields.modified_at;
                                     deferred.resolve(fields);
                                 });
                             });
