@@ -14,7 +14,28 @@ modules.define(
 
                     BEMDOM.blocks['s-brain'].on('up', this._showPlusPoint, this);
 
+                    window.socket.on('user:rating', this._setPopupContent.bind(this));
+
                 }
+            },
+
+            /**
+             * Установить контент попапа для статуса
+             *
+             * @param data
+             * @returns {_setPopupContent}
+             * @private
+             */
+            _setPopupContent: function(data) {
+                _.forEach(data, function(item, num) {
+                    var popup = this.popups[num];
+
+                    popup && popup.domElem.html(BEMHTML.apply({
+                        content: 'Баллов: ' + item.rightAnswers
+                    }));
+                }.bind(this));
+
+                return this;
             },
 
             /**
