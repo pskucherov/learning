@@ -200,4 +200,32 @@ User.getByVKId = function(userModel, vkid) {
     return deferred.promise();
 };
 
+/**
+ * Возвращает количество баллов в одном процентре,
+ * для рассчёта рейтинга пользователей
+ *
+ * @param db
+ * @param {Number|String|Query} [userIds] - id пользователей, для которых надо сделать выборку, если параметр не зада - выбирается для всех.
+ * @returns {*}
+ */
+User.getPointInOneProcent = function(db, ids) {
+    var deferred = vow.defer(),
+        whereId = ids ? 'userId IN (' + ids + ') AND' : '';
+
+    db.driver.execQuery('SELECT MAX(t2.c) AS m FROM ' +
+        '(SELECT COUNT(*) AS c FROM `brain-tests-answers` AS t1 WHERE ' + whereId + ' answer=1 GROUP BY userid) AS t2',
+        function(err, data) {
+
+        if (err) throw err;
+
+        if (_.isEmpty(data)) {
+            deferred.reject(data);
+        } else {
+            deferred.resolve(data[0].m / 100);
+        }
+    });
+
+    return deferred.promise();
+};
+
 module.exports = User;
