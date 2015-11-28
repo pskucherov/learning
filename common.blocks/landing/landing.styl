@@ -32,10 +32,14 @@
     max-width 100px
     margin: 0 auto;
     & .progressbar_color_red .progressbar__bar
-      background-color: #F30
+      background #F30
 
     & .progressbar_color_green .progressbar__bar
-      background-color: #3F0
+      background #3F0
+
+    & .progressbar_color_red .progressbar__bar,
+    & .progressbar_color_green .progressbar__bar
+      background linear-gradient(to right, #f30 10%, #fc0 50%, #3f0 100%)
 
   &__plus-point
     color #0B7C3B
