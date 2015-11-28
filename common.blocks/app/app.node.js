@@ -17,6 +17,8 @@ var fs = require('fs'),
     redirects = require('./routes/redirects'),
 
     User = require('./controllers/User'),
+    BrainTests = require('./controllers/BrainTests'),
+
     settings = require('./settings'),
 
     models   = require('./models/'),
@@ -180,30 +182,26 @@ models(function (err, db) {
                     classNum >= 1 && classNum <= 11 && (find.class = classNum);
                 }
 
-                db.models['brain-tests'].find(find)
-                    .where('id NOT IN (SELECT questionId FROM `brain-tests-answers` WHERE userId = ?)', [user.id])
-                    .orderRaw('rand()').limit(1).run(function (err, data) {
-
-                    if (!_.isEmpty(data)){
-                        io.emit('s-brain:question', data[0]);
-                    } else {
-
+                BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user.id, classNum)
+                    .then(function(data) {
+                        io.emit('s-brain:question', data);
+                    })
+                    .fail(function() {
                         db.models['brain-tests-answers'].find({ userId: user.id, answer: 1 })
                             .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [find.class])
                             .count(function(err, rightAnswers) {
 
-                            db.models['brain-tests-answers'].find({ userId: user.id, answer: 0 })
-                                .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [find.class])
-                                .count(function(err, falseAnswers) {
-                                    io.emit('s-brain:question-end', {
-                                        rightAnswers: rightAnswers,
-                                        falseAnswers: falseAnswers
+                                db.models['brain-tests-answers'].find({ userId: user.id, answer: 0 })
+                                    .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [find.class])
+                                    .count(function(err, falseAnswers) {
+                                        io.emit('s-brain:question-end', {
+                                            rightAnswers: rightAnswers,
+                                            falseAnswers: falseAnswers
+                                        });
                                     });
-                                });
 
-                        });
-                    }
-                });
+                            });
+                    });
 
             }
 
