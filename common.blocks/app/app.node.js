@@ -165,7 +165,10 @@ models(function (err, db) {
                         if (err) throw err;
                     });
 
-                    io.emit('s-brain:setAnswer', isRight);
+                    BrainTests.createAnswerRow(db.models['brain-tests-answers'], user.id, answerData.id, isRight)
+                        .then(function() {
+                            io.emit('s-brain:setAnswer', isRight);
+                        });
                 });
 
             });

@@ -35,7 +35,7 @@ models(function (err, db) {
 
             });
 
-            describe('Get questions and answers', function () {
+            describe('Get and set questions and answers', function () {
 
                 it('should get random question for class', function () {
 
@@ -96,6 +96,25 @@ models(function (err, db) {
                     return assert.isRejected(
                         deferred.promise(),
                         'Should be rejected'
+                    );
+
+                });
+
+                it('should create answer row', function () {
+
+                    var deferred = vow.defer(),
+                        isRight = 1,
+                        questionId = 18,
+                        userId = 123;
+
+                    BrainTests.createAnswerRow(BAnswersModel, userId, questionId, isRight)
+                        .then(function () {
+                            deferred.resolve();
+                        });
+
+                    return assert.isFulfilled(
+                        deferred.promise(),
+                        'Should be resolved'
                     );
 
                 });
