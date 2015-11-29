@@ -138,8 +138,8 @@ models(function (err, db) {
 
             var cookie = {};
 
-            db.models['brain-tests-answers'].count({ userId: this.id, answer: 1 }, function (err, rightAnswers) {
-                db.models['brain-tests-answers'].count({ userId: this.id }, function (err, answers) {
+            db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
+                db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {
                     io.emit('user:rating', {
                         0: {
                             countAnswers: answers,
@@ -169,8 +169,8 @@ models(function (err, db) {
                     if (!_.isEmpty(data)) {
                         isRight = true;
 
-                        db.models['brain-tests-answers'].count({ userId: this.id, answer: 1 }, function (err, rightAnswers) {
-                            db.models['brain-tests-answers'].count({ userId: this.id }, function (err, answers) {
+                        db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
+                            db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {
                                 io.emit('user:rating', {
                                     0: {
                                         countAnswers: answers,
