@@ -131,10 +131,23 @@ models(function (err, db) {
         }
 
         var user = new User(db.models['users'], { sid: sid }, function() {
-            //console.log(session);
 
-            var cookie = {},
-                interval;
+            if ((!user || !user.id)) {
+                return;
+            }
+
+            var cookie = {};
+
+            db.models['brain-tests-answers'].count({ userId: this.id, answer: 1 }, function (err, rightAnswers) {
+                db.models['brain-tests-answers'].count({ userId: this.id }, function (err, answers) {
+                    io.emit('user:rating', {
+                        0: {
+                            countAnswers: answers,
+                            rightAnswers: rightAnswers
+                        }
+                    });
+                });
+            });
 
             socket.on('class-select:change', function (classNum) {
                 cookie['classNum'] = classNum;
@@ -155,15 +168,19 @@ models(function (err, db) {
 
                     if (!_.isEmpty(data)) {
                         isRight = true;
-                    }
 
-                    db.models['brain-tests-answers'].create({
-                        userId: user.id,
-                        questionId: answerData.id,
-                        answer: isRight
-                    }, function (err) {
-                        if (err) throw err;
-                    });
+                        db.models['brain-tests-answers'].count({ userId: this.id, answer: 1 }, function (err, rightAnswers) {
+                            db.models['brain-tests-answers'].count({ userId: this.id }, function (err, answers) {
+                                io.emit('user:rating', {
+                                    0: {
+                                        countAnswers: answers,
+                                        rightAnswers: rightAnswers
+                                    }
+                                });
+                            });
+                        });
+
+                    }
 
                     BrainTests.createAnswerRow(db.models['brain-tests-answers'], user.id, answerData.id, isRight)
                         .then(function() {
