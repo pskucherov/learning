@@ -1,7 +1,7 @@
 modules.define(
     'landing',
-    ['i-bem__dom', 'jquery'],
-    function(provide, BEMDOM, $) {
+    ['i-bem__dom', 'jquery', 'BEMHTML'],
+    function(provide, BEMDOM, $, BEMHTML) {
 
         provide(BEMDOM.decl(this.name, {
             onSetMod: {
