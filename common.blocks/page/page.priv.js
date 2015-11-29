@@ -43,7 +43,7 @@ blocks['page'] = function (data) {
                 BEMPRIV.create('footer', data).json()
             ],
             scripts: [
-                data.isAuth ? [{
+                {
                     elem: 'js',
                     url: '/socket.io/socket.io.js',
                     mix: {
@@ -58,7 +58,7 @@ blocks['page'] = function (data) {
                         elem: 'script'
                     },
                     content: 'window.socket = io();'
-                }] : '',
+                },
                 // Для локалхоста берём jquery не из CDN,
                 // т.к. может не быть соединения.
                 {
