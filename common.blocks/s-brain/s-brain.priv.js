@@ -8,6 +8,7 @@ BEMPRIV.decl('s-brain', {
                 block: 'class-select',
                 val: this.data.cookies.classNum
             },
+            BEMPRIV.json('rating', this.data),
             {
                 block : 'button',
                 mix: { block: 's-brain', elem: 'next-question' },
