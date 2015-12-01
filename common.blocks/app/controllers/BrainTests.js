@@ -80,7 +80,7 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
 BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRightAnswer) {
     var deferred = vow.defer();
 
-    BAnswersModel.db.models['brain-tests-answers'].find({ userId: userId, answer: toRightAnswer })
+    BAnswersModel.find({ userId: userId, answer: toRightAnswer })
         .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [classNum])
         .count(function(err, data) {
             if (err) throw err;

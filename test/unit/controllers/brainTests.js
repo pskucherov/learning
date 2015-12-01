@@ -119,6 +119,47 @@ models(function (err, db) {
 
                 });
 
+                it('should get right count answers', function () {
+
+                    var deferred = vow.defer(),
+                        classNum = 1,
+                        userId = 123;
+
+                    db.driver.execQuery('INSERT INTO `brain-tests-answers` (userId, questionId, answer) ' +
+                        'VALUES (123, 4, 1), (123, 10, 1), (123, 17, 1), (123, 14, 1);', function() {
+
+                        BrainTests.getStatsForUserClass(BAnswersModel, userId, classNum, 1)
+                            .then(function(rightAnswer) { deferred.resolve(rightAnswer); });
+                    });
+
+                    return assert.eventually.equal(
+                        deferred.promise(),
+                        4,
+                        'Shouild be equal 4'
+                    );
+
+                });
+
+                it('should get false count answers', function () {
+
+                    var deferred = vow.defer(),
+                        classNum = 1,
+                        userId = 123;
+
+                    db.driver.execQuery('INSERT INTO `brain-tests-answers` (userId, questionId, answer) ' +
+                        'VALUES (123, 8, 0), (123, 18, 0);', function() {
+
+                        BrainTests.getStatsForUserClass(BAnswersModel, userId, classNum, 0)
+                            .then(function(rightAnswer) { deferred.resolve(rightAnswer); });
+                    });
+
+                    return assert.eventually.equal(
+                        deferred.promise(),
+                        2,
+                        'Shouild be equal 2'
+                    );
+
+                });
 
             });
 
