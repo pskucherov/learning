@@ -117,10 +117,10 @@ server = http.listen(3000, function() {
 
 models(function (err, db) {
 
-    sessionSockets.on('connection', function (err, socket, session) {
+    sessionSockets.on('connection', function(err, socket, session) {
         console.log('connected');
 
-        socket.on('disconnect', function () {
+        socket.on('disconnect', function() {
             console.log('disconnected');
         });
 
@@ -207,20 +207,20 @@ models(function (err, db) {
                         io.emit('s-brain:question', data);
                     })
                     .fail(function() {
-                        db.models['brain-tests-answers'].find({ userId: user.id, answer: 1 })
-                            .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [find.class])
-                            .count(function(err, rightAnswers) {
 
-                                db.models['brain-tests-answers'].find({ userId: user.id, answer: 0 })
-                                    .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [find.class])
-                                    .count(function(err, falseAnswers) {
+
+                        BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 1)
+                            .then(function(rightAnswers) {
+                                BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 0)
+                                    .then(function(falseAnswers) {
                                         io.emit('s-brain:question-end', {
                                             rightAnswers: rightAnswers,
                                             falseAnswers: falseAnswers
                                         });
                                     });
-
                             });
+
+
                     });
 
             }
