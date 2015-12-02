@@ -10,8 +10,14 @@ BEMPRIV.decl('rating', {
     getContent: function() {
         return [
             {
+                elem: 'user',
                 attrs: {
                     style: 'width: 100px; height: 100px; border-radius: 100%; background-color: red; margin: 15px 0;'
+                },
+                content: {
+                    block: 'rating',
+                    elem: 'stats',
+                    content: '1е место'
                 }
             },
             {
