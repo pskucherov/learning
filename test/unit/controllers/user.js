@@ -18,6 +18,8 @@ models(function (err, db) {
     if (err) throw err;
 
     var VK_USER_ID = 100,
+        VK_USER_ID_1 = 101,
+        VK_USER_ID_2 = 102,
         usersModel = db.models.users;
 
     db.sync(function (err) {
@@ -29,13 +31,14 @@ models(function (err, db) {
 
                 this.timeout(10000);
 
-                User.deleteByVKId(usersModel, VK_USER_ID).then(function () {
+                User.deleteByVKId(usersModel, [VK_USER_ID, VK_USER_ID_1, VK_USER_ID_2]).then(function () {
                     done();
                 });
 
             });
 
             describe('Create and delete methods', function () {
+
                 it('should create user in BD', function () {
                     return assert.eventually.propertyVal(
                         User.createByVKId(usersModel, VK_USER_ID),
@@ -71,6 +74,26 @@ models(function (err, db) {
                         "Answer should be equal User.ANSWER.NEW_USER"
                     );
                 });
+
+                it('should get several users from BD', function () {
+                    var deferred = vow.defer();
+
+                    db.driver.execQuery("INSERT INTO `users` (vkid) VALUES (" + VK_USER_ID + "), (" + VK_USER_ID_1 + "), (" + VK_USER_ID_2 + "); ", function() {
+
+                        User.getByVKId(usersModel, [VK_USER_ID, VK_USER_ID_1, VK_USER_ID_2])
+                            .then(function (users) {
+                                deferred.resolve(users);
+                            });
+
+                    });
+
+                    return assert.eventually.lengthOf(
+                        deferred.promise(),
+                        3,
+                        "should returns 3 users"
+                    );
+                });
+
             });
 
             describe('Update methods', function () {

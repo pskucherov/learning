@@ -122,7 +122,7 @@ User.createByVKId = function(userModel, vkid) {
  * Удаляет запись из БД.
  *
  * @param {Model} userModel - модель таблицы user
- * @param {Number} vkid - id анкеты в vk
+ * @param {Number|Array} vkid - id анкеты в vk
  * @returns {Deferred} - promise
  *
  * @static
@@ -131,7 +131,7 @@ User.deleteByVKId = function(userModel, vkid) {
 
     var deferred = vow.defer();
 
-    userModel.find({ vkid: vkid }).remove(function (err) {
+    userModel.find({ vkid: vkid }).remove(function(err) {
         if (err) throw err;
         deferred.resolve(User.ANSWER.DELETED);
     });
@@ -179,7 +179,7 @@ User.updateFieldsByVKId = function(userModel, vkid, fields) {
  * Получить данные пользователя, по вк id
  *
  * @param {Model} userModel - модель таблицы user
- * @param {Number} vkid - id анкеты в vk
+ * @param {Number|Array} vkid - id анкеты в vk
  * @returns {Deferred} - promise
  *
  * @static
@@ -187,7 +187,7 @@ User.updateFieldsByVKId = function(userModel, vkid, fields) {
 User.getByVKId = function(userModel, vkid) {
     var deferred = vow.defer();
 
-    userModel.find({ vkid: vkid }).limit(1).run(function(err, user) {
+    userModel.find({ vkid: vkid }).run(function(err, user) {
         if (err) throw err;
 
         if (_.isEmpty(user)) {
