@@ -132,11 +132,18 @@ models(function (err, db) {
 
         var user = new User(db.models['users'], { sid: sid }, function() {
 
-            if ((!user || !user.id)) {
+            if (!user || !user.id) {
+                user = {};
                 return;
             }
 
-            var cookie = {};
+            var cookie = {},
+                rating = {};
+
+            BrainTests.getStatsRating(db, user.id, 1).then(function(data) {
+               console.log('stats');
+                console.log(data);
+            });
 
             db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
                 db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {

@@ -90,4 +90,63 @@ BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRi
     return deferred.promise();
 };
 
+
+/**
+ * Получить первый трёх человек из рейтинга
+ *
+ * @param db
+ * @returns {*}
+ */
+BrainTests.getStatsRating = function(db, userId, classNum) {
+    var deferred = vow.defer();
+
+    console.log('SELECT @i:=@i+1 AS `RowNumber`, userId, cnt '
+            + 'FROM (SELECT userId, COUNT(*) as cnt '
+            + 'FROM `brain-tests-answers`, (SELECT @i:=0) AS `RowNumberTable` WHERE questionId IN (SELECT id FROM `brain-tests` WHERE class = ' + classNum + ') AND answer=1 '
+            + ' GROUP BY userId ORDER BY cnt DESC) x '
+            + ' LIMIT 3');
+
+    db.driver.execQuery('SELECT @i:=@i+1 AS `RowNumber`, userId, cnt '
+        + 'FROM (SELECT userId, COUNT(*) as cnt '
+        + 'FROM `brain-tests-answers`, (SELECT @i:=0) AS `RowNumberTable` WHERE (`questionId` IN (SELECT id FROM `brain-tests` WHERE `class` = "' + classNum + '") AND answer=1)'
+        + ' GROUP BY userId ORDER BY cnt DESC)x '
+        + ' LIMIT 3',
+        function(err, data) {
+
+            if (err) throw err;
+
+            console.log(err, data)
+
+            if (_.isEmpty(data)) {
+                deferred.reject(data);
+            } else {
+
+
+
+                // Если юзер есть в одном из трёх первых, то возвращаем их и выходим
+                for (var k in data) {
+                    if (data[k]['userId'] === userId) {
+                        console.log('resolve');
+
+                        deferred.resolve(data);
+                        return;
+                    }
+                }
+
+                BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], userId, classNum, 1)
+                    .then(function(uStat) {
+                        if (!_.isEmpty(uStat)) {
+                            data.push(uStat[0]);
+                        }
+                        deferred.resolve(data);
+                    });
+
+            }
+        });
+
+    return deferred.promise();
+};
+
+
+
 module.exports = BrainTests;
