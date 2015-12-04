@@ -1,5 +1,6 @@
 var vow = require('vow'),
     _ = require('lodash'),
+    User = require('./User'),
     path = require('path'),
     utils = require('../utils');
 
@@ -100,12 +101,6 @@ BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRi
 BrainTests.getStatsRating = function(db, userId, classNum) {
     var deferred = vow.defer();
 
-    console.log('SELECT @i:=@i+1 AS `RowNumber`, userId, cnt '
-            + 'FROM (SELECT userId, COUNT(*) as cnt '
-            + 'FROM `brain-tests-answers`, (SELECT @i:=0) AS `RowNumberTable` WHERE questionId IN (SELECT id FROM `brain-tests` WHERE class = ' + classNum + ') AND answer=1 '
-            + ' GROUP BY userId ORDER BY cnt DESC) x '
-            + ' LIMIT 3');
-
     db.driver.execQuery('SELECT @i:=@i+1 AS `RowNumber`, userId, cnt '
         + 'FROM (SELECT userId, COUNT(*) as cnt '
         + 'FROM `brain-tests-answers`, (SELECT @i:=0) AS `RowNumberTable` WHERE (`questionId` IN (SELECT id FROM `brain-tests` WHERE `class` = "' + classNum + '") AND answer=1)'
@@ -115,19 +110,14 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
 
             if (err) throw err;
 
-            console.log(err, data)
 
             if (_.isEmpty(data)) {
                 deferred.reject(data);
             } else {
 
-
-
                 // Если юзер есть в одном из трёх первых, то возвращаем их и выходим
                 for (var k in data) {
                     if (data[k]['userId'] === userId) {
-                        console.log('resolve');
-
                         deferred.resolve(data);
                         return;
                     }
@@ -147,6 +137,44 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
     return deferred.promise();
 };
 
+
+/**
+ * Получить стату для пользователя.
+ *
+ * TODO: тут ещё надо будет всё перепроверить и написать тестов.
+ *
+ * @param db
+ * @param userId
+ * @param classNum
+ * @returns {*}
+ */
+BrainTests.getUserForStat = function(db, userId, classNum) {
+    var deferred = vow.defer();
+
+    BrainTests.getStatsRating(db, userId, classNum).then(function (uStat) {
+
+        var userIds = [];
+
+        for (var k in uStat) {
+            userIds.push(uStat[k].userId);
+        }
+
+        User.getById(db.models['users'], userIds, 'id,vkid,first_name,photo_100').then(function(users) {
+            for (var i in uStat) {
+                for (var k in users) {
+                    if (uStat[i].userId === users[k].id) {
+                        uStat[i].user = users[k];
+                    }
+                }
+            }
+
+            deferred.resolve(uStat);
+        });
+
+    });
+
+    return deferred.promise();
+};
 
 
 module.exports = BrainTests;

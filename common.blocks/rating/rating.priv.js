@@ -12,6 +12,7 @@ BEMPRIV.decl('rating', {
         return [
             {
                 elem: 'user',
+                elemMods: { pos: 0 },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: 15px 0;'
                 },
@@ -27,6 +28,7 @@ BEMPRIV.decl('rating', {
             },
             {
                 elem: 'user',
+                elemMods: { pos: 1 },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: 15px 0;'
                 },
@@ -42,6 +44,7 @@ BEMPRIV.decl('rating', {
             },
             {
                 elem: 'user',
+                elemMods: { pos: 2 },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: 15px 0;'
                 },
@@ -56,6 +59,7 @@ BEMPRIV.decl('rating', {
                 }
             },
             {
+                elem: 'dots',
                 attrs: {
                     style: 'text-align: center; font-size: 52px; color: #666; top: -40px; position: relative;'
                 },
@@ -63,13 +67,14 @@ BEMPRIV.decl('rating', {
             },
             {
                 elem: 'user',
+                elemMods: { pos: 100500 },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: -40px 0;'
                 },
                 content: {
                     block: 'rating',
-                    elem: 'stats',
-                    content: ''
+                    elem: 'arrow',
+                    content: 'Вы 136й'
                 }
             }
         ];

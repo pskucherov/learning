@@ -140,11 +140,6 @@ models(function (err, db) {
             var cookie = {},
                 rating = {};
 
-            BrainTests.getStatsRating(db, user.id, 1).then(function(data) {
-               console.log('stats');
-                console.log(data);
-            });
-
             db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
                 db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {
                     io.emit('user:rating', {
@@ -208,6 +203,10 @@ models(function (err, db) {
                     classNum = parseInt(classNum, 10);
                     classNum >= 1 && classNum <= 11 && (find.class = classNum);
                 }
+
+                BrainTests.getUserForStat(db, user.id, classNum).then(function(data) {
+                    io.emit('rating:rating', data);
+                });
 
                 BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user.id, classNum)
                     .then(function(data) {

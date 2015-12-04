@@ -8,7 +8,37 @@
 
   overflow hidden
 
+  &__user
+    background-size cover
+
   &__stats
     width 70px
     height 70px
     position relative
+
+  &__arrow
+    position: relative;
+    margin: 50px auto;
+
+  &__arrow:before,
+  &__arrow:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 40px solid transparent;
+    border-right: 0;
+  }
+
+  &__arrow:nth-child(1) {
+    width: 200px;
+    height: 30px;
+    background: orangered;
+  }
+
+  &__arrow:nth-child(1):after {
+    top: -25px;
+    right: -30px;
+    border-left-color: orangered;
+  }

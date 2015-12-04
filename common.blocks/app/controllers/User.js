@@ -1,7 +1,7 @@
 var vow = require('vow'),
     _ = require('lodash'),
     path = require('path'),
-    utils = require('../utils'),
+    Utils = require('../utils'),
     vk = require('../controllers/vk');
 
 
@@ -194,6 +194,34 @@ User.getByVKId = function(userModel, vkid) {
             deferred.reject(user);
         } else {
             deferred.resolve(user);
+        }
+    });
+
+    return deferred.promise();
+};
+
+/**
+ * Получить данные пользователя, по id
+ *
+ * @param {Model} userModel - модель таблицы user
+ * @param {Number|Array} id - id анкеты
+ * @param {String[]} fields - какие значения надо вернуть
+ * @returns {Deferred} - promise
+ *
+ * @static
+ */
+User.getById = function(userModel, id, fields) {
+    var deferred = vow.defer();
+
+    fields = Utils.parseUserFields(fields);
+
+    userModel.find({ id: id }).run(function(err, user) {
+        if (err) throw err;
+
+        if (_.isEmpty(user)) {
+            deferred.reject([]);
+        } else {
+            deferred.resolve(user.map(function(u) { return _.pick(u, fields); }));
         }
     });
 
