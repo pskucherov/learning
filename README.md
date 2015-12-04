@@ -47,7 +47,7 @@ npm test
 ```sh
 npm install lodash-cli -g && \
 cd common.blocks/i-lodash/ && \
-lodash include=isEmpty,get,assign,forEach,isUndefined,defaultsDeep,debounce -p && \
+lodash include=isEmpty,get,assign,forEach,isUndefined,defaultsDeep,debounce,pick -p && \
 mv lodash.custom.min.js i-lodash.js
 ```
 
