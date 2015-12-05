@@ -12,7 +12,7 @@ BEMPRIV.decl('rating', {
         return [
             {
                 elem: 'user',
-                elemMods: { pos: 0 },
+                elemMods: { pos: 0, hidden: 'yes' },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: 15px 0;'
                 },
@@ -28,7 +28,7 @@ BEMPRIV.decl('rating', {
             },
             {
                 elem: 'user',
-                elemMods: { pos: 1 },
+                elemMods: { pos: 1, hidden: 'yes' },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: 15px 0;'
                 },
@@ -44,7 +44,7 @@ BEMPRIV.decl('rating', {
             },
             {
                 elem: 'user',
-                elemMods: { pos: 2 },
+                elemMods: { pos: 2, hidden: 'yes' },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: 15px 0;'
                 },
@@ -60,6 +60,7 @@ BEMPRIV.decl('rating', {
             },
             {
                 elem: 'dots',
+                elemMods: { hidden: 'yes' },
                 attrs: {
                     style: 'text-align: center; font-size: 52px; color: #666; top: -40px; position: relative;'
                 },
@@ -67,7 +68,7 @@ BEMPRIV.decl('rating', {
             },
             {
                 elem: 'user',
-                elemMods: { pos: 100500 },
+                elemMods: { pos: 100500, hidden: 'yes' },
                 attrs: {
                     style: 'width: 70px; height: 70px; border-radius: 100%; background-color: red; margin: -40px 0;'
                 },

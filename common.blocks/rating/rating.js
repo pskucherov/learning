@@ -16,7 +16,10 @@ modules.define(
                     window.socket.on('rating:rating', function(rating) {
                         this._hideNotUsedPos();
                         rating.forEach(function(u) {
-                            var e = this.elem('user', 'pos', (u.RowNumber-1));
+
+                            var e = u.RowNumber <= 2
+                                ? this.elem('user', 'pos', (u.RowNumber-1))
+                                : this.elem('user', 'pos', 100500);
 
                             $(e).css({ 'background-image': 'url(' + u.user.photo_100 + ')', 'background-size': 'cover' });
                             this.delMod(e, 'hidden');
@@ -24,6 +27,7 @@ modules.define(
 
                         if (rating.length > 3) {
                             this.delMod(this.elem('dots'), 'hidden');
+                            this.delMod(this.elem('user', 'pos', 100500), 'hidden');
                         }
 
                     }.bind(this));

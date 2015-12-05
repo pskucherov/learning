@@ -110,9 +110,8 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
 
             if (err) throw err;
 
-
             if (_.isEmpty(data)) {
-                deferred.reject(data);
+                deferred.resolve([]);
             } else {
 
                 // Если юзер есть в одном из трёх первых, то возвращаем их и выходим
@@ -151,7 +150,7 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
 BrainTests.getUserForStat = function(db, userId, classNum) {
     var deferred = vow.defer();
 
-    BrainTests.getStatsRating(db, userId, classNum).then(function (uStat) {
+    BrainTests.getStatsRating(db, userId, classNum).then(function(uStat) {
 
         var userIds = [];
 
@@ -159,7 +158,7 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
             userIds.push(uStat[k].userId);
         }
 
-        User.getById(db.models['users'], userIds, 'id,vkid,first_name,photo_100').always(function(users) {
+        User.getById(db.models['users'], userIds, 'id,vkid,first_name,photo_100').then(function(users) {
             for (var i in uStat) {
                 for (var k in users) {
                     if (uStat[i].userId === users[k].id) {
@@ -169,6 +168,8 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
             }
 
             deferred.resolve(uStat);
+        }, function() {
+            deferred.resolve([]);
         });
 
     });
