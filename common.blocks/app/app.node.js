@@ -142,7 +142,7 @@ models(function (err, db) {
 
             db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
                 db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {
-                    io.emit('user:rating', {
+                    socket.emit('user:rating', {
                         0: {
                             countAnswers: answers,
                             rightAnswers: rightAnswers
@@ -173,7 +173,7 @@ models(function (err, db) {
 
                         db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
                             db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {
-                                io.emit('user:rating', {
+                                socket.emit('user:rating', {
                                     0: {
                                         countAnswers: answers,
                                         rightAnswers: rightAnswers
@@ -186,7 +186,7 @@ models(function (err, db) {
 
                     BrainTests.createAnswerRow(db.models['brain-tests-answers'], user.id, answerData.id, isRight)
                         .then(function() {
-                            io.emit('s-brain:setAnswer', isRight);
+                            socket.emit('s-brain:setAnswer', isRight);
                         });
                 });
 
@@ -205,12 +205,12 @@ models(function (err, db) {
                 }
 
                 BrainTests.getUserForStat(db, user.id, classNum).then(function(data) {
-                    io.emit('rating:rating', data);
+                    socket.emit('rating:rating', data);
                 });
 
                 BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user.id, classNum)
                     .then(function(data) {
-                        io.emit('s-brain:question', data);
+                        socket.emit('s-brain:question', data);
                     })
                     .fail(function() {
 
@@ -219,7 +219,7 @@ models(function (err, db) {
                             .then(function(rightAnswers) {
                                 BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 0)
                                     .then(function(falseAnswers) {
-                                        io.emit('s-brain:question-end', {
+                                        socket.emit('s-brain:question-end', {
                                             rightAnswers: rightAnswers,
                                             falseAnswers: falseAnswers
                                         });
