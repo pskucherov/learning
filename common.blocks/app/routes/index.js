@@ -70,6 +70,7 @@ router.get(/^\/verify\/?$/, function(req, res, next) {
 
 
                     // Запрашиваем данные пользователя, чтобы сохранить их в БД (если изменились).
+                    // TODO: есть пользователь, у которого пустой
                     vk.request('users.get',
                         { user_id: _o.user_id, fields: 'sex,photo_50,photo_100,photo_200_orig,photo_200,has_mobile' },
                         function (userFields) {

@@ -17,7 +17,7 @@ modules.define(
                         this._hideNotUsedPos();
                         rating.forEach(function(u) {
 
-                            var e = u.RowNumber <= 2
+                            var e = u.RowNumber <= 3
                                 ? this.elem('user', 'pos', (u.RowNumber-1))
                                 : this.elem('user', 'pos', 100500);
 
