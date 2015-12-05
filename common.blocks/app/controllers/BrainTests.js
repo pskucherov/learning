@@ -125,7 +125,7 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
                 BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], userId, classNum, 1)
                     .then(function(uStat) {
                         if (!_.isEmpty(uStat)) {
-                            data.push(uStat[0]);
+                            data.push({ RowNumber: 100500, userId: userId, cnt: uStat[0] });
                         }
                         deferred.resolve(data);
                     });
