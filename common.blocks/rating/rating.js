@@ -14,13 +14,30 @@ modules.define(
                      * @params {Boolean} isRight
                      */
                     window.socket.on('rating:rating', function(rating) {
+                        this._hideNotUsedPos();
                         rating.forEach(function(u) {
-                            var e = $(this.elem('user', 'pos', (u.RowNumber-1))).css('background', 'url(' + u.user.photo_100 + ')');
+                            var e = this.elem('user', 'pos', (u.RowNumber-1));
+
+                            $(e).css({ 'background-image': 'url(' + u.user.photo_100 + ')', 'background-size': 'cover' });
+                            this.delMod(e, 'hidden');
                         }.bind(this));
+
+                        if (rating.length > 3) {
+                            this.delMod(this.elem('dots'), 'hidden');
+                        }
+
                     }.bind(this));
 
-
                 }
+            },
+
+            /**
+             * Скрыть элементы рейтинга
+             * @private
+             */
+            _hideNotUsedPos: function() {
+                this.setMod(this.elem('user'), 'hidden', 'yes');
+                this.setMod(this.elem('dots'), 'hidden', 'yes');
             }
 
 
