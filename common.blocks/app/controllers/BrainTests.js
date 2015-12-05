@@ -159,7 +159,7 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
             userIds.push(uStat[k].userId);
         }
 
-        User.getById(db.models['users'], userIds, 'id,vkid,first_name,photo_100').then(function(users) {
+        User.getById(db.models['users'], userIds, 'id,vkid,first_name,photo_100').always(function(users) {
             for (var i in uStat) {
                 for (var k in users) {
                     if (uStat[i].userId === users[k].id) {
