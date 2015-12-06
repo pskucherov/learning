@@ -9,6 +9,7 @@
 
         { block: 'index' },
         { block: 'verify' },
-        { block: 'i-vow' }
+        { block: 'i-vow' },
+        { block: 'i-utils' }
     ]
 })

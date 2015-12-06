@@ -10,56 +10,54 @@ BEMPRIV.decl('rating', {
     getContent: function() {
         var p = 'data:image/png;base64,';
         return [
-            {
-                elem: 'user',
-                elemMods: { pos: 0, hidden: 'yes' },
-                content: {
-                    block: 'rating',
-                    elem: 'stats',
+            'borschik:include:./first-place_size_sb.png',
+            'borschik:include:./second-place_size_sb.png',
+            'borschik:include:./third-place_size_sb.png',
+            ''
+        ].map(function(img, i) {
+            return img
+                ? {
+                    elem: 'user',
+                    elemMods: { pos: i, hidden: 'yes' },
                     content: {
-                        block: 'image',
-                        url: p + 'borschik:include:./first-place_size_sb.png'
+                        block: 'rating',
+                        elem: 'stats',
+                        content: [
+                            this._getFadeAndStat(),
+                            {
+                                block: 'image',
+                                url: p + img
+                            }
+                        ]
                     }
                 }
-            },
-            {
-                elem: 'user',
-                elemMods: { pos: 1, hidden: 'yes' },
-                content: {
-                    block: 'rating',
-                    elem: 'stats',
-                    content: {
-                        block: 'image',
-                        url: p + 'borschik:include:./second-place_size_sb.png'
-                    }
-                }
-            },
-            {
-                elem: 'user',
-                elemMods: { pos: 2, hidden: 'yes' },
-                content: {
-                    block: 'rating',
-                    elem: 'stats',
-                    content: {
-                        block: 'image',
-                        url: p + 'borschik:include:./third-place_size_sb.png'
-                    }
-                }
-            },
-            {
-                elem: 'dots',
-                elemMods: { hidden: 'yes' },
-                content: '...'
-            },
-            {
-                elem: 'user',
-                elemMods: { pos: 100500, hidden: 'yes' }
-                /*content: {
-                    block: 'rating',
-                    elem: 'arrow',
-                    content: 'Вы 136й'
-                }*/
-            }
-        ];
+                : [{
+                    elem: 'dots',
+                    elemMods: { hidden: 'yes' },
+                    content: '...'
+                },
+                {
+                    elem: 'user',
+                    elemMods: { pos: 100500, hidden: 'yes' },
+                    content: this._getFadeAndStat()
+                }];
+        }.bind(this));
+    },
+
+    /**
+     * Получить фейд со статой
+     * @returns {{}}
+     * @private
+     */
+    _getFadeAndStat: function() {
+        return [{
+            block: 'rating',
+            elem: 'stat-text',
+            content: '100500'
+        }, {
+            block: 'rating',
+            elem: 'fade'
+        }];
     }
+
 });

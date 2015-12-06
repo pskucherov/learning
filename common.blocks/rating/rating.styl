@@ -31,36 +31,25 @@
   &__stats
     width 70px
     height 70px
-    position relative
+    display flex
 
   &__stats .image
     position absolute
     bottom -15px
     right 0
 
-  &__arrow
-    position: relative;
-    margin: 50px auto;
+  &__fade
+    background #000
+    opacity .5
+    border-radius 100%
+    cursor pointer
+    width inherit
+    height inherit
+    left 0
+    z-index 5
+    position absolute
 
-  &__arrow:before,
-  &__arrow:after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border: 40px solid transparent;
-    border-right: 0;
-  }
-
-  &__arrow:nth-child(1) {
-    width: 200px;
-    height: 30px;
-    background: orangered;
-  }
-
-  &__arrow:nth-child(1):after {
-    top: -25px;
-    right: -30px;
-    border-left-color: orangered;
-  }
+  &__stat-text
+    color #fff
+    margin auto
+    z-index 10
