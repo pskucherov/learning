@@ -89,6 +89,7 @@ modules.define(
                     currentElem = this.findElem('status', 'num', num),
                     popup = this.popups[num];
 
+                // TODO: переписать на pointer-event none
                 if (_.isEmpty(popup) ||
                     (e.target && _.get(e, 'target.className').indexOf('image') === -1)) {
                     return this;

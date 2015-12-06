@@ -26,12 +26,22 @@
 
   &__dots_hidden_yes
   &__user_hidden_yes
+  &__fade_hidden_yes
+  &__stat-text_hidden_yes
     visibility hidden
+
+  &__dots
+  &__fade
+  &__stat-text
+      pointer-events: none;
 
   &__stats
     width 70px
     height 70px
     display flex
+    position relative
+    cursor pointer
+
 
   &__stats .image
     position absolute
@@ -42,7 +52,6 @@
     background #000
     opacity .5
     border-radius 100%
-    cursor pointer
     width inherit
     height inherit
     left 0
@@ -53,3 +62,4 @@
     color #fff
     margin auto
     z-index 10
+    text-align center

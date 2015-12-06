@@ -22,8 +22,9 @@ BEMPRIV.decl('rating', {
                     content: {
                         block: 'rating',
                         elem: 'stats',
+                        elemMods: { pos: i },
                         content: [
-                            this._getFadeAndStat(),
+                            this._getFadeAndStat(i),
                             {
                                 block: 'image',
                                 url: p + img
@@ -39,23 +40,26 @@ BEMPRIV.decl('rating', {
                 {
                     elem: 'user',
                     elemMods: { pos: 100500, hidden: 'yes' },
-                    content: this._getFadeAndStat()
+                    content: this._getFadeAndStat(100500)
                 }];
         }.bind(this));
     },
 
     /**
-     * Получить фейд со статой
-     * @returns {{}}
+     *
+     * @param {Number} pos
+     * @returns {Object[]}
      * @private
      */
-    _getFadeAndStat: function() {
+    _getFadeAndStat: function(pos) {
         return [{
             block: 'rating',
             elem: 'stat-text',
+            elemMods: { pos: pos, hidden: 'yes' },
             content: '100500'
         }, {
             block: 'rating',
+            elemMods: { pos: pos, hidden: 'yes' },
             elem: 'fade'
         }];
     }
