@@ -102,7 +102,7 @@ modules.define(
              */
             _onPointerClick: function(e, pos) {
                 if (e.type === 'pointerclick' && !this.hasMod(this.elem('fade', 'pos', pos), 'hidden')) {
-                    this._hidePoints(e);
+                    this._hidePoints(pos);
                 } else {
                     this
                         .delMod(this.elem('fade', 'pos', pos), 'hidden')
