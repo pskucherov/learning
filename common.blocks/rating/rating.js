@@ -95,11 +95,12 @@ modules.define(
              * предварительно скрыв все попапы.
              * При клике на статус переключаем видимость попапа.
              *
+             * @param e
              * @param pos
              * @returns {_onPointerClick}
              * @private
              */
-            _onPointerClick: function(pos) {
+            _onPointerClick: function(e, pos) {
                 if (e.type === 'pointerclick' && !this.hasMod(this.elem('fade', 'pos', pos), 'hidden')) {
                     this._hidePoints(e);
                 } else {
@@ -146,7 +147,7 @@ modules.define(
                             t = timer[pos];
 
                         t && clearTimeout(t);
-                        this._onPointerClick(pos);
+                        this._onPointerClick(e, pos);
                     })
 
                     // Чтобы попап сам скрывался после того, как пользователь убрал курсор
