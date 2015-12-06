@@ -24,8 +24,10 @@ modules.define(
                         }.bind(this));
 
                         if (rating.length > 3) {
-                            this.delMod(this.elem('dots'), 'hidden');
                             this.delMod(this.elem('user', 'pos', 100500), 'hidden');
+                        }
+                        if (rating.length > 4) {
+                            this.delMod(this.elem('dots'), 'hidden');
                         }
 
                     }.bind(this));
@@ -93,14 +95,11 @@ modules.define(
              * предварительно скрыв все попапы.
              * При клике на статус переключаем видимость попапа.
              *
-             * @param e
+             * @param pos
              * @returns {_onPointerClick}
              * @private
              */
-            _onPointerClick: function(e) {
-                var currentElem = $(e.currentTarget),
-                    pos = this.getMod(currentElem, 'pos');
-
+            _onPointerClick: function(pos) {
                 if (e.type === 'pointerclick' && !this.hasMod(this.elem('fade', 'pos', pos), 'hidden')) {
                     this._hidePoints(e);
                 } else {
@@ -115,17 +114,24 @@ modules.define(
             /**
              * Скрыть инфу про очки и показать бейдж
              *
-             * @param e
+             * @param pos
              * @returns {_hidePoints}
              * @private
              */
-            _hidePoints: function(e) {
-                var currentElem = $(e.currentTarget),
-                    pos = this.getMod(currentElem, 'pos');
-
+            _hidePoints: function(pos) {
                 return this
                     .setMod(this.elem('fade', 'pos', pos), 'hidden', 'yes')
                     .setMod(this.elem('stat-text', 'pos', pos), 'hidden', 'yes');
+            },
+
+            /**
+             *
+             * @param e
+             * @returns {*|String|Boolean}
+             * @private
+             */
+            _getPos: function(e) {
+                return this.getMod($(e.currentTarget), 'pos');
             }
 
         },
@@ -136,15 +142,19 @@ modules.define(
 
                 this
                     .liveBindTo('stats', 'mouseover pointerclick', function (e) {
-                        var t = timer[e.currentTarget];
+                        var pos = this._getPos(e),
+                            t = timer[pos];
+
                         t && clearTimeout(t);
-                        this._onPointerClick(e);
+                        this._onPointerClick(pos);
                     })
 
                     // Чтобы попап сам скрывался после того, как пользователь убрал курсор
                     .liveBindTo('stats', 'mouseout', function(e) {
-                        timer[e.currentTarget] = setTimeout(function() {
-                            this._hidePoints(e);
+                        var pos = this._getPos(e);
+
+                        timer[pos] = setTimeout(function() {
+                            this._hidePoints(pos);
                         }.bind(this), 250);
                     });
 
