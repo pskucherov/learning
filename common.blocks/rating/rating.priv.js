@@ -40,7 +40,12 @@ BEMPRIV.decl('rating', {
                 {
                     elem: 'user',
                     elemMods: { pos: 100500, hidden: 'yes' },
-                    content: this._getFadeAndStat(100500)
+                    content: {
+                        block: 'rating',
+                        elem: 'stats',
+                        elemMods: { pos: 100500 },
+                        content: this._getFadeAndStat(100500)
+                    }
                 }];
         }.bind(this));
     },

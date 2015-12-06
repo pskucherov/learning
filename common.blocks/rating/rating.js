@@ -127,22 +127,23 @@ modules.define(
                     .setMod(this.elem('fade', 'pos', pos), 'hidden', 'yes')
                     .setMod(this.elem('stat-text', 'pos', pos), 'hidden', 'yes');
             }
-            
+
         },
 
         {
             live: function() {
-                var timer;
+                var timer = [];
 
                 this
                     .liveBindTo('stats', 'mouseover pointerclick', function (e) {
-                        clearTimeout(timer);
+                        var t = timer[e.currentTarget];
+                        t && clearTimeout(t);
                         this._onPointerClick(e);
                     })
 
                     // Чтобы попап сам скрывался после того, как пользователь убрал курсор
                     .liveBindTo('stats', 'mouseout', function(e) {
-                        timer = setTimeout(function() {
+                        timer[e.currentTarget] = setTimeout(function() {
                             this._hidePoints(e);
                         }.bind(this), 250);
                     });
