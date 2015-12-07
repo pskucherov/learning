@@ -1,7 +1,7 @@
 ({
-    tech: 'js',
-    mustDeps: [{
-        block: 'blackboard',
-        tech: 'bemhtml'
-    }]
+    shouldDeps: [
+        {
+            block: 'complaint'
+        }
+    ]
 })

@@ -1,0 +1,11 @@
+block('complaint').js()(true);
+
+block('complaint')(
+    content()(function() {
+        return {
+            block: 'button',
+            mods : { theme : 'islands', size : 'l' },
+            text: 'Пожаловаться'
+        };
+    })
+);
