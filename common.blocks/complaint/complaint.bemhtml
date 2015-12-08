@@ -2,10 +2,30 @@ block('complaint').js()(true);
 
 block('complaint')(
     content()(function() {
-        return {
-            block: 'button',
-            mods : { theme : 'islands', size : 'l' },
-            text: 'Пожаловаться'
-        };
+        return [
+            {
+                block: 'button',
+                mix: { block: 'complaint', elem: 'button' },
+                mods : { theme : 'islands', size : 'l' },
+                text: 'Пожаловаться'
+            },
+            {
+                block: 'modal',
+                mix: {
+                    block: 'complaint',
+                    elem: 'popup',
+                    js: true
+                },
+                mods: {
+                    autoclosable: true,
+                    theme: 'islands'
+                },
+                content: [
+                    { content: '1' },
+                    { content: '2' },
+                    { content: '3' }
+                ]
+            }
+        ];
     })
 );
