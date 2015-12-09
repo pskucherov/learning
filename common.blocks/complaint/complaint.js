@@ -15,9 +15,8 @@ modules.define(
              * @private
              */
             _onPointerClick: function(e) {
-                var modal = this.findBlockInside('modal');
 
-                modal.setMod('visible', true);
+                this.modal.setMod('visible', true);
 
                 return this;
             }
@@ -25,8 +24,10 @@ modules.define(
         }, {
             live: function() {
 
+
                 this
                     .liveBindTo('button', 'pointerclick', function (e) {
+                        this.modal || (this.modal = this.findBlockInside('modal'));
                         this._onPointerClick(e);
                     });
 

@@ -21,9 +21,42 @@ block('complaint')(
                     theme: 'islands'
                 },
                 content: [
-                    { content: '1' },
-                    { content: '2' },
-                    { content: '3' }
+                    {
+                        elem: 'title',
+                        content: 'Пожаловаться'
+                    },
+                    {
+                        block: 'checkbox',
+                        mods: { theme: 'islands', size: 'm' },
+                        name: 'name1',
+                        val: '1',
+                        text: 'Вопрос поставлен некорректно'
+                    },
+                    {
+                        block: 'checkbox',
+                        mods: { theme: 'islands', size: 'm' },
+                        name: 'name1',
+                        val: '2',
+                        text: 'В ответе ошибка'
+                    },
+                    {
+                        block: 'checkbox',
+                        mods: { theme: 'islands', size: 'm' },
+                        name: 'name1',
+                        val: '3',
+                        text: 'Класс не соответствует вопросу'
+                    },
+                    {
+                        block: 'input',
+                        mods: { theme: 'islands', size: 'm' },
+                        placeholder: 'Комментарий'
+                    },
+                    {
+                        block: 'button',
+                        mix: { block: 'complaint', elem: 'send-button' },
+                        mods : { theme : 'islands', size : 'l' },
+                        text: 'Отправить'
+                    }
                 ]
             }
         ];
