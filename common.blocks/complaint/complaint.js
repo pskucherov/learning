@@ -28,10 +28,7 @@ modules.define(
             },
 
             _setComplaint: function() {
-                var mContent = this.modal.elem('content');
-
-                mContent.html(BEMHTML.apply(this.params.complaints));
-
+                BEMDOM.update(this.modal.elem('content'), BEMHTML.apply(this.params.complaints));
                 return this;
             },
 
@@ -68,7 +65,6 @@ modules.define(
             live: function() {
                 this
                     .liveBindTo('send-button', 'pointerclick', function (e) {
-                        //this.showPopUpButton || (this.showPopUpButton = this.findBlockInside(this.elem('show-popup-button'), 'button'));
                         this._onSendButtonClick(e);
                     });
 

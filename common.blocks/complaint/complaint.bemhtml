@@ -11,6 +11,7 @@ block('complaint')(
                         js: {
                             complaints: [
                                 {
+                                    block: 'complaint',
                                     elem: 'title',
                                     content: 'Пожаловаться'
                                 },
@@ -18,13 +19,23 @@ block('complaint')(
                                 {
                                     block: 'input',
                                     name: 'complaint',
-                                    mods: {theme: 'islands', size: 'm'},
+                                    mods: {
+                                        theme: 'islands',
+                                        size: 'm'
+                                    },
                                     placeholder: 'Комментарий'
                                 },
                                 {
                                     block: 'button',
-                                    mix: {block: 'complaint', elem: 'send-button', js: true},
-                                    mods: {theme: 'islands', size: 'l'},
+                                    mix: {
+                                        block: 'complaint',
+                                        elem: 'send-button',
+                                        js: true
+                                    },
+                                    mods: {
+                                        theme: 'islands',
+                                        size: 'l'
+                                    },
                                     text: 'Отправить'
                                 }
                             ]
