@@ -1,0 +1,22 @@
+block('complaint-button').js()(true);
+
+block('complaint-button')(
+    content()(function() {
+        return [
+            {
+                block: 'complaint-button',
+                elem: 'show-popup-button',
+                js: true,
+                content: {
+                    block: 'button',
+                    mods: { theme: 'islands', size: 'l' },
+                    text: 'Пожаловаться'
+                }
+            },
+            {
+                block: 'complaint',
+                complaints: this.ctx.complaints
+            }
+        ];
+    })
+);

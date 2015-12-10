@@ -1,7 +1,7 @@
 ({
     shouldDeps: [
         {
-            block: 'complaint'
+            block: 'complaint-button'
         }
     ]
 })

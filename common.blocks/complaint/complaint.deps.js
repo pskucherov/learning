@@ -14,6 +14,13 @@
         {
             block: 'input',
             mods: { theme: 'islands', size: 'm' }
+        },
+        {
+            block : 'spin',
+            tech: 'bemhtml',
+            mods : {
+                theme: 'islands', size: 'xl', visible: true
+            }
         }
     ]
 })

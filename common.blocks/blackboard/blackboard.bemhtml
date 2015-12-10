@@ -15,7 +15,30 @@ block('blackboard')(
                 elem: 'bottom'
             },
             {
-                block: 'complaint'
+                block: 'complaint-button',
+                complaints: [
+                    {
+                        block: 'checkbox',
+                        mods: { theme: 'islands', size: 'm' },
+                        name: 'complaint',
+                        val: '1',
+                        text: 'Вопрос поставлен некорректно'
+                    },
+                    {
+                        block: 'checkbox',
+                        mods: { theme: 'islands', size: 'm' },
+                        name: 'complaint',
+                        val: '2',
+                        text: 'В ответе ошибка'
+                    },
+                    {
+                        block: 'checkbox',
+                        mods: { theme: 'islands', size: 'm' },
+                        name: 'complaint',
+                        val: '3',
+                        text: 'Класс не соответствует вопросу'
+                    }
+                ]
             }
         ];
     })

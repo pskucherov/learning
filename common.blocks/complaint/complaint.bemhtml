@@ -4,60 +4,47 @@ block('complaint')(
     content()(function() {
         return [
             {
-                block: 'button',
-                mix: { block: 'complaint', elem: 'button' },
-                mods : { theme : 'islands', size : 'l' },
-                text: 'Пожаловаться'
-            },
-            {
                 block: 'modal',
-                mix: {
-                    block: 'complaint',
-                    elem: 'popup',
-                    js: true
-                },
+                mix: [
+                    {
+                        block: 'complaint',
+                        js: {
+                            complaints: [
+                                {
+                                    elem: 'title',
+                                    content: 'Пожаловаться'
+                                },
+                                this.ctx.complaints,
+                                {
+                                    block: 'input',
+                                    name: 'complaint',
+                                    mods: {theme: 'islands', size: 'm'},
+                                    placeholder: 'Комментарий'
+                                },
+                                {
+                                    block: 'button',
+                                    mix: {block: 'complaint', elem: 'send-button', js: true},
+                                    mods: {theme: 'islands', size: 'l'},
+                                    text: 'Отправить'
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        block: 'complaint',
+                        elem: 'popup'
+                    }
+                ],
                 mods: {
                     autoclosable: true,
                     theme: 'islands'
                 },
-                content: [
-                    {
-                        elem: 'title',
-                        content: 'Пожаловаться'
-                    },
-                    {
-                        block: 'checkbox',
-                        mods: { theme: 'islands', size: 'm' },
-                        name: 'name1',
-                        val: '1',
-                        text: 'Вопрос поставлен некорректно'
-                    },
-                    {
-                        block: 'checkbox',
-                        mods: { theme: 'islands', size: 'm' },
-                        name: 'name1',
-                        val: '2',
-                        text: 'В ответе ошибка'
-                    },
-                    {
-                        block: 'checkbox',
-                        mods: { theme: 'islands', size: 'm' },
-                        name: 'name1',
-                        val: '3',
-                        text: 'Класс не соответствует вопросу'
-                    },
-                    {
-                        block: 'input',
-                        mods: { theme: 'islands', size: 'm' },
-                        placeholder: 'Комментарий'
-                    },
-                    {
-                        block: 'button',
-                        mix: { block: 'complaint', elem: 'send-button' },
-                        mods : { theme : 'islands', size : 'l' },
-                        text: 'Отправить'
+                content: {
+                    block: 'spin',
+                    mods: {
+                        theme: 'islands', size: 'xl', visible: true
                     }
-                ]
+                }
             }
         ];
     })
