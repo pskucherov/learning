@@ -11,32 +11,43 @@ block('complaint')(
                         js: {
                             complaints: [
                                 {
-                                    block: 'complaint',
-                                    elem: 'title',
-                                    content: 'Пожаловаться'
-                                },
-                                this.ctx.complaints,
-                                {
-                                    block: 'input',
-                                    name: 'complaint',
-                                    mods: {
-                                        theme: 'islands',
-                                        size: 'm'
+                                    tag: 'form',
+                                    attrs: {
+                                        id: 'form-complaint-send',
+                                        action: '/ajax/complaint-send',
+                                        method: 'post'
                                     },
-                                    placeholder: 'Комментарий'
-                                },
-                                {
-                                    block: 'button',
-                                    mix: {
-                                        block: 'complaint',
-                                        elem: 'send-button',
-                                        js: true
-                                    },
-                                    mods: {
-                                        theme: 'islands',
-                                        size: 'l'
-                                    },
-                                    text: 'Отправить'
+                                    content: [
+                                        {
+                                            block: 'modal',
+                                            elem: 'title',
+                                            content: 'Пожаловаться'
+                                        },
+                                        this.ctx.complaints,
+                                        {
+                                            block: 'input',
+                                            name: 'complaint',
+                                            mods: {
+                                                theme: 'islands',
+                                                size: 'm'
+                                            },
+                                            placeholder: 'Комментарий'
+                                        },
+                                        {
+                                            block: 'button',
+                                            mix: {
+                                                block: 'complaint',
+                                                elem: 'send-button',
+                                                js: true
+                                            },
+                                            mods: {
+                                                type: 'submit',
+                                                theme: 'islands',
+                                                size: 'l'
+                                            },
+                                            text: 'Отправить'
+                                        }
+                                    ]
                                 }
                             ]
                         }

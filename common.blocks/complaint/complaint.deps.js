@@ -21,6 +21,14 @@
             mods : {
                 theme: 'islands', size: 'xl', visible: true
             }
+        },
+        {
+            block: 'button',
+            mods: {
+                type: 'submit',
+                theme: 'islands',
+                size: 'l'
+            }
         }
     ]
 })
