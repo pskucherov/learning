@@ -4,19 +4,19 @@ var express = require('express'),
     fs = require('fs'),
     vk = require('../controllers/vk'),
     User = require('../controllers/User'),
+    Complaints = require('../controllers/Complaints'),
+    BrainTests = require('../controllers/BrainTests'),
     _ = require('lodash'),
     settings = require('../settings'),
-    cookieName = settings.vk.cookieName,
-    userAuthMethod = function(req, res, next) {
-        res.appId = settings.vk.appId;
-        res.user = new User(req.models.users, { sid: req.cookies[cookieName] }, next);
-    };
+    cookieName = settings.vk.cookieName;
 
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
  */
-router.get(/.*/, userAuthMethod);
-router.post(/.*/, userAuthMethod);
+router.all(/.*/, function(req, res, next) {
+    res.appId = settings.vk.appId;
+    res.user = new User(req.models.users, { sid: req.cookies[cookieName] }, next);
+});
 
 /**
  * Удаляем куку и редиректим на главную.
@@ -36,15 +36,24 @@ router.post(/^\/ajax\/complaint-send\/?$/, function(req, res, next) {
 
     res.html = '0';
 
-    var params = JSON.parse(req.body.complaintJson);
+    var p = JSON.parse(req.body.complaintJson);
 
-    if (!res.user.isAuth || _.isEmpty(params)) {
+    if (!res.user.isAuth || _.isEmpty(p)) {
         next();
         return;
     }
 
     res.html = '1';
-    res.queryParams = params;
+
+    switch(p.type) {
+
+        // Жалоба на вопросы в s-brain
+        case 1:
+            BrainTests.incQuestionComplaints(req.models['brain-tests'], p.qId);
+            Complaints.createComplaint(req.models.complaints, 'brain-tests', p.qId, p.complaint, p.comment, res.user.id);
+            break;
+
+    }
 
     next();
 

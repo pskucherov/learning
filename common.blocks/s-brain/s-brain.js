@@ -21,6 +21,8 @@ modules.define(
                             return;
                         }
 
+                        this.emit('s-brain:new-question', data.id);
+
                         this
                             ._setTitle(data.subj.name) // + ', ' + data.class + ' класс')
                             ._setQuestionId(data.id)

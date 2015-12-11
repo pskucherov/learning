@@ -79,32 +79,10 @@ var context = VM.createContext({
     Vow: Vow
 });
 
-/**
- * Страница обработки жалобы
- */
-routes.post(/^\/ajax\/complaint-send\/?$/, function(req, res, next) {
-    if (res.html === '0') {
-        next();
-    }
-
-    var p = res.queryParams;
-
-    switch(res.queryParams.type) {
-
-        // Жалоба на вопросы в s-brain
-        case 1:
-            BrainTests.incQuestionComplaints(req.models['brain-tests'], res.queryParams.qId);
-            Complaints.createComplaint(req.models.complaints, 'brain-tests', p.qId, p.complaint, p.comment, res.user.id);
-            break;
-
-    }
-
-    next();
-});
-
 app.use(routes, function(req, res) {
 
     res.searchObj = url.parse(req.url, true).query;
+    res.user || (res.user = {});
 
     var content;
 
