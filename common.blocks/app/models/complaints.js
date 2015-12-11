@@ -33,7 +33,9 @@ module.exports = function (orm, db) {
         }
 
     }, {
-        timestamp: true
+        timestamp: {
+            modifiedProperty: false
+        }
     });
 
 };
