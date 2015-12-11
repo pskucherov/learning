@@ -48,6 +48,12 @@ module.exports = function (orm, db) {
             rightanswernum: {
                 type: 'integer',
                 size: 2
+            },
+
+            complaints: {
+                type: 'integer',
+                size: 2,
+                defaultValue: 0
             }
         });
 

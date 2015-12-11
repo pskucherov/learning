@@ -6,16 +6,17 @@ var express = require('express'),
     User = require('../controllers/User'),
     _ = require('lodash'),
     settings = require('../settings'),
-    cookieName = settings.vk.cookieName;
-
+    cookieName = settings.vk.cookieName,
+    userAuthMethod = function(req, res, next) {
+        res.appId = settings.vk.appId;
+        res.user = new User(req.models.users, { sid: req.cookies[cookieName] }, next);
+    };
 
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
  */
-router.get(/.*/, function(req, res, next) {
-    res.appId = settings.vk.appId;
-    res.user = new User(req.models.users, { sid: req.cookies[cookieName] }, next);
-});
+router.get(/.*/, userAuthMethod);
+router.post(/.*/, userAuthMethod);
 
 /**
  * Удаляем куку и редиректим на главную.
@@ -33,13 +34,17 @@ router.get(/^\/logout\/?$/, function(req, res, next) {
  */
 router.post(/^\/ajax\/complaint-send\/?$/, function(req, res, next) {
 
-    res.html = '1';
+    res.html = '0';
 
     var params = JSON.parse(req.body.complaintJson);
 
-    if (params) {
-        console.log(params);
+    if (!res.user.isAuth || _.isEmpty(params)) {
+        next();
+        return;
     }
+
+    res.html = '1';
+    res.queryParams = params;
 
     next();
 

@@ -26,7 +26,7 @@ block('complaint')(
                                         this.ctx.complaints,
                                         {
                                             block: 'input',
-                                            name: 'complaint',
+                                            name: 'comment',
                                             mods: {
                                                 theme: 'islands',
                                                 size: 'm'

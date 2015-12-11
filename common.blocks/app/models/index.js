@@ -4,7 +4,8 @@
 var models = [
         'users',
         'pagesname',
-        'subjects'
+        'subjects',
+        'complaints'
     ];
 
 var orm = require('orm'),

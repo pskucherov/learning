@@ -40,22 +40,27 @@ modules.define(
 
                 var form = $('#form-complaint-send'),
                     formContent = form.serializeArray(),
-                    actionUrl = form.attr('action');
+                    actionUrl = form.attr('action'),
+                    preparedFormContent;
 
                 if (_.isEmpty(formContent) || (formContent.length === 1 && !formContent[0].value)) {
                     return;
                 }
 
                 for (var k in formContent) {
-                    if (formContent[k].name === 'complaint' && formContent[k].value === '') {
+                    if (formContent[k].value === '') {
                         delete formContent[k];
-                        break;
                     }
                 }
 
-                formContent.push({ qId: this.idToSend });
-                
-                var ajaxValsStringify = JSON.stringify(formContent);
+                formContent.push(
+                    { qId: this.idToSend },
+                    { type: 1 }
+                );
+
+                preparedFormContent = this._prepareContent(formContent);
+
+                var ajaxValsStringify = JSON.stringify(preparedFormContent);
 
                 this
                     .setSpin()
@@ -63,6 +68,35 @@ modules.define(
                     ._sendForm(ajaxValsStringify, actionUrl);
 
                 return this;
+            },
+
+            /**
+             * Подготовить данные для отправки
+             *
+             * @param {Object[]} formContent
+             * @returns {*}
+             * @private
+             */
+            _prepareContent: function(formContent) {
+                var preparedFormContent = {};
+
+                _.forEach(formContent, function(item) {
+                    if (_.isEmpty(item)) {
+                        return;
+                    }
+
+                    if (item.name && item.value) {
+                        preparedFormContent[item.name]
+                            ? preparedFormContent[item.name] += ',' + item.value
+                            : preparedFormContent[item.name] = item.value;
+                    } else {
+                        for (var k in item) {
+                            preparedFormContent[k] = item[k];
+                        }
+                    }
+                });
+
+                return preparedFormContent;
             },
 
             /**
@@ -74,13 +108,14 @@ modules.define(
              */
             _sendForm: function(ajaxValsStringify, actionUrl) {
 
+                // TODO: переписать на WS
                 $.post(actionUrl, { complaintJson: ajaxValsStringify }, function (response) {
                     this.setContent(BEMHTML.apply({
                         block: 'complaint',
                         elem: 'answer',
                         content: 'Жалоба отправлена<br><br>Рассмотрим её в ближайшее время<br><br>Спасибо за обращение'
                     }));
-                }.bind(this));
+                }.bind(this), 'html');
 
             },
 

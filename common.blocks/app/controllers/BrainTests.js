@@ -44,6 +44,40 @@ BrainTests.getRandomQuestionForUser = function(BTestsModel, userId, classNum) {
 };
 
 /**
+ * Инкриментирует количество жалоб
+ *
+ * @param BTestsModel
+ * @param {Number} qId - id вопроса
+ *
+ * @returns {Promise}
+ */
+BrainTests.incQuestionComplaints = function(BTestsModel, qId) {
+    var deferred = vow.defer();
+
+    BTestsModel.find({ id: qId }).limit(1).run(function (err, data) {
+
+        if (err) throw err;
+
+        if (_.isEmpty(data)) {
+            deferred.reject(false);
+        } else {
+            data[0].complaints += 1;
+
+            data[0].save(function(err) {
+                if (err) throw err;
+            });
+
+            deferred.resolve(true);
+        }
+
+    });
+
+    return deferred.promise();
+};
+
+
+
+/**
  * Создать запись в таблице об ответе пользователя
  *
  * @param BAnswersModel

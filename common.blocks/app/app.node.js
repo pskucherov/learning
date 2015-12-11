@@ -18,6 +18,7 @@ var fs = require('fs'),
 
     User = require('./controllers/User'),
     BrainTests = require('./controllers/BrainTests'),
+    Complaints = require('./controllers/Complaints'),
 
     settings = require('./settings'),
 
@@ -76,6 +77,29 @@ app.use(redirects);
 var context = VM.createContext({
     console: console,
     Vow: Vow
+});
+
+/**
+ * Страница обработки жалобы
+ */
+routes.post(/^\/ajax\/complaint-send\/?$/, function(req, res, next) {
+    if (res.html === '0') {
+        next();
+    }
+
+    var p = res.queryParams;
+
+    switch(res.queryParams.type) {
+
+        // Жалоба на вопросы в s-brain
+        case 1:
+            BrainTests.incQuestionComplaints(req.models['brain-tests'], res.queryParams.qId);
+            Complaints.createComplaint(req.models.complaints, 'brain-tests', p.qId, p.complaint, p.comment, res.user.id);
+            break;
+
+    }
+
+    next();
 });
 
 app.use(routes, function(req, res) {
