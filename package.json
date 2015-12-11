@@ -10,6 +10,7 @@
     "email": "php_prog@mail.ru"
   },
   "dependencies": {
+    "body-parser": "^1.14.1",
     "chai": "^3.4.0",
     "chai-as-promised": "^5.1.0",
     "cookie-parser": "^1.4.0",

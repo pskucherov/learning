@@ -10,8 +10,22 @@ modules.define(
 
                     this.modal = this.findBlockInside('modal');
                     BEMDOM.blocks['complaint-button'].on('complaint-button:click', this._setComplaint, this);
+                    BEMDOM.blocks['s-brain'].on('s-brain:new-question', this._setQuestionId, this);
 
                 }
+            },
+
+            /**
+             * Сохранить Id вопроса, который надо отправить на сервер для понимания,
+             * на что жалуются.
+             *
+             * @param e
+             * @param {Number} qId
+             * @private
+             */
+            _setQuestionId: function(e, qId) {
+                this.idToSend = qId;
+                return this;
             },
 
             /**
@@ -24,18 +38,29 @@ modules.define(
              */
             _onSendButtonClick: function(e) {
 
-                var formContent = $('#form-complaint-send').serializeArray();
+                var form = $('#form-complaint-send'),
+                    formContent = form.serializeArray(),
+                    actionUrl = form.attr('action');
 
                 if (_.isEmpty(formContent) || (formContent.length === 1 && !formContent[0].value)) {
                     return;
                 }
 
+                for (var k in formContent) {
+                    if (formContent[k].name === 'complaint' && formContent[k].value === '') {
+                        delete formContent[k];
+                        break;
+                    }
+                }
+
+                formContent.push({ qId: this.idToSend });
+                
                 var ajaxValsStringify = JSON.stringify(formContent);
 
                 this
                     .setSpin()
                     .emit('complaint:sended')
-                    ._sendForm(ajaxValsStringify);
+                    ._sendForm(ajaxValsStringify, actionUrl);
 
                 return this;
             },
@@ -44,25 +69,18 @@ modules.define(
              * Отправляем данные формы аяксом
              *
              * @param {JSON.string} ajaxValsStringify
+             * @param {String} actionUrl
              * @private
              */
-            _sendForm: function(ajaxValsStringify) {
+            _sendForm: function(ajaxValsStringify, actionUrl) {
 
-                $.ajax({
-                    url: $('#form-complaint-send').attr('action'),
-                    type: 'post',
-                    data: ajaxValsStringify,
-                    success: function (response) {
-                        this.setContent(BEMHTML.apply({
-                            block: 'complaint',
-                            elem: 'answer',
-                            content: 'Жалоба отправлена<br><br>Рассмотрим её в ближайшее время<br><br>Спасибо за обращение'
-                        }));
-                    }.bind(this),
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);
-                    }
-                });
+                $.post(actionUrl, { complaintJson: ajaxValsStringify }, function (response) {
+                    this.setContent(BEMHTML.apply({
+                        block: 'complaint',
+                        elem: 'answer',
+                        content: 'Жалоба отправлена<br><br>Рассмотрим её в ближайшее время<br><br>Спасибо за обращение'
+                    }));
+                }.bind(this));
 
             },
 

@@ -9,7 +9,7 @@ block('complaint-button')(
                 js: true,
                 content: {
                     block: 'button',
-                    mods: { theme: 'islands', size: 'l' },
+                    mods: { theme: 'islands', size: 'l', disabled: true },
                     text: 'Пожаловаться'
                 }
             },

@@ -9,13 +9,20 @@ modules.define(
                 js: function() {
                     //BEMDOM.blocks['complaint'].on('complaint:sended', this._onComplaintSended, this);
                     BEMDOM.blocks['complaint'].on('complaint:sended', this._onComplaintSended, this);
+                    BEMDOM.blocks['s-brain'].on('s-brain:new-question', this._onGetNewQuestion, this);
+
                 }
             },
 
             _onComplaintSended: function() {
                 this.showPopUpButton || (this.showPopUpButton = this.findBlockInside(this.elem('show-popup-button'), 'button'));
                 this.showPopUpButton.setMod('disabled', true);
+                return this;
+            },
 
+            _onGetNewQuestion: function() {
+                this.showPopUpButton || (this.showPopUpButton = this.findBlockInside(this.elem('show-popup-button'), 'button'));
+                this.showPopUpButton.delMod('disabled');
                 return this;
             },
 

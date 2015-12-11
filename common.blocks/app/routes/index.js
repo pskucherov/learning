@@ -28,6 +28,24 @@ router.get(/^\/logout\/?$/, function(req, res, next) {
     res.redirect('/');
 });
 
+/**
+ * Страница обработки жалобы
+ */
+router.post(/^\/ajax\/complaint-send\/?$/, function(req, res, next) {
+
+    res.html = '1';
+
+    var params = JSON.parse(req.body.complaintJson);
+
+    if (params) {
+        console.log(params);
+    }
+
+    next();
+
+});
+
+
 router.get(/^\/verify\/?$/, function(req, res, next) {
 
     var protocol = req.headers.host.indexOf('.com') === -1 ? 'http' : 'https';
@@ -156,6 +174,7 @@ router.get(/^\/?$/, function(req, res, next) {
 
     next();
 });
+
 
 
 module.exports = router;

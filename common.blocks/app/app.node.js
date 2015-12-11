@@ -38,18 +38,20 @@ var fs = require('fs'),
 
     _ = require('lodash'),
 
+    bodyParser = require("body-parser"),
+
     server;
 
 // html/css/js кэшируем на день, картинки на год.
 //app.use(express.static(pathToBundle, { maxAge: 86400000 }));
 
 app.use(express.static(PATH.join('.', 'desktop.bundles'), { extensions: ['js', 'css'], maxAge: 86400000 }));
-
 app.use(express.static(pathToStatic, { maxAge: 3153600000000 }));
 
 app.use(myCookieParser);
-
 app.use(session({ secret: _SECRET, store: mySession }));
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 sessionSockets = new SessionSockets(io, mySession, myCookieParser);
