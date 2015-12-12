@@ -22,28 +22,36 @@ block landing, elem status, default: {
         var male = item[this.ctx.isFemale ? 'f' : 'm'];
 
         return {
-            block: 'landing',
-            elem: 'status',
-            elemMods: { num: k },
-            content: [
-                {
-                    block: 'image',
-                    mix: { block: 'landing', elem: 'thumb' },
-                    url: male.img
-                },
-                { tag: 'br' },
-                {
-                    elem: 'progress',
-                    val: this.ctx.progress !== 0 ? 2 : item.defVal
-                },
-                male.name,
-                {
-                    block: 'landing',
-                    elem: 'status-descr',
-                    num: k,
-                    content: item.descr
-                }
-            ]
+            block: 'link',
+            mods: {ajax: 'yes'},
+            url: item.url,
+            content: {
+                block: 'landing',
+                elem: 'status',
+                elemMods: {num: k},
+                content: [
+                    {
+                        block: 'image',
+                        mix: {
+                            block: 'landing',
+                            elem: 'thumb'
+                        },
+                        url: male.img
+                    },
+                    {tag: 'br'},
+                    {
+                        elem: 'progress',
+                        val: this.ctx.progress !== 0 ? 2 : item.defVal
+                    },
+                    male.name,
+                    {
+                        block: 'landing',
+                        elem: 'status-descr',
+                        num: k,
+                        content: item.descr
+                    }
+                ]
+            }
         };
     }.bind(this)));
 
@@ -74,7 +82,7 @@ block landing, elem progress, content: {
         mods: {
             theme: 'islands',
             color: this.ctx.val < 25 ? 'red'
-                : this.ctx.val >= 75 ? 'green' : ''
+                : this.ctx.val >= 75 ? 'green' : 'yellow'
         },
         val: this.ctx.val
     };

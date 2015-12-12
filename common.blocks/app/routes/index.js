@@ -21,7 +21,7 @@ router.all(/.*/, function(req, res, next) {
 /**
  * Удаляем куку и редиректим на главную.
  */
-router.get(/^\/logout\/?$/, function(req, res, next) {
+router.get(/^\/logout\/?$/, function(req, res) {
     res.clearCookie(cookieName, { path: '/', domain: req.headers.host });
     res.clearCookie(cookieName, { path: '/', domain: '.' + req.headers.host });
     res.clearCookie(cookieName, { path: '/', domain: req.headers.hostname });
@@ -160,27 +160,6 @@ router.get(/^\/?$/, function(req, res, next) {
     var page = 'index',
         pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
 
-    /*
-            User.getByVKId(req.models.users, 108239190).then(function (u) {
-
-            console.log(u[0].access_token);
-
-            vk.setToken(u[0].access_token);
-            vk.setSecureRequests(true);
-
-            // Запрашиваем данные пользователя, чтобы сохранить их в БД (если изменились).
-            vk.request('account.getAppPermissions', {},
-
-                function (userFields) {
-
-                    console.log('here');
-                    console.log(JSON.stringify(userFields, null, 4));
-
-                });
-
-            });
-    */
-
     res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
 
     res.pageName = page;
@@ -189,6 +168,27 @@ router.get(/^\/?$/, function(req, res, next) {
     next();
 });
 
+/**
+ * Оратор
+ */
+router.get(/^\/speaker\/?$/, function(req, res, next) {
+
+    if (!res.user || !res.user.isAuth) {
+        res.redirect('/');
+        res.end();
+        return;
+    }
+
+    var page = 'index',
+        pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
+
+    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+
+    res.pageName = 's-speaker';
+    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
+
+    next();
+});
 
 
 module.exports = router;

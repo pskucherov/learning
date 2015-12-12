@@ -27,6 +27,8 @@ modules.define(
              * @private
              */
             _setPopupContent: function(data) {
+                return this;
+
                 _.forEach(data, function(item, num) {
                     var popup = this.popups[num];
 

@@ -13,11 +13,21 @@ BEMPRIV.decl('statuses', {
                 name: 's-brain',
                 m: { name: 'Умник', img: p + 'borschik:include:./botan15_b.png' },
                 f: { name: 'Умничка', img: p + 'borschik:include:./botan15_b.png' },
+                url: '/',
                 descr: 'Необходимо использовать свои знания для того, чтобы отвечать на вопросы, ' +
                     'распутывать головоломки и решать задачи. ' +
                     'Чем больше ты дашь правильных ответов, тем выше твой рейтинг.',
                 defVal: 60
             },
+            {
+                name: 's-speaker',
+                m: { name: 'Оратор', img: p + 'borschik:include:./boltun_b.png' },
+                f: { name: 'Оратор', img: p + 'borschik:include:./boltun_b.png' },
+                url: '/speaker',
+                descr: 'Всё просто — необходимо знать изучать стихотворения, уметь быстро и внятно читать.' +
+                    'Чем больше вы читаете, изучаете и пересказываете, тем выше рейтинг.',
+                defVal: 76
+            }
             /* {
                 name: 's-cool',
                 m: { name: 'Крутой', img: p + 'borschik:include:./gangster14_b.png' },
@@ -27,14 +37,7 @@ BEMPRIV.decl('statuses', {
                     'Чем больше у тебя будет оценок и внимания, тем выше твой рейтинг.',
                 defVal: 76
             },
-            {
-                name: 's-winner',
-                m: { name: 'Победитель', img: p + 'borschik:include:./boltun_b.png' },
-                f: { name: 'Победительница', img: p + 'borschik:include:./boltun_b.png' },
-                descr: 'Всё просто — ты должен побеждать. На сайте представлено множество игр и соревнований, ' +
-                    'в котором нужно быть первым, быть лучшим, чем больше у тебя будет побед, тем выше твой рейтинг.',
-                defVal: 24
-            },
+
             {
                 name: 's-warden',
                 m: { name: 'Староста', img: p + 'borschik:include:./starosta4_b.png' },
