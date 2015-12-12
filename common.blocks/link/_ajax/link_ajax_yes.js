@@ -1,13 +1,13 @@
 modules.define(
     'link',
-    ['i-bem__dom', 'dom', 'jquery'],
-    function(provide, Link, dom, $) {
+    ['i-bem__dom', 'dom', 'jquery', 'BEMHTML'],
+    function(provide, Link, dom, $, BEMHTML) {
 
         provide(Link.decl({ block: 'link', modName: 'ajax', modVal: 'yes' }, {
 
             js: {
                 inited: function () {
-
+                    this.waitRequest = false;
                 }
             },
             _onPointerClick : function(e) {
@@ -18,11 +18,23 @@ modules.define(
 
                 e.preventDefault();
 
+                if (this.waitRequest) {
+                    return;
+                }
 
                 if (this.hasMod('ajax', 'yes')) {
 
+                    this.waitRequest = true;
+                    Link.blocks['page'].setContent(BEMHTML.apply({
+                        block: 'spin',
+                        mods: {
+                            theme: 'islands', size: 'xl', visible: true
+                        }
+                    }));
+
                     this._get()
                         .success(function(data) {
+                            this.waitRequest = false;
                             history.pushState(data, '', this._url);
                             Link.blocks['page'].setContent(data);
                         }.bind(this))
@@ -41,6 +53,7 @@ modules.define(
 
             _onError: function() {
 
+                this.waitRequest = false;
                 console.log('ajax error');
                 window.location.href = this._url;
 

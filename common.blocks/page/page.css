@@ -24,6 +24,11 @@
     height: 100%;
 }
 
+.page__content
+{
+    width: 100%;
+}
+
 .page_type_index
 {
     overflow: hidden;
@@ -33,6 +38,13 @@
     outline: none;
 }
 
-::-moz-focus-inner {
+::-moz-focus-inner
+{
     border: 0;
+}
+
+.page__content .spin
+{
+    display: block;
+    margin: 150px auto;
 }
