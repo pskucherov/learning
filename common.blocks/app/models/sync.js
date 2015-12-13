@@ -331,6 +331,93 @@ models(function (err, db) {
                     });
 
 
+                    db.models['poems'].find({id: 1}).limit(1).run(function (err, poems) {
+                        if (_.isEmpty(poems)) {
+                            db.models['poems'].create([
+                                {
+                                    id: 1,
+                                    name: 'Осень',
+                                    author: 'С. А. Есенин',
+                                    class: 0,
+                                    userId: 1
+                                }
+                            ], function (err) {
+                                err && console.log("\n\n\ err ", err);
+                            });
+
+                            db.models['poem-text'].create([
+                                {
+                                    id: 1,
+                                    line_num: 1,
+                                    line: 'Тихо в чаще можжевеля по обрыву.',
+                                    imageUrl: 'https://im2-tub-ru.yandex.net/i?id=c8202e77d14c1983c9ea116b1b679987&n=13',
+                                    nextEmpLine: false,
+                                    poem_id: 1
+                                },
+                                {
+                                    id: 2,
+                                    line_num: 2,
+                                    line: 'Осень, рыжая кобыла, чешет гриву.',
+                                    imageUrl: 'https://avatars.yandex.net/get-images-search/keWT4CGsPPPhXgZ-qR_9TQ/preview',
+                                    nextEmpLine: true,
+                                    poem_id: 1
+                                },
+                                {
+                                    id: 3,
+                                    line_num: 3,
+                                    line: 'Над речным покровом берегов',
+                                    imageUrl: 'https://im1-tub-ru.yandex.net/i?id=f87931288ac819a4bfadfd1c270548bc&n=13',
+                                    nextEmpLine: false,
+                                    poem_id: 1
+                                },
+                                {
+                                    id: 4,
+                                    line_num: 4,
+                                    line: 'Слышен синий лязг ее подков.',
+                                    imageUrl: 'http://www.stihi.ru/pics/2013/09/13/820.jpg',
+                                    nextEmpLine: true,
+                                    poem_id: 1
+                                },
+
+
+                                {
+                                    id: 5,
+                                    line_num: 5,
+                                    line: 'Схимник-ветер шагом осторожным',
+                                    imageUrl: 'http://rilmark.ru/catalog/20141005/20141005:965-167-341/855f1deaf55e4daf14e65655ae2feafe-download.jpg',
+                                    nextEmpLine: false,
+                                    poem_id: 1
+                                },
+                                {
+                                    id: 6,
+                                    line_num: 6,
+                                    line: 'Мнет листву по выступам дорожным',
+                                    imageUrl: 'http://cs403626.vk.me/v403626094/296c/vfYY72ekDP4.jpg',
+                                    nextEmpLine: true,
+                                    poem_id: 1
+                                },
+                                {
+                                    id: 7,
+                                    line_num: 7,
+                                    line: 'И целует на рябиновом кусту',
+                                    imageUrl: 'http://www.stihi.ru/pics/2013/10/23/6605.jpg',
+                                    nextEmpLine: false,
+                                    poem_id: 1
+                                },
+                                {
+                                    id: 8,
+                                    line_num: 8,
+                                    line: 'Язвы красные незримому Христу.',
+                                    imageUrl: 'http://www.supwom.ru/uploads/posts/2011-01/1294991868_7e71ca3e0b76f481174ce5baf49fd269_big.jpg',
+                                    nextEmpLine: false,
+                                    poem_id: 1
+                                }
+                            ], function (err) {
+                                err && console.log("\n\n\ err ", err);
+                            });
+                        }
+                    });
+
                 }
 
             });

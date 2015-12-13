@@ -9,6 +9,8 @@
 
         { block: 'index' },
         { block: 'verify' },
+        { block: 's-speaker' },
+
         { block: 'i-vow' },
         { block: 'i-utils' }
     ]
