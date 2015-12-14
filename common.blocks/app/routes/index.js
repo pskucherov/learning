@@ -187,7 +187,39 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
     res.pageName = 's-speaker';
     res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
 
-    next();
+
+
+    req.models['poems'].find({ id: 1 }).limit(1).run(function (err, poems) {
+        if (err) throw err;
+
+        console.log('here');
+        console.log(poems);
+
+        for (var k in poems[0].poem) {
+            console.log(poems[0].poem[k].line);
+        }
+
+        next();
+
+
+        if (_.isEmpty(poems)) {
+
+
+            req.models['poems-text'].find({ poem_id: poems[0].id }).order('id').all(function(err, poemsText) {
+                if (err) throw err;
+
+                console.log(poemsText);
+
+                next();
+
+            })
+
+
+        }
+
+    });
+
+
 });
 
 
