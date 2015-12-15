@@ -6,6 +6,7 @@ var express = require('express'),
     User = require('../controllers/User'),
     Complaints = require('../controllers/Complaints'),
     BrainTests = require('../controllers/BrainTests'),
+    Poems = require('../controllers/Poems'),
     _ = require('lodash'),
     settings = require('../settings'),
     cookieName = settings.vk.cookieName;
@@ -176,46 +177,18 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
         return;
     }
 
-    var page = 'index',
-        pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
-
-    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
-
     res.pageName = 's-speaker';
-    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
 
-
-
-    req.models['poems'].find({ id: 1 }).limit(1).run(function (err, poems) {
-        if (err) throw err;
-
-        console.log('here');
-        console.log(poems);
-
-        for (var k in poems[0].poem) {
-            console.log(poems[0].poem[k].line);
-        }
-
-        next();
-
-
-        if (_.isEmpty(poems)) {
-
-
-            req.models['poems-text'].find({ poem_id: poems[0].id }).order('id').all(function(err, poemsText) {
-                if (err) throw err;
-
-                console.log(poemsText);
-
-                next();
-
-            })
-
-
-        }
-
-    });
-
+    Poems.getPoemById(req.models['poems'], 1)
+        .then(function(poem) {
+            for (var k in poem.poem) {
+                console.log(poem.poem[k].line);
+            }
+            next();
+        })
+        .fail(function() {
+            next();
+        });
 
 });
 
