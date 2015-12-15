@@ -14,6 +14,13 @@ var express = require('express'),
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
  */
 router.all(/.*/, function(req, res, next) {
+    // Для всех страниц формируется единый css и js, т.к. это SPA
+    var page = 'index',
+        pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
+
+    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
+    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
+
     res.appId = settings.vk.appId;
     res.user = new User(req.models.users, { sid: req.cookies[cookieName] }, next);
 });
@@ -69,13 +76,9 @@ router.get(/^\/verify\/?$/, function(req, res, next) {
             //res.redirect('/');
             next();
         },
-        page = 'verify',
-        pathToBundle = PATH.join('../../../', 'desktop.bundles', 'index');
-
-    res.BEMHTML = require(PATH.join(pathToBundle, '_index.bemhtml.js')).BEMHTML;
+        page = 'verify';
 
     res.pageName = page;
-    res.priv = require(PATH.join(pathToBundle, '_index.priv.js'), 'utf-8');
 
     vk.requestServerToken(function(_o) {
 
@@ -157,13 +160,7 @@ router.get(/^\/tests\/?$/, function(req, res, next) {
  * Главная
  */
 router.get(/^\/?$/, function(req, res, next) {
-    var page = 'index',
-        pathToBundle = PATH.join('../../../', 'desktop.bundles', page);
-
-    res.BEMHTML = require(PATH.join(pathToBundle, '_' + page + '.bemhtml.js')).BEMHTML;
-
-    res.pageName = page;
-    res.priv = require(PATH.join(pathToBundle, '_' + page + '.priv.js'), 'utf-8');
+    res.pageName = 'index';
 
     next();
 });
