@@ -179,16 +179,7 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
 
     res.pageName = 's-speaker';
 
-    Poems.getPoemById(req.models['poems'], 1)
-        .then(function(poem) {
-            for (var k in poem.poem) {
-                console.log(poem.poem[k].line);
-            }
-            next();
-        })
-        .fail(function() {
-            next();
-        });
+    next();
 
 });
 

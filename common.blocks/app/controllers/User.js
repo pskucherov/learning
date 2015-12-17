@@ -213,6 +213,7 @@ User.getByVKId = function(userModel, vkid) {
 User.getById = function(userModel, id, fields) {
     var deferred = vow.defer();
 
+    // TODO: переписать на выборку нужных полей из БД
     fields = Utils.parseUserFields(fields);
 
     userModel.find({ id: id }).run(function(err, user) {

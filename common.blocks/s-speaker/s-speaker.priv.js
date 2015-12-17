@@ -4,7 +4,10 @@ BEMPRIV.decl('s-speaker', {
         this.js(true);
 
         this.content([
-            ''
+            {
+                block: 's-speaker',
+                elem: 'poem-text'
+            }
         ]);
 
     }

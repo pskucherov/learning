@@ -1,9 +1,9 @@
 modules.define(
     'page',
-    ['i-bem__dom', 'jquery', 'i-bem__dom'],
-    function(provide, Page, $, BEMDOM) {
+    ['i-bem__dom', 'jquery'],
+    function(provide, BEMDOM, $) {
 
-        provide(Page.decl('page', {
+        provide(BEMDOM.decl('page', {
 
         },
         {

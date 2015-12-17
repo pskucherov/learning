@@ -19,6 +19,7 @@ var fs = require('fs'),
     User = require('./controllers/User'),
     BrainTests = require('./controllers/BrainTests'),
     Complaints = require('./controllers/Complaints'),
+    Poems = require('./controllers/Poems'),
 
     settings = require('./settings'),
 
@@ -141,6 +142,22 @@ models(function (err, db) {
                 return;
             }
 
+
+
+            /* S-SPEAKER START */
+
+            socket.on('s-speaker:get-poem', function(poemId) {
+                Poems.getPoemById(db.models['poems'], poemId)
+                    .then(function(poem) {
+                        socket.emit('s-speaker:poem', poem);
+                    });
+            });
+
+            /* S-SPEAKER END */
+
+
+            /* BRAIN-TEST START */
+
             var cookie = {},
                 rating = {};
 
@@ -234,6 +251,9 @@ models(function (err, db) {
                     });
 
             }
+
+            /* BRAIN-TEST END */
+
 
         });
 
