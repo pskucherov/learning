@@ -46,6 +46,11 @@ module.exports = function (orm, db) {
                 size: 255,
                 defaultValue: ''
             },
+            'fts-tokens': {
+                type: 'text',
+                size: 4000,
+                defaultValue: ''
+            },
             nextEmpLine: {
                 type: 'boolean',
                 defaultValue: false

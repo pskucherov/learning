@@ -27,6 +27,7 @@
     "session.socket.io": "^0.2.1",
     "socket.io": "^1.3.7",
     "vksdk": "pskucherov/nodejs-vksdk#aabd6d14b7b",
+    "fts-bm25": "pskucherov/fts-js#0.0.2",
     "vow": "^0.4.11"
   },
   "devDependencies": {
