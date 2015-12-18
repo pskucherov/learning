@@ -1,6 +1,7 @@
 var path = require('path'),
     models = require(path.resolve('./common.blocks/app/models/index')),
-    _ = require('lodash');
+    _ = require('lodash'),
+    BM25 = require('fts-js');
 
 
 models(function (err, db) {
@@ -345,11 +346,23 @@ models(function (err, db) {
                                 err && console.log("\n\n\ err ", err);
                             });
 
+                            var lines = [
+                                'Тихо в чаще можжевеля по обрыву.',
+                                'Осень, рыжая кобыла, чешет гриву.',
+                                'Над речным покровом берегов',
+                                'Слышен синий лязг ее подков.',
+                                'Схимник-ветер шагом осторожным',
+                                'Мнет листву по выступам дорожным',
+                                'И целует на рябиновом кусту',
+                                'Язвы красные незримому Христу.'
+                            ];
+
                             db.models['poem-text'].create([
                                 {
                                     id: 1,
                                     line_num: 1,
-                                    line: 'Тихо в чаще можжевеля по обрыву.',
+                                    line: lines[0],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[0])),
                                     imageUrl: 'https://im2-tub-ru.yandex.net/i?id=c8202e77d14c1983c9ea116b1b679987&n=13',
                                     nextEmpLine: false,
                                     poem_id: 1
@@ -357,7 +370,8 @@ models(function (err, db) {
                                 {
                                     id: 2,
                                     line_num: 2,
-                                    line: 'Осень, рыжая кобыла, чешет гриву.',
+                                    line: lines[1],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[1])),
                                     imageUrl: 'https://avatars.yandex.net/get-images-search/keWT4CGsPPPhXgZ-qR_9TQ/preview',
                                     nextEmpLine: true,
                                     poem_id: 1
@@ -365,7 +379,8 @@ models(function (err, db) {
                                 {
                                     id: 3,
                                     line_num: 3,
-                                    line: 'Над речным покровом берегов',
+                                    line: lines[2],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[2])),
                                     imageUrl: 'https://im1-tub-ru.yandex.net/i?id=f87931288ac819a4bfadfd1c270548bc&n=13',
                                     nextEmpLine: false,
                                     poem_id: 1
@@ -373,7 +388,8 @@ models(function (err, db) {
                                 {
                                     id: 4,
                                     line_num: 4,
-                                    line: 'Слышен синий лязг ее подков.',
+                                    line: lines[3],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[3])),
                                     imageUrl: 'http://www.stihi.ru/pics/2013/09/13/820.jpg',
                                     nextEmpLine: true,
                                     poem_id: 1
@@ -383,7 +399,8 @@ models(function (err, db) {
                                 {
                                     id: 5,
                                     line_num: 5,
-                                    line: 'Схимник-ветер шагом осторожным',
+                                    line: lines[4],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[4])),
                                     imageUrl: 'http://rilmark.ru/catalog/20141005/20141005:965-167-341/855f1deaf55e4daf14e65655ae2feafe-download.jpg',
                                     nextEmpLine: false,
                                     poem_id: 1
@@ -391,7 +408,8 @@ models(function (err, db) {
                                 {
                                     id: 6,
                                     line_num: 6,
-                                    line: 'Мнет листву по выступам дорожным',
+                                    line: lines[5],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[5])),
                                     imageUrl: 'http://cs403626.vk.me/v403626094/296c/vfYY72ekDP4.jpg',
                                     nextEmpLine: true,
                                     poem_id: 1
@@ -399,7 +417,8 @@ models(function (err, db) {
                                 {
                                     id: 7,
                                     line_num: 7,
-                                    line: 'И целует на рябиновом кусту',
+                                    line: lines[6],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[6])),
                                     imageUrl: 'http://www.stihi.ru/pics/2013/10/23/6605.jpg',
                                     nextEmpLine: false,
                                     poem_id: 1
@@ -407,7 +426,8 @@ models(function (err, db) {
                                 {
                                     id: 8,
                                     line_num: 8,
-                                    line: 'Язвы красные незримому Христу.',
+                                    line: lines[7],
+                                    'fts-tokens': JSON.stringify(BM25.Tokenize(lines[7])),
                                     imageUrl: 'http://www.supwom.ru/uploads/posts/2011-01/1294991868_7e71ca3e0b76f481174ce5baf49fd269_big.jpg',
                                     nextEmpLine: false,
                                     poem_id: 1
