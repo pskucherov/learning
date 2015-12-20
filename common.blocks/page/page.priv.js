@@ -45,7 +45,8 @@ blocks['page'] = function (data) {
             scripts: [
                 {
                     elem: 'js',
-                    url: '/socket.io/socket.io.js',
+                    //url: '/socket.io/socket.io.js',
+                    url: 'https://cdn.socket.io/socket.io-1.2.0.js',
                     mix: {
                         block: 'page',
                         elem: 'script'
