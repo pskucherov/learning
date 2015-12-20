@@ -4,6 +4,8 @@ blocks['page'] = function (data) {
         return '404';
     }
 
+    var isLocalServer = data.req.headers.host.indexOf('.com') === -1;
+
     return data.isAjax ? BEMPRIV.create(data.pageName, data).json() :
         {
             block: 'page',
@@ -45,8 +47,9 @@ blocks['page'] = function (data) {
             scripts: [
                 {
                     elem: 'js',
-                    //url: '/socket.io/socket.io.js',
-                    url: 'https://cdn.socket.io/socket.io-1.2.0.js',
+                    url: isLocalServer
+                        ? '/socket.io/socket.io.js'
+                        : 'https://cdn.socket.io/socket.io-1.2.0.js',
                     mix: {
                         block: 'page',
                         elem: 'script'
@@ -64,7 +67,7 @@ blocks['page'] = function (data) {
                 // т.к. может не быть соединения.
                 {
                     elem: 'js',
-                    url: data.req.headers.host.indexOf('.com') === -1
+                    url: isLocalServer
                         ? '/js/jquery.min.js'
                         : 'https://yastatic.net/jquery/1.8.3/jquery.min.js',
                     mix: {

@@ -18,6 +18,9 @@
         },
         {
             block: 'rating'
+        },
+        {
+            block: 'i-speechkit'
         }
     ]
 })
