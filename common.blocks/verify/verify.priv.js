@@ -15,7 +15,7 @@ BEMPRIV.decl('verify', {
                 elem: 'js',
                 content: 'window.checkAuthInfo = true;' +
                     'window.authInfo = function() {' +
-                    "window.location.href = '/';" +
+                    "window.location.href = '" + (this.data.session.redirPage || '/') + "';" +
                     '};'
             },
             BEMPRIV.create('vk', this.data).json()

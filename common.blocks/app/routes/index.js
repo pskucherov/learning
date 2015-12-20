@@ -34,6 +34,7 @@ router.get(/^\/logout\/?$/, function(req, res) {
     res.clearCookie(cookieName, { path: '/', domain: '.' + req.headers.host });
     res.clearCookie(cookieName, { path: '/', domain: req.headers.hostname });
     res.clearCookie(cookieName, { path: '/', domain: '.' + req.headers.hostname });
+    req.session.redirPage = '/';
     res.redirect('/');
 });
 
@@ -162,7 +163,7 @@ router.get(/^\/tests\/?$/, function(req, res, next) {
  */
 router.get(/^\/?$/, function(req, res, next) {
     res.pageName = 'index';
-
+    req.session.redirPage = '/';
     next();
 });
 
@@ -172,12 +173,11 @@ router.get(/^\/?$/, function(req, res, next) {
 router.get(/^\/speaker\/?$/, function(req, res, next) {
 
     if (!res.user || !res.user.isAuth) {
-        res.redirect('/');
-        res.end();
-        return;
+        res.pageName = 'index';
+        req.session.redirPage = '/speaker';
+    } else {
+        res.pageName = 's-speaker';
     }
-
-    res.pageName = 's-speaker';
 
     next();
 
