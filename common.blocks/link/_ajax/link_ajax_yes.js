@@ -36,7 +36,12 @@ modules.define(
                         .success(function(data) {
                             this.waitRequest = false;
                             history.pushState('', '', this._url);
-                            Link.blocks['page'].setContent(data);
+
+                            Link.blocks['page'].setContent(
+                                typeof data === 'string'
+                                    ? data
+                                    : BEMHTML.apply(data)
+                            );
                         }.bind(this))
                         .error(this._onError.bind(this));
 
@@ -46,7 +51,7 @@ modules.define(
             },
 
             _get: function() {
-                return $.get(this._url, { ajax: 'yes' }, null, { dataType: 'json' });
+                return $.get(this._url, { ajax: 'yes' }, { dataType: 'json' });
             },
 
             _onError: function() {

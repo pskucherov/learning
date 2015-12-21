@@ -107,7 +107,8 @@ app.use(routes, function(req, res) {
             req: req,
             res: res,
             isAuth: res.user.isAuth,
-            isFemale: res.user.sex == 1
+            isFemale: res.user.sex == 1,
+            isAjax: res.isAjax
         });
 
         if (res.isAjax) {
