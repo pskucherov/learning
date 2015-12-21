@@ -87,6 +87,8 @@ app.use(routes, function(req, res) {
 
     var content;
 
+    res.isAjax = res.searchObj && (res.searchObj.format === 'json' || res.searchObj.ajax === 'yes');
+
     if (res.html) {
         content = res.html;
     } else if (res.priv) {
@@ -108,7 +110,16 @@ app.use(routes, function(req, res) {
             isFemale: res.user.sex == 1
         });
 
-        content = res.BEMHTML.apply(content);
+        if (res.isAjax) {
+            res.set('Content-Type', 'application/json');
+        } else {
+            res.set('Content-Type', 'text/html');
+            content = res.BEMHTML.apply(content);
+        }
+
+        res.send(content);
+        content = '';
+
     }
 
     res.end(content);

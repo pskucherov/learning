@@ -78,7 +78,7 @@ function main(data) {
 blocks['i-global'] = function(data) {
     var searchObj = data.searchObj;
 
-    data.isAjax = searchObj && (searchObj.format === 'json' || searchObj.ajax === 'yes');
+    //data.isAjax = searchObj && (searchObj.format === 'json' || searchObj.ajax === 'yes');
 };
 
 exports.blocks = blocks;
