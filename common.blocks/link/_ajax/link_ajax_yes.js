@@ -46,9 +46,7 @@ modules.define(
             },
 
             _get: function() {
-
-                return $.get(this._url, { ajax: 'yes' });
-
+                return $.get(this._url, { ajax: 'yes' }, null, { dataType: 'html' });
             },
 
             _onError: function() {
