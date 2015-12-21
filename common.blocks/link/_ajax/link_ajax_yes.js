@@ -35,7 +35,7 @@ modules.define(
                     this._get()
                         .success(function(data) {
                             this.waitRequest = false;
-                            history.pushState(data, '', this._url);
+                            history.pushState('', '', this._url);
                             Link.blocks['page'].setContent(data);
                         }.bind(this))
                         .error(this._onError.bind(this));
