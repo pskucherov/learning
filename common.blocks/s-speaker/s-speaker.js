@@ -18,7 +18,15 @@ modules.define(
 
                         this.currentPoem = poem;
 
-                        BEMDOM.update(this.elem('poem-text'), BEMHTML.apply(
+                        BEMDOM.update(this.elem('poem-text'), BEMHTML.apply([
+                            {
+                                block: 's-speaker',
+                                elem: 'poem-title',
+                                content: poem.name
+                            },
+                            {
+                                tag: 'br'
+                            },
                             poem.poem.map(function(item) {
                                 var i = new Image;
 
@@ -39,8 +47,16 @@ modules.define(
                                         tag: 'br'
                                     } : ''
                                 ];
-                            }.bind(this))
-                        ));
+                            }.bind(this)),
+                            {
+                                tag: 'br'
+                            },
+                            {
+                                block: 's-speaker',
+                                elem: 'poem-author',
+                                content: poem.author
+                            }
+                        ]));
 
 
                         ya.speechkit.recognize({
