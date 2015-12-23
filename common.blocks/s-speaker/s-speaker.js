@@ -102,7 +102,7 @@ modules.define(
             _setImage: function(line) {
 
                 if (line === this.currentLine) {
-                    return;
+                    //return;
                 }
 
                 var v = this.elem('visualisation');
@@ -114,6 +114,7 @@ modules.define(
                     this.setMod(this.elem('line', 'num', (line-1)), 'selected', 'yes');
                 }
 
+                /*
                 if (!v.css('opacity')) {
                     v.css({
                         'background-image': 'url(' + this.currentPoem.poem[line].imageUrl + ')',
@@ -133,14 +134,15 @@ modules.define(
                         v.animate({opacity: 1}, 500);
                     }.bind(this));
                 }
+                */
 
                 return this;
             },
 
             _onPointerClick: function(e) {
-                var num = this.getMod($(e.currentTarget), 'num');
+                var num = +this.getMod($(e.currentTarget), 'num');
 
-                this._setImage(num);
+                this._setImage(num + 1);
 
                 return this;
             }
@@ -151,6 +153,9 @@ modules.define(
                 this
                     .liveBindTo('line', 'mouseover pointerclick', function (e) {
                         this._onPointerClick(e);
+                    })
+                    .liveBindTo('line', 'mouseout', function (e) {
+                        this.delMod(this.elem('line'), 'selected');
                     });
 
                 return false;

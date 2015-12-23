@@ -7,15 +7,15 @@ BEMPRIV.decl('s-speaker', {
             {
                 block: 's-speaker',
                 elem: 'poem-text'
-            },
-            {
+            }
+            /*,{
                 block: 's-speaker',
                 elem: 'visual-container',
                 content: {
                     block: 's-speaker',
                     elem: 'visualisation'
                 }
-            }
+            }*/
         ]);
 
     }
