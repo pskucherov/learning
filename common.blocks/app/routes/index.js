@@ -164,6 +164,8 @@ router.get(/^\/tests\/?$/, function(req, res, next) {
 router.get(/^\/?$/, function(req, res, next) {
     res.pageName = 'index';
     req.session.redirPage = '/';
+    req.session.pageName = 'index';
+
     next();
 });
 
@@ -178,6 +180,8 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
     } else {
         res.pageName = 's-speaker';
     }
+
+    req.session.pageName = 's-speaker';
 
     next();
 

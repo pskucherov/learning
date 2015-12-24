@@ -153,120 +153,125 @@ models(function (err, db) {
                 user = {};
                 return;
             }
+            
+            switch(session.pageName) {
 
+                case 's-speaker':
+                    /* S-SPEAKER START */
 
-
-            /* S-SPEAKER START */
-
-            socket.on('s-speaker:get-poem', function(poemId) {
-                Poems.getPoemById(db.models['poems'], poemId)
-                    .then(function(poem) {
-                        socket.emit('s-speaker:poem', poem);
+                    socket.on('s-speaker:get-poem', function (poemId) {
+                        Poems.getPoemById(db.models['poems'], poemId)
+                            .then(function (poem) {
+                                socket.emit('s-speaker:poem', poem);
+                            });
                     });
-            });
 
-            /* S-SPEAKER END */
+                    /* S-SPEAKER END */
+                    break;
 
+                case 'index':
+                    /* BRAIN-TEST START */
 
-            /* BRAIN-TEST START */
+                    var cookie = {},
+                        rating = {};
 
-            var cookie = {},
-                rating = {};
-
-            db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
-                db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {
-                    socket.emit('user:rating', {
-                        0: {
-                            countAnswers: answers,
-                            rightAnswers: rightAnswers
-                        }
-                    });
-                });
-            });
-
-            socket.on('class-select:change', function (classNum) {
-                cookie['classNum'] = classNum;
-                getTest(cookie.classNum);
-            });
-
-            socket.on('s-braint:nextQuestion', function () {
-                getTest(cookie.classNum);
-            });
-
-            socket.on('s-braint:checkAnswer', function (answerData) {
-
-                db.models['brain-tests'].find({
-                    id: parseInt(answerData.id, 10),
-                    rightanswernum: parseInt(answerData.num, 10)
-                }).limit(1).run(function (err, data) {
-                    var isRight = false;
-
-                    if (!_.isEmpty(data)) {
-                        isRight = true;
-
-                        db.models['brain-tests-answers'].count({ userId: user.id, answer: 1 }, function (err, rightAnswers) {
-                            db.models['brain-tests-answers'].count({ userId: user.id }, function (err, answers) {
-                                socket.emit('user:rating', {
-                                    0: {
-                                        countAnswers: answers,
-                                        rightAnswers: rightAnswers
-                                    }
-                                });
+                    db.models['brain-tests-answers'].count({userId: user.id, answer: 1}, function (err, rightAnswers) {
+                        db.models['brain-tests-answers'].count({userId: user.id}, function (err, answers) {
+                            socket.emit('user:rating', {
+                                0: {
+                                    countAnswers: answers,
+                                    rightAnswers: rightAnswers
+                                }
                             });
                         });
+                    });
 
-                    }
+                    socket.on('class-select:change', function (classNum) {
+                        cookie['classNum'] = classNum;
+                        getTest(cookie.classNum);
+                    });
 
-                    BrainTests.createAnswerRow(db.models['brain-tests-answers'], user.id, answerData.id, isRight)
-                        .then(function() {
-                            socket.emit('s-brain:setAnswer', isRight);
-                        });
-                });
+                    socket.on('s-braint:nextQuestion', function () {
+                        getTest(cookie.classNum);
+                    });
 
-            });
+                    socket.on('s-braint:checkAnswer', function (answerData) {
 
-            function getTest(classNum) {
-                var find = {};
+                        db.models['brain-tests'].find({
+                            id: parseInt(answerData.id, 10),
+                            rightanswernum: parseInt(answerData.num, 10)
+                        }).limit(1).run(function (err, data) {
+                            var isRight = false;
 
-                if (!classNum) {
-                    classNum = cookie['classNum'];
-                }
+                            if (!_.isEmpty(data)) {
+                                isRight = true;
 
-                if (classNum) {
-                    classNum = parseInt(classNum, 10);
-                    classNum >= 1 && classNum <= 11 && (find.class = classNum);
-                }
-
-                BrainTests.getUserForStat(db, user.id, classNum).then(function(data) {
-                    socket.emit('rating:rating', data);
-                });
-
-                BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user.id, classNum)
-                    .then(function(data) {
-                        socket.emit('s-brain:question', data);
-                    })
-                    .fail(function() {
-
-
-                        BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 1)
-                            .then(function(rightAnswers) {
-                                BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 0)
-                                    .then(function(falseAnswers) {
-                                        socket.emit('s-brain:question-end', {
-                                            rightAnswers: rightAnswers,
-                                            falseAnswers: falseAnswers
+                                db.models['brain-tests-answers'].count({
+                                    userId: user.id,
+                                    answer: 1
+                                }, function (err, rightAnswers) {
+                                    db.models['brain-tests-answers'].count({userId: user.id}, function (err, answers) {
+                                        socket.emit('user:rating', {
+                                            0: {
+                                                countAnswers: answers,
+                                                rightAnswers: rightAnswers
+                                            }
                                         });
                                     });
-                            });
+                                });
 
+                            }
+
+                            BrainTests.createAnswerRow(db.models['brain-tests-answers'], user.id, answerData.id, isRight)
+                                .then(function () {
+                                    socket.emit('s-brain:setAnswer', isRight);
+                                });
+                        });
 
                     });
 
+                function getTest(classNum) {
+                    var find = {};
+
+                    if (!classNum) {
+                        classNum = cookie['classNum'];
+                    }
+
+                    if (classNum) {
+                        classNum = parseInt(classNum, 10);
+                        classNum >= 1 && classNum <= 11 && (find.class = classNum);
+                    }
+
+                    BrainTests.getUserForStat(db, user.id, classNum).then(function (data) {
+                        socket.emit('rating:rating', data);
+                    });
+
+                    BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user.id, classNum)
+                        .then(function (data) {
+                            socket.emit('s-brain:question', data);
+                        })
+                        .fail(function () {
+
+
+                            BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 1)
+                                .then(function (rightAnswers) {
+                                    BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 0)
+                                        .then(function (falseAnswers) {
+                                            socket.emit('s-brain:question-end', {
+                                                rightAnswers: rightAnswers,
+                                                falseAnswers: falseAnswers
+                                            });
+                                        });
+                                });
+
+
+                        });
+
+                }
+
+                /* BRAIN-TEST END */
+                break;
             }
-
-            /* BRAIN-TEST END */
-
-
         });
 
     });
