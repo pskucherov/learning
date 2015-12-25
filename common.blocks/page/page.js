@@ -8,6 +8,7 @@ modules.define(
         },
         {
             setContent: function(content) {
+                BEMDOM.destruct($('.page__content'), true);
                 BEMDOM.update($('.page__content'), content);
             }
         }));

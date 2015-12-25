@@ -5,88 +5,100 @@ modules.define(
 
         provide(BEMDOM.decl(this.name, {
             onSetMod: {
-                js: function() {
-
-                    this._clearBoard();
-                    this._answerNum = false;
-
-                    /**
-                     *  Получает новый вопрос и добавляет его на доску
-                     */
-                    window.socket.on('s-brain:question', function (data) {
+                js: {
+                    inited: function () {
 
                         this._clearBoard();
+                        this._answerNum = false;
 
-                        if (_.isEmpty(data)) {
-                            return;
-                        }
+                        /**
+                         *  Получает новый вопрос и добавляет его на доску
+                         */
+                        window.socket.on('s-brain:question', function (data) {
 
-                        this.emit('s-brain:new-question', data.id);
+                            this._clearBoard();
 
-                        this
-                            ._setTitle(data.subj.name) // + ', ' + data.class + ' класс')
-                            ._setQuestionId(data.id)
-                            ._setQuestion(data.question)
-                            ._setAnswers(data.answers);
-                    }.bind(this));
+                            if (_.isEmpty(data)) {
+                                return;
+                            }
 
+                            this.emit('s-brain:new-question', data.id);
 
-                    window.socket.on('s-brain:question-end', function (data) {
-
-                        this._clearBoard();
-
-                        if (_.isEmpty(data)) {
-                            return;
-                        }
-
-                        this
-                            ._setTitle('Победа!')
-                            ._setQuestion(BEMHTML.apply([
-                                { tag: 'br'},
-                                { content: 'Всего вопросов: ' + (data.rightAnswers + data.falseAnswers) },
-                                { tag: 'br'},
-                                {
-                                    block: 's-brain',
-                                    elem: 'answer',
-                                    mods: { is: 'right', freeze: 'yes' },
-                                    content: 'Правильных ответов: ' + data.rightAnswers
-                                },
-                                { tag: 'br'},
-                                {
-                                    block: 's-brain',
-                                    elem: 'answer',
-                                    mods: { is: 'false', freeze: 'yes' },
-                                    content: 'Надо исправить: ' + data.falseAnswers
-                                }
-                            ]))
-                    }.bind(this));
-
-                    /**
-                     * Получение данных от сервера,
-                     * это был правильный ответ на вопрос или нет.
-                     *
-                     * @params {Boolean} isRight
-                     */
-                    window.socket.on('s-brain:setAnswer', _.debounce(function(isRight) {
-                        var answer = this._getSelectedAnswerElem();
-
-                        if (_.isEmpty(answer)) {
-                            return;
-                        }
-
-                        this.setMod(answer, 'is', isRight ? 'right' : 'false');
-
-                        if (isRight) {
-                            // 0 - номер статуса для данной ситуации
-                            this.emit('up', 0);
-                        }
-                    }.bind(this), 1000, {
-                        'leading': true,
-                        'trailing': false
-                    }));
+                            this
+                                ._setTitle(data.subj.name) // + ', ' + data.class + ' класс')
+                                ._setQuestionId(data.id)
+                                ._setQuestion(data.question)
+                                ._setAnswers(data.answers);
+                        }.bind(this));
 
 
+                        window.socket.on('s-brain:question-end', function (data) {
+
+                            this._clearBoard();
+
+                            if (_.isEmpty(data)) {
+                                return;
+                            }
+
+                            this
+                                ._setTitle('Победа!')
+                                ._setQuestion(BEMHTML.apply([
+                                    {tag: 'br'},
+                                    {content: 'Всего вопросов: ' + (data.rightAnswers + data.falseAnswers)},
+                                    {tag: 'br'},
+                                    {
+                                        block: 's-brain',
+                                        elem: 'answer',
+                                        mods: {is: 'right', freeze: 'yes'},
+                                        content: 'Правильных ответов: ' + data.rightAnswers
+                                    },
+                                    {tag: 'br'},
+                                    {
+                                        block: 's-brain',
+                                        elem: 'answer',
+                                        mods: {is: 'false', freeze: 'yes'},
+                                        content: 'Надо исправить: ' + data.falseAnswers
+                                    }
+                                ]))
+                        }.bind(this));
+
+                        /**
+                         * Получение данных от сервера,
+                         * это был правильный ответ на вопрос или нет.
+                         *
+                         * @params {Boolean} isRight
+                         */
+                        window.socket.on('s-brain:setAnswer', _.debounce(function (isRight) {
+                            var answer = this._getSelectedAnswerElem();
+
+                            if (_.isEmpty(answer)) {
+                                return;
+                            }
+
+                            this.setMod(answer, 'is', isRight ? 'right' : 'false');
+
+                            if (isRight) {
+                                // 0 - номер статуса для данной ситуации
+                                this.emit('up', 0);
+                            }
+                        }.bind(this), 1000, {
+                            'leading': true,
+                            'trailing': false
+                        }));
+
+                    }
                 }
+            },
+
+            unbindEvents: function() {
+                window.socket.removeAllListeners('s-brain:question');
+                window.socket.removeAllListeners('s-brain:question-end');
+                window.socket.removeAllListeners('s-brain:setAnswer');
+            },
+
+            _destruct: function() {
+                this.unbindEvents();
+                this.__base.apply(this, arguments);
             },
 
             _clearBoard: function() {
@@ -250,7 +262,19 @@ modules.define(
              * @private
              */
             _onNextButtonClick: function() {
-                this._clearBoard();
+                this
+                    ._clearBoard()
+                    ._nextQuestion();
+                return this;
+            },
+
+            /**
+             * Отправить запрос за следующим вопросом
+             *
+             * @returns {_nextQuestion}
+             * @private
+             */
+            _nextQuestion: function() {
                 window.socket.emit('s-braint:nextQuestion');
                 return this;
             }

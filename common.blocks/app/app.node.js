@@ -155,8 +155,8 @@ models(function (err, db) {
             }
             
             switch(session.pageName) {
-
-                case 's-speaker':
+                default:
+                //case 's-speaker':
                     /* S-SPEAKER START */
 
                     socket.on('s-speaker:get-poem', function (poemId) {
@@ -167,9 +167,9 @@ models(function (err, db) {
                     });
 
                     /* S-SPEAKER END */
-                    break;
+                    //break;
 
-                case 'index':
+                //case 'index':
                     /* BRAIN-TEST START */
 
                     var cookie = {},
@@ -236,6 +236,9 @@ models(function (err, db) {
                     if (!classNum) {
                         classNum = cookie['classNum'];
                     }
+
+                    console.log('here');
+                    console.log(classNum);
 
                     if (classNum) {
                         classNum = parseInt(classNum, 10);

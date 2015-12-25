@@ -5,34 +5,45 @@ modules.define(
 
         provide(BEMDOM.decl(this.name, {
             onSetMod: {
-                js: function() {
+                js: {
+                    inited: function () {
 
-                    /**
-                     * Получение данных от сервера,
-                     * это был правильный ответ на вопрос или нет.
-                     *
-                     * @params {Boolean} isRight
-                     */
-                    window.socket.on('rating:rating', function(rating) {
-                        this._hideUser();
-                        rating.forEach(function(u) {
+                        /**
+                         * Получение данных от сервера,
+                         * это был правильный ответ на вопрос или нет.
+                         *
+                         * @params {Boolean} isRight
+                         */
+                        window.socket.on('rating:rating', function (rating) {
+                            this._hideUser();
+                            rating.forEach(function (u) {
 
-                            this
-                                ._setUser(u)
-                                ._setFade(u);
+                                this
+                                    ._setUser(u)
+                                    ._setFade(u);
+
+                            }.bind(this));
+
+                            if (rating.length > 3) {
+                                this.delMod(this.elem('user', 'pos', 100500), 'hidden');
+                            }
+                            if (rating.length > 4) {
+                                this.delMod(this.elem('dots'), 'hidden');
+                            }
 
                         }.bind(this));
 
-                        if (rating.length > 3) {
-                            this.delMod(this.elem('user', 'pos', 100500), 'hidden');
-                        }
-                        if (rating.length > 4) {
-                            this.delMod(this.elem('dots'), 'hidden');
-                        }
-
-                    }.bind(this));
-
+                    }
                 }
+            },
+
+            unbindEvents: function() {
+                window.socket.removeAllListeners('rating:rating');
+            },
+
+            _destruct: function() {
+                this.unbindEvents();
+                this.__base.apply(this, arguments);
             },
 
             /**

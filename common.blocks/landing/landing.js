@@ -5,18 +5,30 @@ modules.define(
 
         provide(BEMDOM.decl(this.name, {
             onSetMod: {
-                js: function() {
-                    var popups = this.findBlocksInside('popup');
+                js: {
+                    inited: function () {
+                        var popups = this.findBlocksInside('popup');
 
-                    this.popups = popups && this.findBlocksInside('popup').map(function(item) {
-                            return item;
-                        });
+                        this.popups = popups && this.findBlocksInside('popup').map(function (item) {
+                                return item;
+                            });
 
-                    BEMDOM.blocks['s-brain'].on('up', this._showPlusPoint, this);
+                        BEMDOM.blocks['s-brain'].on('up', this._showPlusPoint, this);
 
-                    window.socket.on('user:rating', this._setPopupContent.bind(this));
+                        window.socket.on('user:rating', this._setPopupContent.bind(this));
 
+                    }
                 }
+            },
+
+            unbindEvents: function() {
+                window.socket.removeAllListeners('user:rating');
+                BEMDOM.blocks['s-brain'].un('up', this._showPlusPoint, this);
+            },
+
+            _destruct: function() {
+                this.unbindEvents();
+                this.__base.apply(this, arguments);
             },
 
             /**
