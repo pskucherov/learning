@@ -9,13 +9,23 @@ block('s-warden').elem('column').content()(function() {
             elem: 'content',
             content: this.ctx.items.map(function(item) {
                 return {
-                    content: {
-                        block: 'link',
-                        mix: [{ block: 's-warden', elem: 'item-link' }],
-                        mods: { pseudo: true },
-                        title: item,
-                        content: item
-                    }
+                    elem: 'item',
+                    content: [
+                        {
+                            block: 'link',
+                            mix: [{block: 's-warden', elem: 'item-link'}],
+                            mods: {pseudo: true},
+                            content: item.text
+                        },
+                        ['added', 'moderation', 'rejected'].map(function(status) {
+                            return {
+                                block: 'link',
+                                mix: [{block: 's-warden', elem: 'status-link', mods: { status: status }}],
+                                mods: {pseudo: true},
+                                content: '(' + item[status] + ')'
+                            };
+                        })
+                    ]
                 };
             })
         }

@@ -7,41 +7,22 @@ BEMPRIV.decl('s-warden', {
             {
                 block: 's-warden',
                 elem: 'column',
-                title: 'qwe',
+                title: 'Управление',
                 items: [
-                    'a',
-                    'b',
-                    'c'
-                ]
-            },
-            {
-                block: 's-warden',
-                elem: 'column',
-                title: 'qwe',
-                items: [
-                    'a',
-                    'b',
-                    'c'
-                ]
-            },
-            {
-                block: 's-warden',
-                elem: 'column',
-                title: 'qwe',
-                items: [
-                    'a',
-                    'b',
-                    'c'
-                ]
-            },
-            {
-                block: 's-warden',
-                elem: 'column',
-                title: 'qwe',
-                items: [
-                    'a',
-                    'b',
-                    'c'
+                    {
+                        name: 'addAuthor',
+                        text: 'Добавить автора',
+                        added: 0,
+                        moderation: 0,
+                        rejected: 0
+                    },
+                    {
+                        name: 'addComposition',
+                        text: 'Добавить произведение',
+                        added: 0,
+                        moderation: 0,
+                        rejected: 0
+                    }
                 ]
             }
         ]);

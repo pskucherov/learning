@@ -10,9 +10,38 @@
 
   &__column
     float left
-    font-size 22px
     margin-top 50px
     width 300px
+    font-size 17px
 
   &__title
     text-align center
+    font-size 22px
+
+  &__item
+    margin 8px 0
+
+  &__item-link
+    cursor pointer
+    color #2a79cd
+
+  &__item-link:hover
+    color #2a79cd
+    text-decoration underline
+
+  &__status-link
+    cursor pointer
+    padding 0 5px
+
+    &_status_added
+    &_status_added:hover
+      padding-left 15px
+      color #0B7C3B
+
+    &_status_moderation
+    &_status_moderation:hover
+      color #fc0
+
+    &_status_rejected
+    &_status_rejected:hover
+      color #F30
