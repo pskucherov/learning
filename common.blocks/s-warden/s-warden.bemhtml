@@ -22,6 +22,9 @@ block('s-warden').elem('column').content()(function() {
                                 block: 'link',
                                 mix: [{block: 's-warden', elem: 'status-link', mods: { status: status }}],
                                 mods: {pseudo: true},
+                                title: status === 'added'
+                                    ? 'Принято'
+                                    : status === 'moderation' ? 'На модерации' : 'Отклонено',
                                 content: '(' + item[status] + ')'
                             };
                         })
