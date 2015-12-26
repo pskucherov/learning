@@ -188,4 +188,22 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
 });
 
 
+/**
+ * Оратор
+ */
+router.get(/^\/warden\/?$/, function(req, res, next) {
+
+    if (!res.user || !res.user.isAuth) {
+        res.pageName = 'index';
+        req.session.redirPage = '/warden';
+    } else {
+        res.pageName = 's-warden';
+    }
+
+    req.session.pageName = 's-warden';
+
+    next();
+
+});
+
 module.exports = router;

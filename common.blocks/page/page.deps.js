@@ -10,6 +10,7 @@
         { block: 'index' },
         { block: 'verify' },
         { block: 's-speaker' },
+        { block: 's-warden' },
 
         { block: 'i-vow' },
         { block: 'i-utils' }

@@ -1,0 +1,24 @@
+block('s-warden').elem('column').content()(function() {
+
+    return [
+        {
+            elem: 'title',
+            content: this.ctx.title
+        },
+        {
+            elem: 'content',
+            content: this.ctx.items.map(function(item) {
+                return {
+                    content: {
+                        block: 'link',
+                        mix: [{ block: 's-warden', elem: 'item-link' }],
+                        mods: { pseudo: true },
+                        title: item,
+                        content: item
+                    }
+                };
+            })
+        }
+    ];
+
+});
