@@ -14,14 +14,10 @@ var Poems = function() {
 };
 
 /**
- * Создаёт жалобу в таблице
+ * Получить стихотворение из БД по id
  *
  * @param pModel
  * @param poemId
- * @param rowId
- * @param checkboxes
- * @param comment
- * @param userId
  * @returns {*}
  */
 Poems.getPoemById = function(pModel, poemId) {

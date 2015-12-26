@@ -22,12 +22,14 @@ var appId = 5076733,
         host     : '127.0.0.1',
         port     : 3306,         // optional, defaults to database default
         user     : 'root',
-        password : '',
-        query    : {
+        password : ''
+        /*
+        , query    : {
             pool     : true|false,   // optional, false by default
-            debug    : true||false,   // optional, false by default
+            debug: true|false,
             strdates : true|false    // optional, false by default
         }
+        */
     }
 };
 
