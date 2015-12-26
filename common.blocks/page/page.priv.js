@@ -69,7 +69,7 @@ blocks['page'] = function (data) {
                     elem: 'js',
                     url: isLocalServer
                         ? '/js/jquery.min.js'
-                        : 'https://yastatic.net/jquery/1.8.3/jquery.min.js',
+                        : 'https://yastatic.net/jquery/2.1.4/jquery.min.js',
                     mix: {
                         block: 'page',
                         elem: 'script'
