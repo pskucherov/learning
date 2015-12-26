@@ -46,3 +46,5 @@ npm-debug.log
 public/freeze/*
 
 common.blocks/app/_settings.js
+
+coverage.html

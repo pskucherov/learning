@@ -36,6 +36,11 @@ node common.blocks/app/models/sync.js
 npm test
 ```
 
+Посмотреть покрытие контроллеров юнит-тестами
+```sh
+mocha test/unit/* --delay --require blanket --reporter html-cov  > coverage.html && open coverage.html
+```
+
 ###### Unit тесты
 * [Mocha]: Фреймворк для тестирования на nodejs
 * [Chai]: BDD / TDD assertion library
