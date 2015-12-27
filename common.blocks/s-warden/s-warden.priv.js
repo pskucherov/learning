@@ -24,6 +24,10 @@ BEMPRIV.decl('s-warden', {
                         rejected: 0
                     }
                 ]
+            },
+            {
+                block: 's-warden',
+                elem: 'add-author'
             }
         ]);
 

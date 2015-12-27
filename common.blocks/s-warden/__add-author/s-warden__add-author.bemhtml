@@ -1,0 +1,33 @@
+block('s-warden').elem('add-author').content()(function() {
+
+    return [
+        {
+            elem: 'title',
+            content: 'Добавить автора'
+        },
+        {
+            block: 'input',
+            name: 'comment',
+            mods: {
+                theme: 'islands',
+                size: 'm'
+            },
+            placeholder: 'Комментарий'
+        },
+        {
+            block: 'button',
+            mix: {
+                block: 'complaint',
+                elem: 'send-button',
+                js: true
+            },
+            mods: {
+                type: 'submit',
+                theme: 'islands',
+                size: 'l'
+            },
+            text: 'Отправить'
+        }
+    ];
+
+});
