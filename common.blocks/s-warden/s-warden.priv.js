@@ -26,8 +26,12 @@ BEMPRIV.decl('s-warden', {
                 ]
             },
             {
-                block: 's-warden',
-                elem: 'add-author'
+                block: 'modal',
+                mods: { theme : 'islands', autoclosable: true },
+                content: {
+                    block: 's-warden',
+                    elem: 'add-author'
+                }
             }
         ]);
 
