@@ -10,6 +10,7 @@ block('s-warden').elem('column').content()(function() {
             content: this.ctx.items.map(function(item) {
                 return {
                     elem: 'item',
+                    mods: { add: item.mod },
                     content: [
                         {
                             block: 'link',

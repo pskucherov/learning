@@ -12,6 +12,7 @@ BEMPRIV.decl('s-warden', {
                     {
                         name: 'addAuthor',
                         text: 'Добавить автора',
+                        mod: 'author',
                         added: 0,
                         moderation: 0,
                         rejected: 0
@@ -20,6 +21,7 @@ BEMPRIV.decl('s-warden', {
                         name: 'addComposition',
                         text: 'Добавить произведение',
                         added: 0,
+                        mod: 'composition',
                         moderation: 0,
                         rejected: 0
                     }
@@ -27,10 +29,19 @@ BEMPRIV.decl('s-warden', {
             },
             {
                 block: 'modal',
-                mods: { theme : 'islands', autoclosable: true },
+                mods: { theme : 'islands', autoclosable: true, add: 'author' },
                 content: {
                     block: 's-warden',
                     elem: 'add-author'
+                }
+            },
+            {
+                block: 'modal',
+                mods: { theme : 'islands', autoclosable: true, add: 'composition' },
+                content: {
+                    block: 's-warden',
+                    elem: 'add-composition',
+                    content: 'aaa composition'
                 }
             }
         ]);
