@@ -8,9 +8,7 @@ modules.define(
                 js: {
                     inited: function () {
 
-                        this.bm = new BM25();
-
-                        this._getPoem(1);
+                        //this._getPoem(1);
 
                         this.currentPoem = {};
 
@@ -107,6 +105,7 @@ modules.define(
             },
 
             _getPoem: function(poemId) {
+                this.bm = new BM25();
                 window.socket.emit('s-speaker:get-poem', poemId);
             },
 
