@@ -15,6 +15,8 @@
 
   &__line
     cursor pointer
+    display inline-block
+    margin 7px 0
 
   &__visual-container
     width 400px
@@ -32,6 +34,10 @@
   &__line_selected_yes
     text-decoration underline
 
+  &__line_disabled_yes
+    cursor default
+    color #999
+    
   &__poem-title
     text-align center
     font-weight bold
@@ -41,3 +47,8 @@
     text-align right
     font-weight bold
     font-style italic
+
+  &__checkbox
+    top -4px
+    margin 10px
+    position relative
