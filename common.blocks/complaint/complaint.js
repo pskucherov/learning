@@ -128,7 +128,9 @@ modules.define(
              * @private
              */
             _setComplaint: function() {
-                BEMDOM.update(this.modal.elem('content'), BEMHTML.apply(this.params.complaints));
+                var elem = this.modal.elem('content');
+                BEMDOM.destruct(elem, true);
+                BEMDOM.update(elem, BEMHTML.apply(this.params.complaints));
                 return this;
             },
 
