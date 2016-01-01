@@ -42,6 +42,11 @@ BEMPRIV.decl('s-speaker', {
                                 }
                             ];
                         })
+                    },
+                    {
+                        block: 'modal',
+                        mods: { theme : 'islands', autoclosable: true, modal: 'index' },
+                        content: ''
                     }
                 ]
             }
