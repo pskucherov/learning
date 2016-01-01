@@ -1,4 +1,13 @@
-var enbBemTechs = require('enb-bem-techs'),
+var techs = {
+        fileMerge: require('enb/techs/file-merge'),
+        // css
+        stylus: require('enb-stylus/techs/stylus'),
+        // js
+        browserJs: require('enb-js/techs/browser-js'),
+        // bemhtml
+        bemhtml: require('enb-bemxjst/techs/bemhtml')
+    },
+    enbBemTechs = require('enb-bem-techs'),
     borschikTech = require('enb-borschik/techs/borschik'),
     isProd = process.env.YENV !== 'dev';
 
@@ -72,33 +81,50 @@ module.exports = function (config) {
             [enbBemTechs.files],
             [enbBemTechs.deps],
             [enbBemTechs.bemjsonToBemdecl],
-            // ie.css
-            [require('enb/techs/css'), {
-                target: '?.ie.css',
-                sourceSuffixes: ['css', 'ie.css']
-            }],
-
-            // browser.js
-            [require('enb-diverse-js/techs/browser-js'), { target: '?.browser.js' }],
-            [require('enb/techs/file-merge'), {
-                target: '?.pre.js',
-                sources: ['?.bemhtml.js', '?.browser.js']
-            }],
-
-
-            [require('enb-modules/techs/prepend-modules'), {
-                source: '?.pre.js',
-                target: '?.js'
-            }],
 
             // priv.js
             [ require('enb-priv-js/techs/priv-js'), { freezeableTechs: ['_?.css', '_?.js'] } ],
             [ borschikTech, { freeze: true, minify: false, sourceTarget: '?.priv.js', destTarget: '_?.priv.js' } ],
 
             // css
-            [require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }],
+            //[require('enb-stylus/techs/css-stylus'), { target: '?.noprefix.css' }],
+
+            // browser.js
+
+            [techs.browserJs, { target: '?.browser.js' }],
+            [require('enb/techs/file-merge'), {
+                target: '?.pre.js',
+                sources: ['?.bemhtml.js', '?.browser.js']
+            }],
+            [require('enb-modules/techs/prepend-modules'), {
+                source: '?.pre.js',
+                target: '?.js'
+            }],
+
+
+            // js
+           /* [techs.browserJs],
+            [techs.fileMerge, {
+                target: '?.js',
+                sources: ['?.browser.js']//, '?.browser.bemhtml.js']
+            }],
+            */
+
+
+            // css
+            [techs.stylus, {
+                target: '?.css',
+                sourcemap: false,
+                autoprefixer: {
+                    browsers: ['ie >= 10', 'last 2 versions', 'opera 12.1', '> 2%']
+                }
+            }],
+
+
             // bemhtml
-            [require('enb-bemxjst/techs/bemhtml-old'), { devMode: !isProd }],
+            //[require('enb-bemxjst/techs/bemhtml-old'), { devMode: !isProd }],
+            [techs.bemhtml, { sourceSuffixes: ['bemhtml', 'bemhtml.js'] }],
+
             // client bemhtml
             [enbBemTechs.depsByTechToBemdecl, {
                 target: '?.bemhtml.bemdecl.js',
@@ -114,22 +140,25 @@ module.exports = function (config) {
                 filesTarget: '?.bemhtml.files',
                 dirsTarget: '?.bemhtml.dirs'
             }],
+
+            /*
             [require('enb-bemxjst/techs/bemhtml-old'), {
                 target: '?.browser.bemhtml.js',
                 filesTarget: '?.bemhtml.files',
                 devMode: process.env.BEMHTML_ENV === 'development'
             }],
+            */
 
             // borschik
             [borschikTech, { sourceTarget: '?.css', destTarget: '_?.css', tech: 'cleancss', freeze: true, minify: isProd }],
-            [borschikTech, { sourceTarget: '?.ie.css', destTarget: '_?.ie.css', freeze: true, minify: isProd }],
+            //[borschikTech, { sourceTarget: '?.ie.css', destTarget: '_?.ie.css', freeze: true, minify: isProd }],
             [borschikTech, { sourceTarget: '?.js', destTarget: '_?.js', freeze: true, minify: isProd }],
             [borschikTech, { sourceTarget: '?.bemhtml.js', destTarget: '_?.bemhtml.js', freeze: true, minify: isProd }]
         ]);
 
         nodeConfig.addTargets([
             '_?.css',
-            '_?.ie.css',
+            //'_?.ie.css',
             '_?.js',
             '_?.bemhtml.js',
             '_?.priv.js'
@@ -140,11 +169,14 @@ module.exports = function (config) {
         nodeConfig.addTechs([
             // essential
             [enbBemTechs.levels, { levels: getDesktops(config) }],
+
+            /*
             // autoprefixer
             [require('enb-autoprefixer/techs/css-autoprefixer'), {
                 browserSupport: ['last 2 versions', 'ie 10', 'ff 24', 'opera 12.16'],
                 sourceTarget: '?.noprefix.css'
             }]
+            */
         ]);
     });
 

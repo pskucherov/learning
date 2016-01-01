@@ -1,31 +1,33 @@
-block user, elem info, default: {
+block('user').elem('info').replace()(function() {
 
     var name = this.ctx.first_name || this.ctx.last_name,
         content = {
             block: 'link',
-            mix: [{ block: 'user', elem: 'info' }],
-            mods: { pseudo: true },
+            mix: [{
+                block: 'user',
+                elem: 'info'
+            }],
+            mods: {
+                pseudo: true
+            },
             title: name,
-            content: [
-                {
-                    block: 'image',
-                    mix: [
-                        { block: 'user', elem: 'ava' }
-                    ],
-                    alt: name,
-                    url: this.ctx.photo_100
-                },
-                {
+            content: [{
+                block: 'image',
+                mix: [{
                     block: 'user',
-                    elem: 'nickname',
-                    content: name
-                },
-                {
-                    block: 'user-menu'
-                }
-            ]
+                    elem: 'ava'
+                }],
+                alt: name,
+                url: this.ctx.photo_100
+            }, {
+                block: 'user',
+                elem: 'nickname',
+                content: name
+            }, {
+                block: 'user-menu'
+            }]
         };
 
-    applyCtx(content);
+    return content;
 
-}
+})

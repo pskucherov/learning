@@ -1,14 +1,14 @@
-block landing, elem title, default: {
+block('landing').elem('title').replace()(function() {
     var content = {
         elem: 'title',
         content: this.ctx.isFemale
             ? 'Ты пришла в класс, осмотрелась по сторонам и увидела, что ты можешь развиваться в следующих возможностях'
             : 'Ты пришёл в класс, осмотрелся по сторонам и увидел, что ты можешь прокачиваться в следующих возможностях'
     };
-    applyCtx(content);
-}
+    return content;
+})
 
-block landing, elem status, default: {
+block('landing').elem('statuses').replace()(function() {
 
     var content,
         item;
@@ -23,28 +23,30 @@ block landing, elem status, default: {
 
         return {
             block: 'link',
-            mods: {ajax: 'yes'},
+            mods: {
+                ajax: 'yes'
+            },
             url: item.url,
             content: {
                 block: 'landing',
                 elem: 'status',
-                elemMods: {num: k},
-                content: [
-                    {
+                elemMods: {
+                    num: k
+                },
+                content: [{
                         block: 'image',
                         mix: {
                             block: 'landing',
                             elem: 'thumb'
                         },
                         url: male.img
-                    },
-                    {tag: 'br'},
-                    {
+                    }, {
+                        tag: 'br'
+                    }, {
                         elem: 'progress',
                         val: this.ctx.progress !== 0 ? 2 : item.defVal
                     },
-                    male.name,
-                    {
+                    male.name, {
                         block: 'landing',
                         elem: 'status-descr',
                         num: k,
@@ -55,39 +57,49 @@ block landing, elem status, default: {
         };
     }.bind(this)));
 
-    applyCtx(content);
+    return content;
 
-}
+})
 
-block landing, elem status-descr, content: {
+
+block('landing').elem('status-descr').content()(function() {
 
     var content = {
         block: 'landing',
         elem: 'status-descr',
         js: true,
-        mods: { popup: 'yes', item: this.ctx.num },
-        mix: [
-            { block: 'popup', mods: { theme: 'islands', target: 'anchor', autoclosable: true }}
-        ],
+        mods: {
+            popup: 'yes',
+            item: this.ctx.num
+        },
+        mix: [{
+            block: 'popup',
+            mods: {
+                theme: 'islands',
+                target: 'anchor',
+                autoclosable: true
+            }
+        }],
         content: this.ctx.content || 'empty'
     };
 
-    applyCtx(content);
+    return applyCtx(content);
 
-}
+})
 
-block landing, elem progress, content: {
+
+block('landing').elem('progress').content()(function() {
     var content = {
         block: 'progressbar',
         mods: {
             theme: 'islands',
-            color: this.ctx.val < 25 ? 'red'
-                : this.ctx.val >= 75 ? 'green' : 'yellow'
+            color: this.ctx.val < 25 ? 'red' : this.ctx.val >= 75 ? 'green' : 'yellow'
         },
         val: this.ctx.val
     };
 
     return content;
-}
+})
 
-block landing, elem plus-point, content: '+1'
+
+block('landing').elem('plus-point').content()('+1')

@@ -1,4 +1,4 @@
-block header, elem logo, default: {
+block('header').elem('logo').replace()(function() {
 
     var title = 'Школьник.com - проект, который помогает детям найти взаимопонимание, похвалу и компромисс у родителей.',
         content = {
@@ -16,6 +16,6 @@ block header, elem logo, default: {
             }
         };
 
-    applyCtx(content);
+    return content;
 
-}
+})

@@ -174,7 +174,7 @@ router.get(/^\/?$/, function(req, res, next) {
  */
 router.get(/^\/speaker\/?$/, function(req, res, next) {
 
-    if ((!res.user || !res.user.isAuth) && false) {
+    if ((!res.user || !res.user.isAuth)) {
         res.pageName = 'index';
         req.session.redirPage = '/speaker';
     } else {

@@ -21,7 +21,7 @@ BEMPRIV.decl('landing', {
         var content = {
             block: 'landing',
             mods: mods,
-            elem: 'status',
+            elem: 'statuses',
             isFemale: this.data.isFemale,
             progress: this.data.user.isAuth ? JSON.parse(this.data.user.statuses || 1) : 0,
             statuses: BEMPRIV.block('statuses').getList()
