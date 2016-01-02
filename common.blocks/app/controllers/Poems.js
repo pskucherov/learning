@@ -47,7 +47,7 @@ Poems.findAuthorByQuery = function(authorModel, query) {
     var deferred = vow.defer();
 
     // Добавить moderate = 0 OR userId = 123
-    authorModel.find().where('name LIKE ? AND name != ? AND (moderate = "1")', ['%' + query + '%', query]).only('name').limit(10).run(function (err, authors) {
+    authorModel.find().where('name LIKE ? AND name != ? AND (moderate = "1")', ['%' + query + '%', query]).only('name').limit(5).run(function (err, authors) {
         if (err) throw err;
 
         deferred.resolve(authors);

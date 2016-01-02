@@ -63,7 +63,8 @@ block('s-speaker').elem('select-poem')(
                             mods: {
                                 theme: 'islands',
                                 size: 'm',
-                                width: 'available'
+                                width: 'available',
+                                act: 'text'
                             },
                             placeholder: 'Здесь будет содержание'
                         }

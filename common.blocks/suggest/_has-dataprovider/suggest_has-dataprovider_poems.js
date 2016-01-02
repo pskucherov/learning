@@ -36,7 +36,8 @@ provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
     /** @override */
     _onInputChange : function(e) {
 
-        if(this.hasMod('focused')) {
+        if (this.hasMod('focused') && !_.isEmpty(this._input.getVal())) {
+            this._input.setMod(this._input.elem('spin'), 'visible', true);
             this._menu.requestData({
                 val: e.target.getVal(),
                 act: this.getMod('act')
@@ -44,10 +45,13 @@ provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
         }
 
         this.emit('change');
+    },
 
-        if (!_.isEmpty(this._input.getVal())) {
-            this._input.setMod(this._input.elem('spin'), 'visible', true);
-        }
+    _onMenuItemClick : function(e, data) {
+        this
+            .delMod('focused')
+            .setVal(data.item.getVal(), { source : 'datalist' })
+            ._hideSpin();
 
     },
 
