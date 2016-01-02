@@ -1,4 +1,4 @@
-({
+[{
     shouldDeps: [
         {
             block: 'i-fts'
@@ -10,6 +10,14 @@
                 size : 'l',
                 'has-dataprovider' : 'timezone'
             }
+        },
+        {
+            elem: 'select-poem',
+            tech: 'bemhtml'
         }
     ]
-})
+}/*,
+{
+    tech : 'js',
+    mustDeps : { elem: 'select-poem', tech : 'bemhtml' }
+}*/]

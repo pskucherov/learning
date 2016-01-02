@@ -1,0 +1,55 @@
+block('s-speaker').elem('select-poem')(
+    content()(function() {
+        return [
+            {
+                elem: 'title',
+                content: 'Выберите стихотворение'
+            },
+            {
+                elem: 'form',
+                tag: 'form',
+                attrs: {
+                    id: 'form-select-poem'
+                },
+                content: [
+                    {
+                        elem: 'author',
+                        content: {
+                            block: 'suggest',
+                            mods: {
+                                theme: 'islands',
+                                size: 'l',
+                                'has-dataprovider': 'poem-author'
+                            },
+                            placeholder: 'Введите автора'
+                        }
+                    },
+                    {
+                        elem: 'name',
+                        content: {
+                            block: 'suggest',
+                            mods: {
+                                theme: 'islands',
+                                size: 'l',
+                                'has-dataprovider': 'poem-author'
+                            },
+                            placeholder: 'Введите название'
+                        }
+                    },
+                    {
+                        elem: 'text',
+                        content: {
+                            block: 'textarea',
+                            mods: {
+                                theme: 'islands',
+                                size: 'm',
+                                width: 'available'
+                            },
+                            placeholder: 'Здесь будет содержание'
+                        }
+                    }
+                ]
+            }
+        ];
+    })
+);

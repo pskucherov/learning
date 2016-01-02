@@ -1,6 +1,19 @@
 BEMPRIV.decl('s-speaker', {
     init: function() {
 
+        /**
+         * Модификаторы для меню, на который матчатся события
+         * @type {{0: string, 1: string, 2: string, 3: string, 4: string, 5: string}}
+         */
+        var LINE_ACTION_MOD = [
+            'select-poem',
+            'read',
+            'select-images',
+            'sort-lines',
+            'repeat-poem',
+            'finish'
+        ];
+
         this.js(true);
 
         this.content([
@@ -10,7 +23,7 @@ BEMPRIV.decl('s-speaker', {
                 content: [
                     {
                         block: 's-speaker',
-                        elem: 'poem-title',
+                        elem: 'title',
                         content: 'Быстро и увлекательно учим стихи'
                     },
                     {
@@ -28,13 +41,13 @@ BEMPRIV.decl('s-speaker', {
                             return [
                                 {
                                     block: 'checkbox',
-                                    mods: { disabled: 'yes' },
+                                    mods: { disabled: 'yes', act: LINE_ACTION_MOD[k] },
                                     mix: { block: 's-speaker', elem: 'checkbox' }
                                 },
                                 {
                                     elem: 'line',
                                     attrs: { style: k ? '' : 'margin-top: 0;' },
-                                    mods: { disabled: k ? 'yes' : '' },
+                                    mods: { disabled: k ? 'yes' : '', act: LINE_ACTION_MOD[k] },
                                     content: item
                                 },
                                 {
