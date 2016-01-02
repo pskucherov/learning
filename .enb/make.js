@@ -92,10 +92,16 @@ module.exports = function (config) {
             // browser.js
 
             [techs.browserJs, { target: '?.browser.js' }],
+
+            // Сейчас в JS на клиент тянется весь BEMHTML,
+            // чтобы норм работали аякспереходы и не особо заморачиваться с депсами
+            // в идеале, надо каждый шаблон добавлять на клиент по надобности, но есть ощущение, что в итоге
+            // на клиент приедет большая часть шаблонов и профит будет минимальный.
             [require('enb/techs/file-merge'), {
                 target: '?.pre.js',
                 sources: ['?.bemhtml.js', '?.browser.js']
             }],
+
             [require('enb-modules/techs/prepend-modules'), {
                 source: '?.pre.js',
                 target: '?.js'
@@ -216,6 +222,7 @@ function getDesktops(config) {
         { path: 'libs/bem-components/design/common.blocks', check: false },
         { path: 'libs/bem-components/desktop.blocks', check: false },
         { path: 'libs/bem-components/design/desktop.blocks', check: false },
+        { path: 'libs/bem-suggest/blocks', check: false },
         { path: 'libs/bem-priv/build/blocks', check: false },
         'common.blocks',
         'desktop.blocks'
