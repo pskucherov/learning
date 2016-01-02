@@ -36,4 +36,24 @@ Poems.getPoemById = function(pModel, poemId) {
     return deferred.promise();
 };
 
+/**
+ * Найти автора по заданному параметру
+ *
+ * @param pModel
+ * @param query
+ * @returns {*}
+ */
+Poems.findAuthorByQuery = function(pModel, query) {
+    var deferred = vow.defer();
+
+    pModel.find().where('author LIKE ?', ['%' + query + '%']).only('author').run(function (err, authors) {
+        if (err) throw err;
+
+        deferred.resolve(authors);
+
+    });
+
+    return deferred.promise();
+};
+
 module.exports = Poems;

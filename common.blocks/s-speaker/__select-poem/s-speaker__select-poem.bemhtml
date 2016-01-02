@@ -18,10 +18,20 @@ block('s-speaker').elem('select-poem')(
                             block: 'suggest',
                             mods: {
                                 theme: 'islands',
+                                act: 'author',
                                 size: 'l',
-                                'has-dataprovider': 'poem-author'
+                                'has-dataprovider': 'poems',
+                                'has-spin': true
                             },
-                            placeholder: 'Введите автора'
+                            placeholder: 'Введите автора',
+                            name: 'poems',
+                            dataprovider : {
+                                data: [
+                                    'Africa/Abidjan',
+                                    'Africa/Accra',
+                                    'Africa/Addis_Ababa'
+                                ]
+                            }
                         }
                     },
                     {
@@ -29,11 +39,21 @@ block('s-speaker').elem('select-poem')(
                         content: {
                             block: 'suggest',
                             mods: {
+                                act: 'poem',
                                 theme: 'islands',
                                 size: 'l',
-                                'has-dataprovider': 'poem-author'
+                                'has-dataprovider': 'poems',
+                                'has-spin': true
                             },
-                            placeholder: 'Введите название'
+                            placeholder: 'Введите название',
+                            name: 'poems',
+                            dataprovider: {
+                                data: [
+                                    'Africa/Abidjan',
+                                    'Africa/Accra',
+                                    'Africa/Addis_Ababa'
+                                ]
+                            }
                         }
                     },
                     {
@@ -47,6 +67,57 @@ block('s-speaker').elem('select-poem')(
                             },
                             placeholder: 'Здесь будет содержание'
                         }
+                    }
+                ]
+            },
+            {
+                elem: 'buttons',
+                content: [
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 's-speaker',
+                            elem: 'button-recognition',
+                            js: true
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            disabled: true
+                        },
+                        icon: {
+                            block : 'icon',
+                            url : '/images/i-speechkit-mic-off.svg'
+                        },
+                        text: 'Продиктовать'
+                    },
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 's-speaker',
+                            elem: 'button-save',
+                            js: true
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            disabled: true
+                        },
+                        text: 'Сохранить'
+                    },
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 's-speaker',
+                            elem: 'button-reset',
+                            js: true
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            disabled: true
+                        },
+                        text: 'Сбросить'
                     }
                 ]
             }

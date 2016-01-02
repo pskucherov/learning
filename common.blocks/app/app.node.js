@@ -154,6 +154,23 @@ models(function (err, db) {
                 return;
             }
 
+            /* DATA-PROVIDER START */
+
+            socket.on('provider:act:find-author', function (query) {
+
+                Poems.findAuthorByQuery(db.models['poems'], query)
+                    .then(function (authors) {
+                        socket.emit('provider:data:author', authors);
+                    });
+
+            });
+            //window.socket.emit('provider:act:' + params.act, params.val);
+
+
+            /* DATA-PROVIDER END */
+
+
+
             /* LANDING START */
 
             db.models['brain-tests-answers'].count({userId: user.id, answer: 1}, function (err, rightAnswers) {

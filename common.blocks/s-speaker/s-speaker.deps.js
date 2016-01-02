@@ -8,12 +8,27 @@
             mods : {
                 theme : 'islands',
                 size : 'l',
-                'has-dataprovider' : 'timezone'
+                'has-dataprovider': 'poems'
             }
         },
         {
             elem: 'select-poem',
             tech: 'bemhtml'
+        },
+        {
+            block: 'icon'
+        },
+        {
+            block: 'input',
+            mods: { 'has-spin': true }
+        },
+        {
+            block: 'input',
+            elem: 'spin'
+        },
+        {
+            block : 'spin',
+            mods : { theme : 'islands', size : 'xs', visible : true }
         }
     ]
 }/*,

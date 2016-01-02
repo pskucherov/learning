@@ -238,9 +238,9 @@ modules.define(
  mods : {
  theme : 'islands',
  size : 'l',
- 'has-dataprovider' : 'timezone'
+ 'has-dataprovider' : 'poems'
  },
- name : 'timezone',
+ name : 'poems',
  dataprovider : {
  data : [
  'Africa/Abidjan',

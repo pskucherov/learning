@@ -1,0 +1,3 @@
+({
+    shouldDeps : 'poems-provider'
+})
