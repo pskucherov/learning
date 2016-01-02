@@ -1,0 +1,9 @@
+block('input').mod('has-spin', true).elem('box')
+    .content()(function() {
+        return [this.ctx.content, {
+            elem: 'spin', content: {
+                block: 'spin',
+                mods: {theme: 'islands', size: 'xs', visible: true}
+            }
+        }];
+    });
