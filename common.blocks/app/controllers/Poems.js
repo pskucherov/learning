@@ -43,14 +43,37 @@ Poems.getPoemById = function(pModel, poemId) {
  * @param query
  * @returns {*}
  */
-Poems.findAuthorByQuery = function(pModel, query) {
+Poems.findAuthorByQuery = function(authorModel, query) {
     var deferred = vow.defer();
 
-    pModel.find().where('author LIKE ?', ['%' + query + '%']).only('author').run(function (err, authors) {
+    // Добавить moderate = 0 OR userId = 123
+    authorModel.find().where('name LIKE ? AND name != ? AND (moderate = "1")', ['%' + query + '%', query]).only('name').limit(10).run(function (err, authors) {
         if (err) throw err;
 
         deferred.resolve(authors);
 
+    });
+
+    return deferred.promise();
+};
+
+/**
+ * Найти стих по автору и названию
+ *
+ * @param pModel
+ * @param query
+ * @returns {*}
+ */
+Poems.findPoemByAuthorANDQuery = function(pModel, query, author) {
+    var deferred = vow.defer();
+
+    //where('`poems`.`name` LIKE ? AND (`poems`.`moderate` = 1)', ['%' + query + '%', query]).only('id', 'name').limit(1)
+
+    // Добавить moderate = 0 OR userId = 123
+    pModel.findByAuthor({ name: author }).only('name', 'moderate', 'userId').each().filter(function (poem) {
+        return poem.moderate === '1' && (new RegExp(query, 'im')).test(poem.name);
+    }).get(function (poems) {
+        deferred.resolve(poems);
     });
 
     return deferred.promise();

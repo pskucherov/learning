@@ -33,12 +33,22 @@ provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
         return new TzDataProvider(this.params.data);
     },
 
+    /** @override */
     _onInputChange : function(e) {
-        this.__base.apply(this, arguments);
+
+        if(this.hasMod('focused')) {
+            this._menu.requestData({
+                val: e.target.getVal(),
+                act: this.getMod('act')
+            });
+        }
+
+        this.emit('change');
 
         if (!_.isEmpty(this._input.getVal())) {
             this._input.setMod(this._input.elem('spin'), 'visible', true);
         }
+
     },
 
     _onMenuGotItems: function(e, data) {

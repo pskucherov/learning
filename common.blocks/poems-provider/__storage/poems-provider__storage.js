@@ -17,8 +17,13 @@ provide(inherit({
      * @param {Function} callback
      */
     find: function(params, callback) {
-        window.socket.emit('provider:act:find-' + params.act, params.val);
+
+        // Передаём автора стиха. Если нет автора, то ничего не найдётся
+        window.socket.emit('provider:act:find-' + params.act, params.val,
+            params.act === 'poem' ? $('.suggest_act_author .input__control').val() : ''
+        );
         window.socket.on('provider:data:' + params.act, this['_provideData' + params.act].bind(this, callback));
+
     },
 
     _provideDataauthor: function(callback, authors) {
@@ -26,12 +31,26 @@ provide(inherit({
         callback(null,
             authors.map(function(item) {
                 return {
-                    text: item.author,
-                    val: item.author
+                    text: item.name,
+                    val: item.name
                 };
             })
         );
         window.socket.removeAllListeners('provider:data:author');
+
+    },
+
+    _provideDatapoem: function(callback, authors) {
+
+        callback(null,
+            authors.map(function(item) {
+                return {
+                    text: item.name,
+                    val: item.name
+                };
+            })
+        );
+        window.socket.removeAllListeners('provider:data:poem');
 
     }
 
