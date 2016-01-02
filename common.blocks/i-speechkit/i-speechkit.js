@@ -1670,6 +1670,8 @@
     };
 }(this));
 
+/*
+кажись это лишнее
 (function (namespace) {
     'use strict';
 
@@ -1749,7 +1751,7 @@
      * значение, заданное в настройках ya.speechkit.lang. Если в настройках значение не задано, то по умолчанию
      * выбирается русский язык: 'ru-RU'.
      * @param {ya.speechkit.FORMAT} [options.format=ya.speechkit.FORMAT.PCM16] Формат передачи аудио-сигнала.
-     */
+     *//*
     namespace.ya.speechkit.Textline = function (target, options) {
         if (!(this instanceof namespace.ya.speechkit.Textline)) {
             return new namespace.ya.speechkit.Textline(target, options);
@@ -1835,6 +1837,7 @@
              * @name Textline.destroy
              * @function
              */
+/*
             destroy: function () {
                 if (_this.dict) {
                     _this.dict.stop();
@@ -1860,12 +1863,18 @@
              *     console.log("Результат распознавания: " + textline.value());
              * }, 5000);
              */
+/*
             value: function () {
                 return _this.final_result;
             }
         };
     };
 }(this));
+*/
+
+
+
+
 
 /*
 
