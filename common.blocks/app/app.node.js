@@ -201,14 +201,19 @@ models(function (err, db) {
                     });
             });
 
-            socket.on('s-speaker:getPoemByNameAndAuthor', function (params) {
+            /* S-SPEAKER END */
+
+            /* SELECT-POEM START */
+
+            socket.on('select-poem:getPoemByNameAndAuthor', function (params) {
                 Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author)
                     .then(function (poem) {
-                        socket.emit('s-speaker:getPoemByNameAndAuthor', poem);
+                        socket.emit('select-poem:getPoemByNameAndAuthor', poem);
                     });
             });
 
-            /* S-SPEAKER END */
+            /* SELECT-POEM END */
+
 
             /* BRAIN-TEST START */
 

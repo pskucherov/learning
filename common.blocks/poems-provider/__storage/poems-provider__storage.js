@@ -1,4 +1,4 @@
-modules.define('poems-provider__storage', ['inherit', 's-speaker'], function(provide, inherit, speaker) {
+modules.define('poems-provider__storage', ['inherit', 'select-poem'], function(provide, inherit, selectPoem) {
 
 provide(inherit({
     __constructor : function(data) {
@@ -40,7 +40,7 @@ provide(inherit({
 
         if (_.isEmpty(authors)) {
             this.errorInterval = setTimeout(function() {
-                speaker.getPoemIfExists();
+                selectPoem.getPoemIfExists();
             }.bind(this), 5000);
         }
 
@@ -48,7 +48,7 @@ provide(inherit({
             authors.map(function(item) {
 
                 if (item.name === author) {
-                    speaker.getPoemIfExists();
+                    selectPoem.getPoemIfExists();
                 }
 
                 return {
@@ -67,7 +67,7 @@ provide(inherit({
 
         if (_.isEmpty(poems)) {
             this.errorInterval = setTimeout(function() {
-                speaker.getPoemIfExists();
+                selectPoem.getPoemIfExists();
             }.bind(this), 5000);
         }
 
@@ -75,7 +75,7 @@ provide(inherit({
             poems.map(function(item) {
 
                 if (item.name === val) {
-                    speaker.getPoemIfExists();
+                    selectPoem.getPoemIfExists();
                 }
 
                 return {

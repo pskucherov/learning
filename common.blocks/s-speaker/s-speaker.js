@@ -177,8 +177,8 @@ modules.define(
 
                     BEMDOM.destruct(elem, true);
                     BEMDOM.update(elem, BEMHTML.apply({
-                        block: 's-speaker',
-                        elem: act
+                        block: act,
+                        js: true
                     }));
 
                     this.modal.setMod('visible', true);

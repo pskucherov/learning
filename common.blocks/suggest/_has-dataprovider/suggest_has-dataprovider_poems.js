@@ -1,7 +1,7 @@
 modules.define(
     'suggest',
-    ['poems-provider', 's-speaker'],
-    function(provide, TzDataProvider, speaker, Suggest) {
+    ['poems-provider', 'select-poem'],
+    function(provide, TzDataProvider, selectPoem, Suggest) {
 
 provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
 
@@ -54,7 +54,7 @@ provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
             ._hideSpin();
 
         // TODO: этому здесь не место, т.к. блок может быть привязан к любому другому элементу
-        speaker.getPoemIfExists();
+        selectPoem.getPoemIfExists();
     },
 
     _onMenuGotItems: function(e, data) {

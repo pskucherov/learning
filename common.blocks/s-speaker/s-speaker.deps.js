@@ -12,7 +12,7 @@
             }
         },
         {
-            elem: 'select-poem',
+            block: 'select-poem',
             tech: 'bemhtml'
         },
         {

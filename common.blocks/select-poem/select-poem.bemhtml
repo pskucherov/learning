@@ -1,4 +1,4 @@
-block('s-speaker').elem('select-poem')(
+block('select-poem')(
     content()(function() {
         return [
             {
@@ -77,7 +77,7 @@ block('s-speaker').elem('select-poem')(
                     /*{
                         block: 'button',
                         mix: {
-                            block: 's-speaker',
+                            block: 'select-poem',
                             elem: 'button-recognition',
                             js: true
                         },
@@ -95,7 +95,7 @@ block('s-speaker').elem('select-poem')(
                     {
                         block: 'button',
                         mix: {
-                            block: 's-speaker',
+                            block: 'select-poem',
                             elem: 'button-search',
                             js: true
                         },
@@ -112,7 +112,7 @@ block('s-speaker').elem('select-poem')(
                     {
                         block: 'button',
                         mix: {
-                            block: 's-speaker',
+                            block: 'select-poem',
                             elem: 'button-save',
                             js: true
                         },
@@ -126,14 +126,13 @@ block('s-speaker').elem('select-poem')(
                     {
                         block: 'button',
                         mix: {
-                            block: 's-speaker',
+                            block: 'select-poem',
                             elem: 'button-reset',
                             js: true
                         },
                         mods: {
                             theme: 'islands',
-                            size: 'l',
-                            disabled: true
+                            size: 'l'
                         },
                         text: 'Очистить'
                     }

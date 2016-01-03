@@ -82,8 +82,6 @@ Poems.findPoemByAuthorANDQuery = function(pModel, query, author) {
 Poems.getPoemByNameAndAuthor = function(pModel, name, author) {
     var deferred = vow.defer();
 
-    console.log(name, author);
-
     // TODO: Добавить moderate = 0 OR userId = 123
     pModel.findByAuthor({ name: author }).find({ name: name }).run(function (err, poems) {
         if (err) throw err;
