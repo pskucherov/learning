@@ -134,6 +134,8 @@ server = http.listen(3000, function() {
 
 models(function (err, db) {
 
+    // Это всё "безобразие" начинает разрастаться ;(
+    // TODO: разнести по контроллерам, структурировать, написать комментариев
     sessionSockets.on('connection', function(err, socket, session) {
         console.log('connected');
 
@@ -210,6 +212,10 @@ models(function (err, db) {
                     .then(function (poem) {
                         socket.emit('select-poem:getPoemByNameAndAuthor', poem);
                     });
+            });
+
+            socket.on('select-poem:saveFirstStep', function (params) {
+                console.log(params);
             });
 
             /* SELECT-POEM END */

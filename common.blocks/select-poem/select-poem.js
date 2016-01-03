@@ -10,6 +10,8 @@ modules.define(
                     inited: function() {
                         this.__base.apply(this, arguments);
 
+                        this.currentPoemId = 0;
+
                         window.socket.on('select-poem:getPoemByNameAndAuthor', this.setSelectedPoemInModal.bind(this));
                     }
                 }
@@ -18,12 +20,17 @@ modules.define(
             setSelectedPoemInModal: function(poem) {
 
                 if (_.isEmpty(poem)) {
+                    this.currentPoemId = 0;
                     this.__self.enableYaSearchButton();
                     this.__self.setMessageInPlaceholder();
                     return this;
                 }
 
-                this.__self.setTextareaVal(poem[0].poem.map(function(item) {
+                var p = poem[0];
+
+                this.currentPoemId = p.id;
+
+                this.__self.setTextareaVal(p.poem.map(function(item) {
                         return item.line + (item.nextEmpLine ? '\n' : '');
                     }).join('\n')
                 );
@@ -79,7 +86,16 @@ modules.define(
             _save: function() {
 
                 if (this._validateForm()) {
-                    console.log('ok');
+
+                    window.socket.emit('select-poem:saveFirstStep', this.currentPoemId
+                        ? { poemId: this.currentPoemId }
+                        : {
+                            author: this.__self.getAuthor(),
+                            name: this.__self.getPoemName(),
+                            poem: this.__self.getTextareaVal()
+                        }
+                    );
+
                 }
 
                 return this;
