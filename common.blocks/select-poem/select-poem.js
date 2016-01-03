@@ -41,9 +41,77 @@ modules.define(
                 this.__self.setTextareaVal('');
                 this.__self.setPlaceholder('Здесь будет содержание');
                 this.__self.disableYaSearchButton();
+
+                return this;
+            },
+
+            /**
+             * Смотрит на поля формы, если что-то не заполнено, то подсвечивает это поле
+             * @returns {boolean}
+             * @private
+             */
+            _validateForm: function() {
+                var author = this.__self.getAuthor(),
+                    name = this.__self.getPoemName(),
+                    poem = this.__self.getTextareaVal();
+
+                if (!_.isEmpty(author) && !_.isEmpty(name) && !_.isEmpty(poem)) {
+                    return true;
+                }
+
+                if (_.isEmpty(author)) {
+                    this.__self.setAuthorError();
+                }
+                if (_.isEmpty(name)) {
+                    this.__self.setPoemNameError();
+                }
+                if (_.isEmpty(poem)) {
+                    this.__self.setPoemError();
+                }
+
+                setTimeout(function() {
+                    this.__self.clearError();
+                }.bind(this), 300);
+
+                return false;
+            },
+
+            _save: function() {
+
+                if (this._validateForm()) {
+                    console.log('ok');
+                }
+
+                return this;
             }
 
         }, {
+
+            // TODO: надо бы всё это переписать по БЭМу, а то чёт я разогнался )))
+            // очевидно, что выставлять модификаторы занимало бы сильно меньше места.
+            // + лишний поиск элементов в DOM-ноде.
+            // в общем, так лучше не делать ... даже в 4 часа утра ... даже если это никто не будет ревьювить :)
+
+            setAuthorError: function() {
+                $('.suggest_act_author .input')[0].className += ' input_error';
+            },
+            setPoemNameError: function() {
+                $('.suggest_act_poem .input')[0].className += ' input_error';
+            },
+            setPoemError: function() {
+                $('.select-poem__text .textarea_act_text')[0].className += ' textarea_error';
+            },
+
+            clearError: function() {
+                var i = $('.suggest_act_author .input')[0],
+                    n = $('.suggest_act_poem .input')[0],
+                    p = $('.select-poem__text .textarea_act_text')[0];
+
+                [i, n].forEach(function(item) {
+                    item.className = item.className.replace(/input_error/i, '');
+                });
+                p.className = p.className.replace(/textarea_error/i, '');
+            },
 
             disableYaSearchButton: function() {
                 var bSearch = $('.select-poem__button-search');
@@ -68,7 +136,11 @@ modules.define(
             },
 
             setTextareaVal: function(text) {
-                $('.select-poem__text .textarea_act_text').val(text);
+                return $('.select-poem__text .textarea_act_text').val(text);
+            },
+
+            getTextareaVal: function() {
+                return $('.select-poem__text .textarea_act_text').val();
             },
 
             setMessageInPlaceholder: function() {
@@ -123,6 +195,9 @@ modules.define(
                 this
                     .liveBindTo('button-reset', 'pointerclick', function (e) {
                         this._reset();
+                    })
+                    .liveBindTo('button-save', 'pointerclick', function (e) {
+                        this._save();
                     });
 
                 return false;

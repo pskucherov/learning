@@ -118,10 +118,9 @@ block('select-poem')(
                         },
                         mods: {
                             theme: 'islands',
-                            size: 'l',
-                            disabled: true
+                            size: 'l'
                         },
-                        text: 'Сохранить'
+                        text: 'Готово'
                     },
                     {
                         block: 'button',
