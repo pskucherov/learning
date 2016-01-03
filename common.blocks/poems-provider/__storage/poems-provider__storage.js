@@ -34,12 +34,23 @@ provide(inherit({
 
     },
 
-    _provideDataauthor: function(callback, a, val, authors) {
+    _provideDataauthor: function(callback, author, val, authors) {
 
-        $('.suggest_act_poem .input__control').val('');
+        clearTimeout(this.errorInterval);
+
+        if (_.isEmpty(authors)) {
+            this.errorInterval = setTimeout(function() {
+                speaker.getPoemIfExists();
+            }.bind(this), 5000);
+        }
 
         callback(null,
             authors.map(function(item) {
+
+                if (item.name === author) {
+                    speaker.getPoemIfExists();
+                }
+
                 return {
                     text: item.name,
                     val: item.name
@@ -56,8 +67,7 @@ provide(inherit({
 
         if (_.isEmpty(poems)) {
             this.errorInterval = setTimeout(function() {
-                speaker.enableYaSearchButton();
-                speaker.setPlaceholder(val, author);
+                speaker.getPoemIfExists();
             }.bind(this), 5000);
         }
 
@@ -65,7 +75,7 @@ provide(inherit({
             poems.map(function(item) {
 
                 if (item.name === val) {
-                    console.log('Совпадают');
+                    speaker.getPoemIfExists();
                 }
 
                 return {

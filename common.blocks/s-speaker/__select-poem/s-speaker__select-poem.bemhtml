@@ -105,7 +105,7 @@ block('s-speaker').elem('select-poem')(
                             theme: 'islands',
                             size: 'l',
                             type: 'link',
-                            //disabled: true
+                            disabled: true
                         },
                         text: 'Найти в Яндекс'
                     },
@@ -135,7 +135,7 @@ block('s-speaker').elem('select-poem')(
                             size: 'l',
                             disabled: true
                         },
-                        text: 'Сбросить'
+                        text: 'Очистить'
                     }
                 ]
             }

@@ -157,12 +157,17 @@ models(function (err, db) {
             /* DATA-PROVIDER START */
 
             socket.on('provider:act:find-author', function (query) {
-
-                Poems.findAuthorByQuery(db.models['poems'], query)
+                Poems.findAuthorByQuery(db.models['authors'], query)
                     .then(function (authors) {
                         socket.emit('provider:data:author', authors);
                     });
+            });
 
+            socket.on('provider:act:find-poem', function (query, author) {
+                Poems.findPoemByAuthorANDQuery(db.models['poems'], query, author)
+                    .then(function(poems) {
+                        socket.emit('provider:data:poem', poems);
+                    });
             });
             //window.socket.emit('provider:act:' + params.act, params.val);
 
@@ -193,6 +198,13 @@ models(function (err, db) {
                 Poems.getPoemById(db.models['poems'], poemId)
                     .then(function (poem) {
                         socket.emit('s-speaker:poem', poem);
+                    });
+            });
+
+            socket.on('s-speaker:getPoemByNameAndAuthor', function (params) {
+                Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author)
+                    .then(function (poem) {
+                        socket.emit('s-speaker:getPoemByNameAndAuthor', poem);
                     });
             });
 

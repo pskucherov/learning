@@ -46,7 +46,7 @@ Poems.getPoemById = function(pModel, poemId) {
 Poems.findAuthorByQuery = function(authorModel, query) {
     var deferred = vow.defer();
 
-    // Добавить moderate = 0 OR userId = 123
+    // TODO: Добавить moderate = 0 OR userId = 123
     authorModel.find().where('name LIKE ? AND name != ? AND (moderate = "1")', ['%' + query + '%', query]).only('name').limit(5).run(function (err, authors) {
         if (err) throw err;
 
@@ -69,10 +69,25 @@ Poems.findPoemByAuthorANDQuery = function(pModel, query, author) {
 
     //where('`poems`.`name` LIKE ? AND (`poems`.`moderate` = 1)', ['%' + query + '%', query]).only('id', 'name').limit(1)
 
-    // Добавить moderate = 0 OR userId = 123
+    // TODO: Добавить moderate = 0 OR userId = 123
     pModel.findByAuthor({ name: author }).only('name', 'moderate', 'userId').each().filter(function (poem) {
         return poem.moderate === '1' && (new RegExp(query, 'im')).test(poem.name);
     }).get(function (poems) {
+        deferred.resolve(poems);
+    });
+
+    return deferred.promise();
+};
+
+Poems.getPoemByNameAndAuthor = function(pModel, name, author) {
+    var deferred = vow.defer();
+
+    console.log(name, author);
+
+    // TODO: Добавить moderate = 0 OR userId = 123
+    pModel.findByAuthor({ name: author }).find({ name: name }).run(function (err, poems) {
+        if (err) throw err;
+
         deferred.resolve(poems);
     });
 
