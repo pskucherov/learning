@@ -1,4 +1,4 @@
-modules.define('poems-provider__storage', ['inherit'], function(provide, inherit) {
+modules.define('poems-provider__storage', ['inherit', 's-speaker'], function(provide, inherit, speaker) {
 
 provide(inherit({
     __constructor : function(data) {
@@ -9,7 +9,7 @@ provide(inherit({
             };
         });
 
-        this.errorInterval;
+        this.errorInterval = null;
 
     },
 
@@ -19,6 +19,7 @@ provide(inherit({
      */
     find: function(params, callback) {
 
+        // TODO: добавить trim
         var author = $('.suggest_act_author .input__control').val();
 
         $('.s-speaker__text .textarea_act_text').attr('placeholder', 'Здесь будет содержание');
@@ -55,15 +56,18 @@ provide(inherit({
 
         if (_.isEmpty(poems)) {
             this.errorInterval = setTimeout(function() {
-                $('.s-speaker__text .textarea_act_text')
-                    .attr('placeholder', 'К сожалению, в базе нет "' + val + '"' + (author ? ', автора "' + author + '"' : '') + '.\n\n' +
-                        'Воспользуейтесь голосовым вводом, чтобы продиктовать стихотворение.\n\n' +
-                        'Подсказка: если нет микрофона, можно найти стихотворение в Яндексе и добавить в это поле.');
+                speaker.enableYaSearchButton();
+                speaker.setPlaceholder(val, author);
             }.bind(this), 5000);
         }
 
         callback(null,
             poems.map(function(item) {
+
+                if (item.name === val) {
+                    console.log('Совпадают');
+                }
+
                 return {
                     text: item.name,
                     val: item.name

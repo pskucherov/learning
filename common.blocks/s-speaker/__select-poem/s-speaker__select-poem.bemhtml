@@ -74,7 +74,7 @@ block('s-speaker').elem('select-poem')(
             {
                 elem: 'buttons',
                 content: [
-                    {
+                    /*{
                         block: 'button',
                         mix: {
                             block: 's-speaker',
@@ -91,6 +91,23 @@ block('s-speaker').elem('select-poem')(
                             url : '/images/i-speechkit-mic-off.svg'
                         },
                         text: 'Продиктовать'
+                    },*/
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 's-speaker',
+                            elem: 'button-search',
+                            js: true
+                        },
+                        target: '_blank',
+                        url: 'https://yandex.ru/search/?text=стих',
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            type: 'link',
+                            //disabled: true
+                        },
+                        text: 'Найти в Яндекс'
                     },
                     {
                         block: 'button',
