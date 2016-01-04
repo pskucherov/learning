@@ -21,6 +21,29 @@ models(function (err, db) {
 
         describe('Utils', function () {
 
+            describe('formatEmptyLines', function () {
+
+                it('should return string', function () {
+                    var text = utils.formatEmptyLines('a\nb\nc');
+                    return assert.isString(text, 'wrong type');
+                });
+
+                it('should return string[]', function () {
+                    var text = utils.formatEmptyLines(['a', 'b', 'c']);
+                    return assert.isArray(text, 'wrong type');
+                });
+
+                it('should join two empty lines in one (for String)', function () {
+                    var text = utils.formatEmptyLines('a\n\nb\n\n\n\n\nc\nd\n');
+                    return assert.equal(text, 'a\n\nb\n\nc\nd');
+                });
+
+                it('should join two empty lines in one (for Array)', function () {
+                    var text = utils.formatEmptyLines(['', '', 'a', '', 'b', '', '', '', 'c', 'd', '']);
+                    return assert.deepEqual(text, ['a', '', 'b', '', 'c', 'd']);
+                });
+
+            });
 
 
         });
