@@ -22,6 +22,16 @@ modules.define(
                 }
             },
 
+            unbindEvents: function() {
+                window.socket.removeAllListeners('select-poem:getPoemByNameAndAuthor');
+                window.socket.removeAllListeners('select-poem:saveFirstStep');
+            },
+
+            _destruct: function() {
+                this.unbindEvents();
+                this.__base.apply(this, arguments);
+            },
+
             /**
              * Построчно добавляет стих в поле ввода
              *
