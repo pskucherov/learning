@@ -162,14 +162,14 @@ models(function (err, db) {
             /* DATA-PROVIDER START */
 
             socket.on('provider:act:find-author', function (query) {
-                Poems.findAuthorByQuery(db.models['authors'], query)
+                Poems.findAuthorByQuery(db.models['authors'], query, user.id)
                     .then(function (authors) {
                         socket.emit('provider:data:author', authors);
                     });
             });
 
             socket.on('provider:act:find-poem', function (query, author) {
-                Poems.findPoemByAuthorANDQuery(db.models['poems'], query, author)
+                Poems.findPoemByAuthorANDQuery(db.models['poems'], query, author, user.id)
                     .then(function(poems) {
                         socket.emit('provider:data:poem', poems);
                     });
@@ -210,8 +210,9 @@ models(function (err, db) {
 
             /* SELECT-POEM START */
 
+            // Получить стих по точному вхождению имени и автора
             socket.on('select-poem:getPoemByNameAndAuthor', function (params) {
-                Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author)
+                Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user.id)
                     .then(function (poem) {
                         socket.emit('select-poem:getPoemByNameAndAuthor', poem);
                     });
