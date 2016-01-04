@@ -12,11 +12,22 @@ modules.define(
 
                         this.currentPoemId = 0;
 
+                        this.spin = this.findBlockInside('spin');
+
                         window.socket.on('select-poem:getPoemByNameAndAuthor', this.setSelectedPoemInModal.bind(this));
+
+                        window.socket.on('select-poem:saveFirstStep', this._saveFirstStep.bind(this));
+
                     }
                 }
             },
 
+            /**
+             * Построчно добавляет стих в поле ввода
+             *
+             * @param poem
+             * @returns {setSelectedPoemInModal}
+             */
             setSelectedPoemInModal: function(poem) {
 
                 if (_.isEmpty(poem)) {
@@ -35,6 +46,24 @@ modules.define(
                     }).join('\n')
                 );
 
+            },
+
+            /**
+             * Перейти на следующий шаг,
+             * если сервер вернул ок результат
+             *
+             * @param result
+             * @returns {_saveFirstStep}
+             * @private
+             */
+            _saveFirstStep: function(result) {
+                if (!result) {
+                    this._toggleForm();
+                } else {
+                    console.log('Переходим к следующему шагу');
+                }
+
+                return this;
             },
 
             /**
@@ -83,9 +112,17 @@ modules.define(
                 return false;
             },
 
+            /**
+             * Отправить содержимое формы на сервер
+             *
+             * @returns {_save}
+             * @private
+             */
             _save: function() {
 
                 if (this._validateForm()) {
+
+                    this._toggleForm();
 
                     window.socket.emit('select-poem:saveFirstStep', this.currentPoemId
                         ? { poemId: this.currentPoemId }
@@ -97,6 +134,21 @@ modules.define(
                     );
 
                 }
+
+                return this;
+            },
+
+            /**
+             * Поменять состояние формы
+             * @private
+             */
+            _toggleForm: function() {
+
+                this
+                    .toggleMod(this.elem('form'), 'hidden', true)
+                    .toggleMod(this.elem('buttons'), 'hidden', true);
+
+                this.spin.toggleMod('visible', true);
 
                 return this;
             }

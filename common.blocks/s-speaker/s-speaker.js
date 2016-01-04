@@ -27,8 +27,6 @@ modules.define(
 
             _sSpeakerPoem: function(poem) {
 
-                console.log(poem);
-
                 this.currentPoem = poem;
 
                 BEMDOM.update(this.elem('poem-text'), BEMHTML.apply([
@@ -80,7 +78,6 @@ modules.define(
                         var num = this.bm.search(text);
 
                         if (typeof num === 'number' && num >= 0) {
-                            console.log(num);
                             this._setImage(num + 1);
                         }
 
@@ -171,7 +168,6 @@ modules.define(
                 }
 
                 if (act) {
-                    console.log(act, this.params);
 
                     var elem = this.modal.elem('content');
 

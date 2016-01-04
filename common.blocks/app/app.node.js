@@ -220,7 +220,6 @@ models(function (err, db) {
             // Сохраняем статус для изучения стиха
             // Если стихотворения нет, то добавляем его в БД
             socket.on('select-poem:saveFirstStep', function (params) {
-                console.log(params);
 
                 function createProgress(params) {
                     SpeakerLearnPoem.getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, user.id)
@@ -239,7 +238,7 @@ models(function (err, db) {
 
                     if (!_.isEmpty(params.author) && !_.isEmpty(params.name) && !_.isEmpty(params.poem)) {
 
-                        Authors.create(db.models['speaker-learn-poem'], params.author, user.id).then(function(author) {
+                        Authors.create(db.models['authors'], params.author, user.id).then(function(author) {
                             Poems.create(db.models['poems'], params.name, author.id, user.id).then(function(poem) {
                                 PoemLines.create(db.models['poem-text'], poem.id, params.poem).then(function(lines) {
                                     createProgress({

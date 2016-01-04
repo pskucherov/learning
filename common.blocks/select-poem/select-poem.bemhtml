@@ -6,6 +6,12 @@ block('select-poem')(
                 content: 'Выберите стихотворение'
             },
             {
+                block: 'spin',
+                mods: {
+                    theme: 'islands', size: 'xl'
+                }
+            },
+            {
                 elem: 'form',
                 tag: 'form',
                 attrs: {
