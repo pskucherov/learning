@@ -14,6 +14,33 @@ var Poems = function() {
 };
 
 /**
+ * Добавить стихотворение
+ *
+ * @param pModel
+ * @param name
+ * @param authorId
+ * @param userId
+ *
+ * @returns {*}
+ */
+Poems.create = function(pModel, name, authorId, userId) {
+    var deferred = vow.defer();
+
+    pModel.create({
+        name: name,
+        author_id: authorId,
+        class: 0,
+        userId: userId,
+        moderate: '0'
+    }, function (err, poem) {
+        if (err) throw err;
+        deferred.resolve(poem);
+    });
+
+    return deferred.promise();
+};
+
+/**
  * Получить стихотворение из БД по id
  *
  * @param pModel

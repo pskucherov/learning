@@ -151,14 +151,6 @@ modules.define(
                 bSearch.removeAttr('aria-disabled');
             },
 
-            setTextareaVal: function(text) {
-                return $('.select-poem__text .textarea_act_text').val(text);
-            },
-
-            getTextareaVal: function() {
-                return $('.select-poem__text .textarea_act_text').val();
-            },
-
             setMessageInPlaceholder: function() {
                 var author = this.getAuthor(),
                     name = this.getPoemName();
@@ -191,7 +183,7 @@ modules.define(
             },
 
             getAuthor: function() {
-                return $('.suggest_act_author .input__control').val();
+                return _.trim($('.suggest_act_author .input__control').val());
             },
 
             setAuthor: function(val) {
@@ -199,11 +191,19 @@ modules.define(
             },
 
             getPoemName: function() {
-                return $('.suggest_act_poem .input__control').val();
+                return _.trim($('.suggest_act_poem .input__control').val());
             },
 
             setPoemName: function(val) {
                 return $('.suggest_act_poem .input__control').val(val);
+            },
+
+            setTextareaVal: function(text) {
+                return $('.select-poem__text .textarea_act_text').val(text);
+            },
+
+            getTextareaVal: function() {
+                return _.trim($('.select-poem__text .textarea_act_text').val());
             },
 
             live: function() {

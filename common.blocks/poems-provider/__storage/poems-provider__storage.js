@@ -19,7 +19,7 @@ provide(inherit({
      */
     find: function(params, callback) {
 
-        // TODO: добавить trim
+        // TODO: добавить trim + статические методы из select-poem
         var author = $('.suggest_act_author .input__control').val();
 
         $('.s-speaker__text .textarea_act_text').attr('placeholder', 'Здесь будет содержание');

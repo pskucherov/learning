@@ -90,10 +90,49 @@ module.exports = function (orm, db) {
             }
         }, {
             timestamp: false
+        }),
+        selectPoem = db.define('speaker-learn-poem', {
+            id: {
+                type: 'serial',
+                key: true
+            },
+            userId: {
+                type: 'integer',
+                size: 8,
+                index: true
+            },
+            // Эакончил учить стих или ещё в процессе
+            finished: {
+                type: 'boolean',
+                defaultValue: false
+            },
+            // Время, потраченное на изучение стиха
+            deltaTime: {
+                type: 'integer',
+                size: 8,
+                defaultValue: 0
+            },
+            // Какой следующий шаг
+            nextStep: {
+                type: 'integer',
+                size: 4,
+                defaultValue: 0
+            },
+            // попыток
+            attempts: {
+                type: 'integer',
+                size: 4,
+                defaultValue: 0
+            }
+        }, {
+            timestamp: true
         });
+
+    // TODO: убрать autoFetch
 
     s.hasOne('author', a, { reverse: 'author', autoFetch: true });
 
     b.hasOne('poem', s, { reverse: 'poem', autoFetch: true });
 
+    selectPoem.hasOne('poem', s);
 };

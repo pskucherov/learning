@@ -20,6 +20,9 @@ var fs = require('fs'),
     BrainTests = require('./controllers/BrainTests'),
     Complaints = require('./controllers/Complaints'),
     Poems = require('./controllers/Poems'),
+    SpeakerLearnPoem = require('./controllers/SpeakerLearnPoem'),
+    Authors = require('./controllers/Authors'),
+    PoemLines = require('./controllers/PoemLines'),
 
     settings = require('./settings'),
 
@@ -214,8 +217,43 @@ models(function (err, db) {
                     });
             });
 
+            // Сохраняем статус для изучения стиха
+            // Если стихотворения нет, то добавляем его в БД
             socket.on('select-poem:saveFirstStep', function (params) {
                 console.log(params);
+
+                function createProgress(params) {
+                    SpeakerLearnPoem.getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, user.id)
+                        .then(function (poem) {
+                            socket.emit('select-poem:saveFirstStep', 1);
+                        });
+                }
+
+                if (params.poemId) {
+                    createProgress(params);
+                } else {
+
+                    _.forEach(params, function(item, k) {
+                        params[k] = _.trim(item);
+                    });
+
+                    if (!_.isEmpty(params.author) && !_.isEmpty(params.name) && !_.isEmpty(params.poem)) {
+
+                        Authors.create(db.models['speaker-learn-poem'], params.author, user.id).then(function(author) {
+                            Poems.create(db.models['poems'], params.name, author.id, user.id).then(function(poem) {
+                                PoemLines.create(db.models['poem-text'], poem.id, params.poem).then(function(lines) {
+                                    createProgress({
+                                        poemId: poem.id
+                                    });
+                                });
+                            });
+                        });
+
+                    } else {
+                        socket.emit('select-poem:saveFirstStep', 0);
+                    }
+                }
+
             });
 
             /* SELECT-POEM END */
