@@ -1,7 +1,7 @@
 modules.define(
     's-speaker',
-    ['i-bem__dom', 'jquery', 'BEMHTML'],
-    function(provide, BEMDOM, $, BEMHTML) {
+    ['i-bem__dom', 'jquery', 'BEMHTML', 'select-poem'],
+    function(provide, BEMDOM, $, BEMHTML, spoem) {
 
         provide(BEMDOM.decl(this.name, {
             onSetMod: {
@@ -15,6 +15,8 @@ modules.define(
 
                         window.socket.on('s-speaker:poem', this._sSpeakerPoem.bind(this));
 
+                        spoem.on('finish', this._startNextStep, this);
+
                     }
 
                 }
@@ -23,6 +25,27 @@ modules.define(
 
             unbindEvents: function() {
                 window.socket.removeAllListeners('s-speaker:poem');
+                spoem.un('finish', this._startNextStep, this);
+            },
+
+            _startNextStep: function(e, finishedStep) {
+
+                var nextStep =  finishedStep === 'select-poem' ? 'read' : 'select-poem';
+
+                this.findBlockInside({ block: 'checkbox', modName: 'act', modVal: finishedStep }).setMod('checked', true);
+
+                this.modal.setMod('visible', false);
+
+                switch(nextStep) {
+                    case 'select-poem':
+                        break;
+                    case 'read':
+                        break;
+                }
+
+
+                console.log('_startNextStep');
+                return this;
             },
 
             _sSpeakerPoem: function(poem) {

@@ -70,7 +70,8 @@ modules.define(
                 if (!result) {
                     this._toggleForm();
                 } else {
-                    console.log('Переходим к следующему шагу');
+                    this.emit('finish', 'select-poem');
+                    BEMDOM.destruct(this.domElem, false);
                 }
 
                 return this;
