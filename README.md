@@ -52,7 +52,7 @@ mocha test/unit/* --delay --require blanket --reporter html-cov  > coverage.html
 ```sh
 npm install lodash-cli -g && \
 cd common.blocks/i-lodash/ && \
-lodash include=isEmpty,get,assign,forEach,isUndefined,defaultsDeep,debounce,pick -p && \
+lodash include=isEmpty,get,assign,forEach,isUndefined,defaultsDeep,debounce,pick,map,trim -p && \
 mv lodash.custom.min.js i-lodash.js
 ```
 
