@@ -10,20 +10,30 @@ modules.define(
                     inited: function() {
                         this.__base.apply(this, arguments);
 
-                        this.currentPoemId = 0;
+                        this.currentPoemId = this.params.poemId;
 
                         this.spin = this.findBlockInside('spin');
 
-                        window.socket.on('select-poem:getPoemByNameAndAuthor', this.setSelectedPoemInModal.bind(this));
+                        window.socket.on('select-poem:getPoem', this.setSelectedPoemInModal.bind(this));
+
+                        window.socket.on('select-poem:getPoemById', function(poem) {
+                            poem && this.setSelectedPoemInModal([poem]);
+                            this._toggleForm();
+                        }.bind(this));
 
                         window.socket.on('select-poem:saveFirstStep', this._saveFirstStep.bind(this));
+
+                        if (this.currentPoemId > 0) {
+                            this._toggleForm();
+                            window.socket.emit('select-poem:getPoemById', this.currentPoemId);
+                        }
 
                     }
                 }
             },
 
             unbindEvents: function() {
-                window.socket.removeAllListeners('select-poem:getPoemByNameAndAuthor');
+                window.socket.removeAllListeners('select-poem:getPoem');
                 window.socket.removeAllListeners('select-poem:saveFirstStep');
             },
 
@@ -52,6 +62,9 @@ modules.define(
                 this.__self.disableYaSearchButton();
 
                 this.currentPoemId = p.id;
+
+                this.__self.setPoemName(p.name);
+                this.__self.setAuthor(p.author.name);
 
                 this.__self.setTextareaVal(p.poem.map(function(item) {
                         return item.line + (item.nextEmpLine ? '\n' : '');

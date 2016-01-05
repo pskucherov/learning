@@ -134,7 +134,6 @@ Poems.findPoemByAuthorANDQuery = function(pModel, query, author, userId) {
 Poems.getPoemByNameAndAuthor = function(pModel, name, author, userId) {
     var deferred = vow.defer();
 
-    // TODO: Добавить moderate = 0 OR userId = 123
     pModel
         .findByAuthor({
             name: author,

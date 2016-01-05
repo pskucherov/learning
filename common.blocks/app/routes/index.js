@@ -9,7 +9,11 @@ var express = require('express'),
     Poems = require('../controllers/Poems'),
     _ = require('lodash'),
     settings = require('../settings'),
-    cookieName = settings.vk.cookieName;
+    cookieName = settings.vk.cookieName,
+
+    SpeakerLearnPoem = require('../controllers/SpeakerLearnPoem'),
+    Authors = require('../controllers/Authors'),
+    PoemLines = require('../controllers/PoemLines');
 
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
@@ -183,7 +187,11 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
 
     req.session.pageName = 's-speaker';
 
-    next();
+    SpeakerLearnPoem.getDataOfProgress(req.models['speaker-learn-poem'], res.user.id)
+        .then(function(progress) {
+            res.speakerLearnPoem = progress;
+            next();
+        });
 
 });
 

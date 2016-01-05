@@ -61,4 +61,23 @@ SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, userId) 
     return deferred.promise();
 };
 
+/**
+ * Получить данные о прогрессе
+ *
+ * @param slpModel
+ * @param userId
+ * @returns {*}
+ */
+SpeakerLearnPoem.getDataOfProgress = function(slpModel, userId) {
+    var deferred = vow.defer();
+
+    slpModel.find({ userId: userId, finished: false }).limit(1).run(function (err, progress) {
+        if (err) throw err;
+        deferred.resolve(progress[0] || []);
+    });
+
+    return deferred.promise();
+};
+
+
 module.exports = SpeakerLearnPoem;

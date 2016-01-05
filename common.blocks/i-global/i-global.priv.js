@@ -1,6 +1,7 @@
 var BEM = BEM || {},
     blocks = {},
-    global = {};
+    global = {},
+    _ = require('lodash');
 
 /**
  * Оборачивает блоки проекта |blocks| в обёртку try-catch для того, чтобы если блок при выполнении

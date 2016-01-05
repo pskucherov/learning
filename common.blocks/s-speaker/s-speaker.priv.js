@@ -14,7 +14,9 @@ BEMPRIV.decl('s-speaker', {
             'finish'
         ];
 
-        this.js(true);
+        this.js({
+            poemId: _.get(this.data, 'res.speakerLearnPoem.id', 0)
+        });
 
         this.content([
             {

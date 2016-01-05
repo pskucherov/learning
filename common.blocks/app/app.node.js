@@ -214,7 +214,16 @@ models(function (err, db) {
             socket.on('select-poem:getPoemByNameAndAuthor', function (params) {
                 Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user.id)
                     .then(function (poem) {
-                        socket.emit('select-poem:getPoemByNameAndAuthor', poem);
+                        socket.emit('select-poem:getPoem', poem);
+                    });
+            });
+
+            // Получить стих по ID
+            socket.on('select-poem:getPoemById', function (id) {
+                db.models['poems']
+                    .get(id, function (err, poem) {
+                        if (err) throw err;
+                        socket.emit('select-poem:getPoemById', poem);
                     });
             });
 

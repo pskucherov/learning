@@ -197,7 +197,9 @@ modules.define(
                     BEMDOM.destruct(elem, true);
                     BEMDOM.update(elem, BEMHTML.apply({
                         block: act,
-                        js: true
+                        js: {
+                            poemId: this.params.poemId
+                        }
                     }));
 
                     this.modal.setMod('visible', true);
