@@ -88,5 +88,20 @@ Utils._cutEmptyLines = function(text, atBegin) {
 
 };
 
+/**
+ * Добавить подстроку в строку через запятую, если в строке уже что-то есть
+ *
+ * @param text
+ * @param str
+ * @returns {string}
+ */
+Utils.addStringInTextAfterComma = function(text, str) {
+    text = typeof text === 'string' && !_.isEmpty(text) && text.split(',') || [];
+    if (text.indexOf(str) === -1) {
+        text.push(str);
+    }
+
+    return text.join(',');
+};
 
 module.exports = Utils;
