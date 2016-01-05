@@ -34,6 +34,7 @@ modules.define(
 
             unbindEvents: function() {
                 window.socket.removeAllListeners('select-poem:getPoem');
+                window.socket.removeAllListeners('select-poem:getPoemById');
                 window.socket.removeAllListeners('select-poem:saveFirstStep');
             },
 
@@ -81,11 +82,14 @@ modules.define(
              * @returns {_saveFirstStep}
              * @private
              */
-            _saveFirstStep: function(result) {
-                if (!result) {
+            _saveFirstStep: function(pId) {
+                if (!pId) {
                     this._toggleForm();
                 } else {
-                    this.emit('finish', 'select-poem');
+                    this.emit('finish', {
+                        act: 'select-poem',
+                        pId: pId
+                    });
                     BEMDOM.destruct(this.domElem, false);
                 }
 

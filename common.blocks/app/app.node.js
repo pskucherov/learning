@@ -234,7 +234,7 @@ models(function (err, db) {
                 function createProgress(params) {
                     SpeakerLearnPoem.getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, user.id)
                         .then(function (poem) {
-                            socket.emit('select-poem:saveFirstStep', 1);
+                            socket.emit('select-poem:saveFirstStep', params.poemId);
                         });
                 }
 

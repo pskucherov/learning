@@ -30,9 +30,10 @@ modules.define(
 
             _startNextStep: function(e, finishedStep) {
 
-                var nextStep =  finishedStep === 'select-poem' ? 'read' : 'select-poem';
+                var nextStep =  finishedStep.act === 'select-poem' ? 'read' : 'select-poem';
+                finishedStep.pId && (this.params.poemId = finishedStep.pId);
 
-                this.findBlockInside({ block: 'checkbox', modName: 'act', modVal: finishedStep }).setMod('checked', true);
+                this.findBlockInside({ block: 'checkbox', modName: 'act', modVal: finishedStep.act }).setMod('checked', true);
 
                 this.modal.setMod('visible', false);
 
