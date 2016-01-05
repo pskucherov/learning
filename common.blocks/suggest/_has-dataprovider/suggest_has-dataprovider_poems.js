@@ -1,7 +1,7 @@
 modules.define(
     'suggest',
-    ['poems-provider', 'select-poem'],
-    function(provide, TzDataProvider, selectPoem, Suggest) {
+    ['poems-provider', 'select-poem', 'keyboard__codes'],
+    function(provide, TzDataProvider, selectPoem, keyCodes, Suggest) {
 
 provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
 
@@ -48,13 +48,27 @@ provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
     },
 
     _onMenuItemClick : function(e, data) {
+        this._setItemInInput(data.item);
+    },
+
+    _setItemInInput: function(item) {
+        var val = item.getVal();
+
         this
             .delMod('focused')
-            .setVal(data.item.getVal(), { source : 'datalist' })
+            .setVal(val.name, { source : 'datalist' })
             ._hideSpin();
 
         // TODO: этому здесь не место, т.к. блок может быть привязан к любому другому элементу
-        selectPoem.getPoemIfExists();
+        selectPoem.getPoemIfExists(val.author, val.poemName);
+    },
+
+    _onKeyPress : function(e) {
+        if (e.keyCode === keyCodes.ENTER) {
+            if(this.hasMod('opened') && this._hoveredItem) {
+                this._setItemInInput(this._hoveredItem);
+            }
+        }
     },
 
     _onMenuGotItems: function(e, data) {
@@ -67,7 +81,6 @@ provide(Suggest.decl({ modName : 'has-dataprovider', modVal : 'poems' }, {
         this._input.delMod(this._input.elem('spin'), 'visible');
         return this;
     }
-
 
 }));
 

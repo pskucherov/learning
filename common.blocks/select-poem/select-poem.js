@@ -241,10 +241,15 @@ modules.define(
                 return $('.select-poem__text .textarea_act_text').attr('placeholder', val);
             },
 
-            getPoemIfExists: function() {
+            /**
+             *
+             * @param [author]
+             * @param [name]
+             */
+            getPoemIfExists: function(author, name) {
 
-                var author = this.getAuthor(),
-                    name = this.getPoemName();
+                author && this.setAuthor(author) || (author = this.getAuthor());
+                name && this.setPoemName(name) || (name = this.getPoemName());
 
                 this._setQueryInYaButton();
 

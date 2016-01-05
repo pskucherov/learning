@@ -100,18 +100,20 @@ Poems.findAuthorByQuery = function(authorModel, query, userId) {
  * @returns {*}
  */
 Poems.findPoemByAuthorANDQuery = function(pModel, query, author, userId) {
-    var deferred = vow.defer();
+    var deferred = vow.defer(),
+        authorObj = {
+            or: [{ userId: userId }, { moderate: '1' }]
+        };
+
+    !_.isEmpty(author) && (authorObj.name = author);
 
     pModel
-        .findByAuthor({
-            name: author,
-            or: [{ userId: userId }, { moderate: '1' }]
-        })
+        .findByAuthor(authorObj)
         .find({
             name: orm.like('%' + query + '%'),
             or: [{ userId: userId }, { moderate: '1' }]
         })
-        .only('name', 'moderate', 'userId')
+        .only('name', 'author_id')
         .limit(15)
         .run(function(err, poems) {
             deferred.resolve(poems);

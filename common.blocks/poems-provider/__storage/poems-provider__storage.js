@@ -48,12 +48,15 @@ provide(inherit({
             authors.map(function(item) {
 
                 if (item.name === author) {
-                    selectPoem.getPoemIfExists();
+                    selectPoem.getPoemIfExists(author);
                 }
 
                 return {
                     text: item.name,
-                    val: item.name
+                    val: {
+                        author: item.name,
+                        name: item.name
+                    }
                 };
             })
         );
@@ -73,14 +76,21 @@ provide(inherit({
 
         callback(null,
             poems.map(function(item) {
+                var author = _.get(item, 'author.name', '');
 
+                // Костыль: если после клика по item вызвался метод
                 if (item.name === val) {
-                    selectPoem.getPoemIfExists();
+                    selectPoem.getPoemIfExists(author, val);
                 }
 
                 return {
                     text: item.name,
-                    val: item.name
+                    val: {
+                        name: item.name,
+                        author: author,
+                        poemName: item.name
+                    }
+
                 };
             })
         );
