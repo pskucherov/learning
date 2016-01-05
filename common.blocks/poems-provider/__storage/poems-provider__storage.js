@@ -74,6 +74,8 @@ provide(inherit({
             }.bind(this), 5000);
         }
 
+        var isAuthorExistsInInput = !_.isEmpty(selectPoem.getAuthor());
+
         callback(null,
             poems.map(function(item) {
                 var author = _.get(item, 'author.name', '');
@@ -84,7 +86,9 @@ provide(inherit({
                 }
 
                 return {
-                    text: item.name,
+                    text: item.name + (isAuthorExistsInInput
+                        ? ''
+                        : ' (' + author + ')'),
                     val: {
                         name: item.name,
                         author: author,
