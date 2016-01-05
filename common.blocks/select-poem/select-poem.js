@@ -49,6 +49,8 @@ modules.define(
 
                 var p = poem[0];
 
+                this.__self.disableYaSearchButton();
+
                 this.currentPoemId = p.id;
 
                 this.__self.setTextareaVal(p.poem.map(function(item) {
@@ -205,13 +207,21 @@ modules.define(
                 var bSearch = $('.select-poem__button-search');
                 bSearch[0].className = bSearch[0].className.replace(/button_disabled/i, '');
                 //bSearch.data('bem').button.url
+                this._setQueryInYaButton();
+                bSearch.removeAttr('aria-disabled');
+            },
+
+            /**
+             * Вставить запрос в кнопку "Найти в Яндекс"
+             * @private
+             */
+            _setQueryInYaButton: function() {
+                var bSearch = $('.select-poem__button-search');
                 bSearch.attr('href', 'https://yandex.ru/search/?text='
-                    + encodeURIComponent('Стихотворение '
-                        + this.getAuthor() + ' '
+                    + encodeURIComponent(this.getAuthor() + ' '
                         + this.getPoemName()
                     )
                 );
-                bSearch.removeAttr('aria-disabled');
             },
 
             setMessageInPlaceholder: function() {
@@ -235,6 +245,8 @@ modules.define(
 
                 var author = this.getAuthor(),
                     name = this.getPoemName();
+
+                this._setQueryInYaButton();
 
                 if (!_.isEmpty(author) && !_.isEmpty(name)) {
                     window.socket.emit('select-poem:getPoemByNameAndAuthor', {
