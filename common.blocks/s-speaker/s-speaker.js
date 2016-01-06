@@ -193,10 +193,7 @@ modules.define(
 
                 if (act) {
 
-                    var elem = this.modal.elem('content');
-
-                    BEMDOM.destruct(elem, true);
-                    BEMDOM.update(elem, BEMHTML.apply({
+                    this.modal.setContent(BEMHTML.apply({
                         block: act,
                         js: {
                             poemId: this.params.poemId

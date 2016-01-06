@@ -133,6 +133,10 @@ modules.define(
              */
             _save: function() {
 
+                if (this.buttonSave.hasMod('disabled')) {
+                    return this;
+                }
+
                 window.socket.emit('s-speaker-read:save', {
                     poemId: this.currentPoemId,
                     act: 's-speaker-read'
