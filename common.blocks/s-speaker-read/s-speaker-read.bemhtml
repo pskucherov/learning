@@ -99,7 +99,13 @@ block('s-speaker-read').elem('poem')(
                                     elem: 'checkbox'
                                 }
                             },
-                            item.line
+                            {
+                                block: 'link',
+                                target: '_blank',
+                                title: 'Найти картинку в Яндекс',
+                                url: 'https://yandex.ru/images/search?text=' + encodeURIComponent(item.line),
+                                content: item.line
+                            }
                         ]
                     },
                     item.nextEmpLine ? {
