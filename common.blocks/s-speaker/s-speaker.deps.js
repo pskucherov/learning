@@ -16,6 +16,10 @@
             tech: 'bemhtml'
         },
         {
+            block: 's-speaker-read',
+            tech: 'bemhtml'
+        },
+        {
             block: 'icon'
         },
         {

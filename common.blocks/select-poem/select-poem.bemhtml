@@ -54,11 +54,7 @@ block('select-poem')(
                             placeholder: 'Введите название',
                             name: 'poems',
                             dataprovider: {
-                                data: [
-                                    'Africa/Abidjan',
-                                    'Africa/Accra',
-                                    'Africa/Addis_Ababa'
-                                ]
+                                data: ['']
                             }
                         }
                     },
