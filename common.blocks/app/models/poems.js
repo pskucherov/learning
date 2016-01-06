@@ -112,11 +112,11 @@ module.exports = function (orm, db) {
                 size: 8,
                 defaultValue: 0
             },
-            // Какой следующий шаг
-            nextStep: {
-                type: 'integer',
-                size: 4,
-                defaultValue: 0
+            // Какие шаги завершены
+            complitedSteps: {
+                type: 'text',
+                size: 1000,
+                defaultValue: ''
             },
             // попыток
             attempts: {

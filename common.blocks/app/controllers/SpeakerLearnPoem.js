@@ -40,10 +40,11 @@ SpeakerLearnPoem.createProgress = function(slpModel, poemId, userId) {
  *
  * @param slpModel
  * @param poemId
+ * @param {String} act — завершённое действие в текущем шаге
  * @param userId
  * @returns {*}
  */
-SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, userId) {
+SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, act, userId) {
     var deferred = vow.defer();
 
     slpModel.find({ userId: userId, poem_id: poemId }).limit(1).run(function (err, progress) {
@@ -51,15 +52,24 @@ SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, userId) 
 
         if (_.isEmpty(progress)) {
             SpeakerLearnPoem.createProgress(slpModel, poemId, userId).then(function(progress) {
-                deferred.resolve(progress);
+                progress.complitedSteps = utils.addStringInTextAfterComma(progress.complitedSteps, act);
+                progress.save(function(err) {
+                    if (err) throw err;
+                    deferred.resolve(progress);
+                });
             });
         } else {
-            deferred.resolve(progress[0]);
+            progress[0].complitedSteps = utils.addStringInTextAfterComma(progress[0].complitedSteps, act);
+            progress[0].save(function(err) {
+                if (err) throw err;
+                deferred.resolve(progress[0]);
+            });
         }
     });
 
     return deferred.promise();
 };
+
 
 /**
  * Получить данные о прогрессе
@@ -71,10 +81,14 @@ SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, userId) 
 SpeakerLearnPoem.getDataOfProgress = function(slpModel, userId) {
     var deferred = vow.defer();
 
-    slpModel.find({ userId: userId, finished: false }).limit(1).run(function (err, progress) {
-        if (err) throw err;
-        deferred.resolve(progress[0] || []);
-    });
+    slpModel
+        .find({ userId: userId, finished: false })
+        .limit(1)
+        .orderRaw("?? DESC", ['modified_at'])
+        .run(function (err, progress) {
+            if (err) throw err;
+            deferred.resolve(progress[0] || []);
+        });
 
     return deferred.promise();
 };

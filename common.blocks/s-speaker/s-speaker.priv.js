@@ -6,13 +6,36 @@ BEMPRIV.decl('s-speaker', {
          * @type {{0: string, 1: string, 2: string, 3: string, 4: string, 5: string}}
          */
         var LINE_ACTION_MOD = [
-            'select-poem',
-            'read',
-            //'select-images',
-            'sort-lines',
-            'repeat-poem',
-            'finish'
-        ];
+                {
+                    act: 'select-poem',
+                    text: 'Выберите стихотворение'
+                },
+                {
+                    act: 's-speaker-read',
+                    text: 'Прочитайте и запомните содержание'
+                },
+                /*{
+                    act: 'select-images',
+                    text: 'Подберите картинки, которые напоминают каждый куплет'
+                },*/
+                {
+                    act: 'sort-lines',
+                    text: 'Расставьте строки в правильном порядке'
+                },
+                {
+                    act: 'repeat-poem',
+                    text: 'Расскажите стих, следуя подсказкам'
+                },
+                /*{
+                    act: 'repeat-steps',
+                    text: 'Повторяйте пункты 4 и 5, пока не запомните стихотворение'
+                },*/
+                {
+                    act: 'finish',
+                    text: 'Поделитесь с друзьями своим успехом'
+                }
+            ],
+            finishedSteps = _.get(this.data, 'res.speakerLearnPoem.complitedSteps', '').split(',');
 
         this.js({
             poemId: _.get(this.data, 'res.speakerLearnPoem.id', 0)
@@ -32,26 +55,30 @@ BEMPRIV.decl('s-speaker', {
                         tag: 'br'
                     },
                     {
-                        content: [
-                            'Выберите стихотворение',
-                            'Прочитайте и запомните содержание',
-                            //'Подберите картинки, которые напоминают каждый куплет',
-                            'Расставьте строки в правильном порядке',
-                            'Расскажите стих, следуя подсказкам',
-                            'Поделитесь с друзьями своим успехом'
-                            //'Повторяйте пункты 4 и 5, пока не запомните стихотворение'
-                        ].map(function (item, k) {
+                        content: _.map(LINE_ACTION_MOD, function (item, k) {
+                            var prev = LINE_ACTION_MOD[k-1],
+                                prevIsEnabled = prev && finishedSteps.indexOf(prev.act) !== -1 || false;
+
                             return [
                                 {
                                     block: 'checkbox',
-                                    mods: { disabled: 'yes', act: LINE_ACTION_MOD[k] },
+                                    mods: {
+                                        disabled: 'yes',
+                                        act: item.act,
+                                        checked: finishedSteps.indexOf(item.act) !== -1
+                                    },
                                     mix: { block: 's-speaker', elem: 'checkbox' }
                                 },
                                 {
                                     elem: 'line',
                                     attrs: { style: k ? '' : 'margin-top: 0;' },
-                                    mods: { disabled: k ? 'yes' : '', act: LINE_ACTION_MOD[k] },
-                                    content: item
+                                    mods: {
+                                        disabled: k && finishedSteps.indexOf(item.act) === -1 && !prevIsEnabled
+                                            ? 'yes'
+                                            : '',
+                                        act: item.act
+                                    },
+                                    content: item.text
                                 },
                                 {
                                     tag: 'br'
