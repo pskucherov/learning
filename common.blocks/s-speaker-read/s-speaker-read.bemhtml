@@ -65,6 +65,7 @@ block('s-speaker-read')(
                         mods: {
                             theme: 'islands',
                             size: 'l',
+                            'button-save': true,
                             disabled: true
                         },
                         text: 'Готово'

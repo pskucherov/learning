@@ -21,13 +21,47 @@ modules.define(
                         window.socket.on('select-poem:getPoemById', function(poem) {
                             poem && this.setSelectedPoemInModal([poem]);
                             this._toggleForm();
+
+                            this.bindEvents();
                         }.bind(this));
 
                     }
                 }
             },
 
+            bindEvents: function() {
+
+                this.checkboxes = this.findBlocksInside('checkbox');
+                this.buttonSave = this.findBlockInside({ block: 'button', modName: 'button-save', modVal: true });
+
+                _.forEach(this.checkboxes, function(item) {
+                    item.on({ modName : 'checked', modVal : '*' }, this._onCheckboxChanged, this);
+                }.bind(this));
+
+            },
+
+            /**
+             * Если изменился чекбокс во включенное состояние и все остальные чекбоксы так же отмечены,
+             * то включаем кнопку сохранения
+             *
+             * @param e
+             * @param checkbox
+             * @returns {_onCheckboxChanged}
+             * @private
+             */
+            _onCheckboxChanged: function(e, checkbox) {
+                if (checkbox.modVal && this._checkAllCheckbox()) {
+                    this.buttonSave.setMod('disabled', false);
+                } else {
+                    this.buttonSave.setMod('disabled', true);
+                }
+                return this;
+            },
+
             unbindEvents: function() {
+                _.forEach(this.checkboxes, function(item) {
+                    item.un({ modName: 'checked', modVal: '*' }, this._onCheckboxChanged, this);
+                }.bind(this));
             },
 
             _destruct: function() {
@@ -35,6 +69,16 @@ modules.define(
                 this.__base.apply(this, arguments);
             },
 
+            /**
+             * Проверяет, что все чекбоксы отмечены
+             * @returns {boolean}
+             * @private
+             */
+            _checkAllCheckbox: function() {
+                return _.every(this.checkboxes, function(item) {
+                    return item.hasMod('checked');
+                }, true);
+            },
 
             /**
              * Построчно добавляет стих в поле ввода
