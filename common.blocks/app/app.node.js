@@ -227,20 +227,24 @@ models(function (err, db) {
                     });
             });
 
+            function createOrSaveProgress(params, answerName) {
+                SpeakerLearnPoem
+                    .getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, params.act, user.id)
+                    .then(function (poem) {
+                        socket.emit(answerName || 'select-poem:saveFirstStep', params.poemId);
+                    });
+            }
+
+            socket.on('s-speaker-read:save', function (params) {
+                createOrSaveProgress(params, 's-speaker-read:save');
+            });
+
             // Сохраняем статус для изучения стиха
             // Если стихотворения нет, то добавляем его в БД
             socket.on('select-poem:saveFirstStep', function (params) {
 
-                function createProgress(params) {
-                    SpeakerLearnPoem
-                        .getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, params.act, user.id)
-                        .then(function (poem) {
-                            socket.emit('select-poem:saveFirstStep', params.poemId);
-                        });
-                }
-
                 if (params.poemId) {
-                    createProgress(params);
+                    createOrSaveProgress(params);
                 } else {
 
                     _.forEach(params, function(item, k) {
@@ -252,7 +256,7 @@ models(function (err, db) {
                         Authors.create(db.models['authors'], params.author, user.id).then(function(author) {
                             Poems.create(db.models['poems'], params.name, author.id, user.id).then(function(poem) {
                                 PoemLines.create(db.models['poem-text'], poem.id, params.poem).then(function(lines) {
-                                    createProgress({
+                                    createOrSaveProgress({
                                         poemId: poem.id
                                     });
                                 });

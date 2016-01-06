@@ -25,6 +25,8 @@ modules.define(
                             this.bindEvents();
                         }.bind(this));
 
+                        window.socket.on('s-speaker-read:save', this._saveStep.bind(this));
+
                     }
                 }
             },
@@ -121,13 +123,56 @@ modules.define(
                 this.toggleMod(this.elem('instruction'), 'hidden', true);
                 this.toggleMod(this.elem('poem'), 'hidden', true);
                 return this;
+            },
+
+            /**
+             * Отправить на сервер инфу о том, что надо перейти к следующему шагу
+             *
+             * @returns {_save}
+             * @private
+             */
+            _save: function() {
+
+                window.socket.emit('s-speaker-read:save', {
+                    poemId: this.currentPoemId,
+                    act: 's-speaker-read'
+                });
+
+                return this;
+            },
+
+            /**
+             * Перейти на следующий шаг,
+             * если сервер вернул ок результат
+             *
+             * @param result
+             * @returns {_saveStep}
+             * @private
+             */
+            _saveStep: function(pId) {
+                if (!pId) {
+                    this._toggleForm();
+                } else {
+                    this.emit('finish', {
+                        act: 's-speaker-read',
+                        pId: pId
+                    });
+                    BEMDOM.destruct(this.domElem, false);
+                }
+
+                return this;
             }
+
 
         }, {
             live: function() {
-                this.liveBindTo('button-instruction', 'pointerclick', function(e) {
-                    this._onInstructionButtonClick(e);
-                });
+                this
+                    .liveBindTo('button-instruction', 'pointerclick', function(e) {
+                        this._onInstructionButtonClick(e);
+                    })
+                    .liveBindTo('button-save', 'pointerclick', function (e) {
+                        this._save();
+                    });
 
                 return false;
             }
