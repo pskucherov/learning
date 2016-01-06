@@ -1,0 +1,12 @@
+block('modal').content()(function() {
+    var content = applyNext();
+
+    content.content.content.content = [
+        {
+            elem: 'close'
+        },
+        content.content.content.content
+    ];
+
+    return content;
+});
