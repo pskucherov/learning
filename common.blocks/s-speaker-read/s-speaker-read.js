@@ -115,6 +115,7 @@ modules.define(
             _toggleForm: function() {
 
                 this.spin.toggleMod('visible', true);
+                this.toggleMod(this.elem('buttons'), 'hidden', true);
 
                 return this;
             },
