@@ -120,12 +120,28 @@ modules.define(
                 }
 
                 return this;
-            }
+            },
 
+            _onHelpButtonClick: function(e) {
+
+                this.helpButton
+                    || (this.helpButton = this.findBlockInside({ block: 'button', modName: 'help', modVal: true }));
+
+                this.delMod(this.elem('hidden-line'), 'no-help');
+
+                setTimeout(function() {
+                    this.setMod(this.elem('hidden-line'), 'no-help', true);
+                    this.helpButton.delMod('checked');
+                }.bind(this), 5000);
+
+            }
 
         }, {
             live: function() {
                 this
+                    .liveBindTo('button-help', 'pointerclick', function (e) {
+                        this._onHelpButtonClick();
+                    })
                     .liveBindTo('button-save', 'pointerclick', function (e) {
                         this._save();
                     });

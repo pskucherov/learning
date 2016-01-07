@@ -24,7 +24,8 @@ block('s-speaker-sort-lines')(
                         mods: {
                             theme: 'islands',
                             size: 'l',
-                            togglable : 'check'
+                            togglable : 'check',
+                            help: true
                         },
                         text: 'Подсказка'
                     },
