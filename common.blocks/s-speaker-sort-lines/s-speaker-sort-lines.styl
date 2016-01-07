@@ -1,0 +1,75 @@
+.s-speaker-sort-lines
+  min-width 400px
+  min-height 400px
+  padding 50px
+  display flex
+  justify-content center
+  align-items center
+  flex-direction column
+
+  &__poems
+    justify-content center
+    align-items center
+    flex-direction row
+
+  &__poem
+    float left
+    display inline-block
+
+  & &__title-poem
+    font-size 25px
+    text-align center
+    margin-bottom 25px
+
+  &__poem_hidden
+    display none
+
+  &__line
+    cursor pointer
+    margin 7px 0
+    font-size 20px
+
+  &__poem-author
+    text-align right
+    font-weight bold
+    font-style italic
+    margin-top 25px
+
+  &__buttons
+    text-align center
+    margin-top 50px
+
+    &_hidden
+      visibility hidden
+
+  & .button
+    margin 0 10px
+
+  &_hidden
+    visibility hidden
+
+  & .spin
+    margin auto
+
+  &__hidden-line
+    display inline-block
+    background-color #EEE
+    color #EEE
+
+    &_no-help
+      width 85%
+      max-width 350px
+
+  &__hidden-text
+    visibility hidden
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
+
+  &__str
+    display inline-block
+    height 32px
+
+  &__poem_right
+    position relative
+    top 50px

@@ -19,7 +19,7 @@ BEMPRIV.decl('s-speaker', {
                     text: 'Подберите картинки, которые напоминают каждый куплет'
                 },*/
                 {
-                    act: 'sort-lines',
+                    act: 's-speaker-sort-lines',
                     text: 'Расставьте строки в правильном порядке'
                 },
                 {

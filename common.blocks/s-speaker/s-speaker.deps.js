@@ -20,6 +20,10 @@
             tech: 'bemhtml'
         },
         {
+            block: 's-speaker-sort-lines',
+            tech: 'bemhtml'
+        },
+        {
             block: 'icon'
         },
         {

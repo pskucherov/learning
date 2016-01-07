@@ -1,0 +1,137 @@
+block('s-speaker-sort-lines')(
+    js()(true),
+    content()(function() {
+
+        return [
+            {
+                block: 'spin',
+                mods: {
+                    theme: 'islands', size: 'xl'
+                }
+            },
+            {
+                elem: 'poems'
+            },
+            {
+                elem: 'buttons',
+                content: [
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 's-speaker-sort-lines',
+                            elem: 'button-help'
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            togglable : 'check'
+                        },
+                        text: 'Подсказка'
+                    },
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 's-speaker-sort-lines',
+                            elem: 'button-check'
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l'
+                        },
+                        text: 'Проверить'
+                    },
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 's-speaker-sort-lines',
+                            elem: 'button-save'
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            'button-save': true,
+                            disabled: true
+                        },
+                        text: 'Готово'
+                    }
+                ]
+            }
+        ];
+    })
+);
+
+block('s-speaker-sort-lines').elem('poems')(
+    content()(function() {
+
+        console.log('poem', this.ctx);
+
+        var poems = this.ctx.poem;
+
+        return this.ctx.title && this.ctx.poem && this.ctx.author && [
+            {
+                elem: 'poem',
+                elemMods: {left: true},
+                content: [
+                    {
+                        elem: 'title-poem',
+                        content: this.ctx.title
+                    },
+                    this.ctx.poem.map(function (item) {
+                        return [
+                            {
+                                elem: 'line',
+                                mods: {
+                                    num: item.line_num
+                                },
+                                content: [
+                                    (item.line_num + 1) + '. ',
+                                    {
+                                        elem: 'hidden-line',
+                                        elemMods: {
+                                            'no-help': true
+                                        },
+                                        content: {
+                                            elem: 'hidden-text',
+                                            content: item.line
+                                        }
+                                    }
+                                ]
+                            },
+                            item.nextEmpLine ? {
+                                tag: 'br'
+                            } : ''
+                        ];
+                    }.bind(this)),
+                    {
+                        elem: 'poem-author',
+                        content: this.ctx.author
+                    }
+                ]
+            },
+            {
+                elem: 'poem',
+                elemMods: {right: true},
+                content: [
+                    _.shuffle(this.ctx.poem).map(function(item) {
+                        return [
+                            {
+                                elem: 'line',
+                                mods: {
+                                    num: item.line_num
+                                },
+                                content: {
+                                    tag: 'span',
+                                    elem: 'str',
+                                    content: item.line
+                                }
+                            },
+                            item.nextEmpLine ? {
+                                tag: 'br'
+                            } : ''
+                        ];
+                    }.bind(this))
+                ]
+            }
+        ] || '';
+    })
+);
