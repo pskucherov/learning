@@ -33,7 +33,7 @@ block('s-speaker-sort-lines')(
                         },
                         text: 'Подсказка'
                     },
-                    {
+                    /*{
                         block: 'button',
                         mix: {
                             block: 's-speaker-sort-lines',
@@ -44,7 +44,7 @@ block('s-speaker-sort-lines')(
                             size: 'l'
                         },
                         text: 'Проверить'
-                    },
+                    },*/
                     {
                         block: 'button',
                         mix: {
@@ -85,9 +85,6 @@ block('s-speaker-sort-lines').elem('poems')(
                             return [
                                 {
                                     elem: 'line',
-                                    mods: {
-                                        num: item.line_num
-                                    },
                                     content: [
                                         //(item.line_num + 1) + '. ',
                                         {
@@ -122,7 +119,8 @@ block('s-speaker-sort-lines').elem('poems')(
                                 {
                                     elem: 'line',
                                     mods: {
-                                        num: item.line_num
+                                        num: item.line_num,
+                                        draggable: true
                                     },
                                     content: {
                                         tag: 'span',

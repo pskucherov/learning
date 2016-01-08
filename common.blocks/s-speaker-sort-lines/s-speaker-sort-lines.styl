@@ -31,9 +31,16 @@
     display none
 
   &__line
-    cursor move
+    cursor default
     margin 7px 0
     font-size 20px
+    &_draggable
+      cursor move
+
+    &_wrong-pos
+      box-shadow 0px 0px 1px 1px #f00
+    &_right-pos
+      box-shadow 0px 0px 1px 1px #0f0
 
   &__poem-author
     text-align right

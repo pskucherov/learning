@@ -235,8 +235,14 @@ models(function (err, db) {
                     });
             }
 
+
+            // TODO: объединить эти события
             socket.on('s-speaker-read:save', function (params) {
                 createOrSaveProgress(params, 's-speaker-read:save');
+            });
+
+            socket.on('s-speaker-sort-lines:save', function (params) {
+                createOrSaveProgress(params, 's-speaker-sort-lines:save');
             });
 
             // Сохраняем статус для изучения стиха

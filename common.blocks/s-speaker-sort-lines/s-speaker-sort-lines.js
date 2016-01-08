@@ -68,10 +68,84 @@ modules.define(
                 }));
 
                 // Делаем возможным перетаскивать строки в пределах попапа
-                this.elem('line').draggable({
-                    containment: '.s-speaker-sort-lines__poems'
+                this.elem('line', 'draggable', true).draggable({
+                    containment: '.s-speaker-sort-lines__poems',
+                    stop: this._onStopDrag.bind(this)
                 });
 
+            },
+
+            _onStopDrag: function() {
+                if (this._isPoemReady()) {
+                    this.buttonSave.delMod('disabled');
+                } else {
+                    this.buttonSave.setMod('disabled', true);
+                }
+            },
+
+            /**
+             * Проверяет все ли строки стоят на своих местах
+             *
+             * @returns {Boolean}
+             * @private
+             */
+            _isPoemReady: function() {
+                var linesPos = this._getSortedLinesPos();
+
+                return _.every(this.elem('line', 'draggable', true), function(current) {
+                    current = $(current);
+                    var i = this.getMod(current, 'num');
+                    return linesPos[i] === current.offset().top;
+                }.bind(this));
+
+            },
+
+            /**
+             * Отсортировать позиции строк в возрастающем порядке
+             *
+             * @returns {Array.<T>}
+             * @private
+             */
+            _getSortedLinesPos: function() {
+                var linesPos = [];
+
+                _.forEach(this.elem('line', 'draggable', true), function(item) {
+                    linesPos.push($(item).offset().top);
+                }.bind(this));
+
+                return linesPos.sort(function(a, b) {
+                    return a - b;
+                });
+            },
+
+            /**
+             * Показать статус сортировки строк
+             *
+             * @returns {_checkLinesPos}
+             * @private
+             */
+            _showSortStatus: function() {
+                var linesPos = this._getSortedLinesPos();
+
+                _.forEach(this.elem('line', 'draggable', true), function(current) {
+
+                    current = $(current);
+
+                    var i = this.getMod(current, 'num');
+
+                    this
+                        .delMod(current, 'wrong-pos')
+                        .delMod(current, 'right-pos');
+
+                    if (linesPos[i] !== current.offset().top) {
+                        this.setMod(current, 'wrong-pos', true);
+                    } else {
+                        this.setMod(current, 'right-pos', true);
+                    }
+
+                }.bind(this));
+
+                return this;
             },
 
             /**
@@ -135,9 +209,16 @@ modules.define(
 
                 this.delMod(this.elem('hidden-line'), 'no-help');
 
+                this._showSortStatus();
+
                 setTimeout(function() {
-                    this.setMod(this.elem('hidden-line'), 'no-help', true);
                     this.helpButton.delMod('checked');
+
+                    this
+                        .setMod(this.elem('hidden-line'), 'no-help', true)
+                        .delMod(this.elem('line'), 'wrong-pos')
+                        .delMod(this.elem('line'), 'right-pos');
+
                 }.bind(this), 5000);
 
             }
