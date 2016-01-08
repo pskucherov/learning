@@ -10,6 +10,10 @@ block('s-speaker-sort-lines')(
                 }
             },
             {
+                elem: 'title',
+                content: 'Соберите из строк стихотворение'
+            },
+            {
                 elem: 'poems'
             },
             {
