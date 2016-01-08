@@ -1,5 +1,8 @@
 ({
     shouldDeps: [
-        { elem: 'ui' }
+        {
+            elem: 'ui',
+            mods: { touch: true }
+        }
     ]
 })

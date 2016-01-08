@@ -60,8 +60,13 @@ mv lodash.custom.min.js i-lodash.js
 
 Кастомная сборка:
 ```
+Desktop:
 http://jqueryui.com/download/#!version=1.11.4&components=1110100000000000000000000000000000000
 jquery-ui.js -> common.blocks/i-jquery/__ui/i-jquery__ui.js
+
++ Touch Punch:
+https://github.com/furf/jquery-ui-touch-punch/blob/8f7559b6e65cdc3ee3648d5fe76d38c653f87ff5/jquery.ui.touch-punch.js
+jquery.ui.touch-punch.js -> common.blocks/i-jquery/__ui/_touch/i-jquery__ui_touch.js
 ```
 
 [issue в orm]: <https://github.com/dresende/node-orm2/issues/524>
