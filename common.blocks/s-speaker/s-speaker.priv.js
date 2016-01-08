@@ -23,7 +23,7 @@ BEMPRIV.decl('s-speaker', {
                     text: 'Расставьте строки в правильном порядке'
                 },
                 {
-                    act: 'repeat-poem',
+                    act: 's-speaker-repeat',
                     text: 'Расскажите стих, следуя подсказкам'
                 },
                 /*{

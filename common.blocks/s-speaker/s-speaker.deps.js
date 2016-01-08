@@ -24,6 +24,10 @@
             tech: 'bemhtml'
         },
         {
+            block: 's-speaker-repeat',
+            tech: 'bemhtml'
+        },
+        {
             block: 'icon'
         },
         {
