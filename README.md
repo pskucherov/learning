@@ -56,6 +56,14 @@ lodash include=isEmpty,get,assign,forEach,isUndefined,defaultsDeep,debounce,pick
 mv lodash.custom.min.js i-lodash.js
 ```
 
+### JQuery UI
+
+Кастомная сборка:
+```
+http://jqueryui.com/download/#!version=1.11.4&components=1110100000000000000000000000000000000
+jquery-ui.js -> common.blocks/i-jquery/__ui/i-jquery__ui.js
+```
+
 [issue в orm]: <https://github.com/dresende/node-orm2/issues/524>
 [Orm]: <http://dresende.github.io/node-orm2/>
 [MySQL]: <http://www.mysql.com/>

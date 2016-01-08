@@ -12,6 +12,7 @@ modules.define(
 
                         this.currentPoemId = this.params.poemId;
                         this.spin = this.findBlockInside('spin');
+                        this.buttonSave = this.findBlockInside({ block: 'button', modName: 'button-save', modVal: true });
 
                         if (this.currentPoemId > 0) {
                             this._toggleForm();
@@ -65,6 +66,11 @@ modules.define(
                     author: p.author.name,
                     poem: p.poem
                 }));
+
+                // Делаем возможным перетаскивать строки в пределах попапа
+                this.elem('line').draggable({
+                    containment: '.s-speaker-sort-lines__poems'
+                });
 
             },
 

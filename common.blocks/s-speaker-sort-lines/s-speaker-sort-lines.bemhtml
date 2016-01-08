@@ -62,77 +62,78 @@ block('s-speaker-sort-lines')(
 );
 
 block('s-speaker-sort-lines').elem('poems')(
-    content()(function() {
-
-        console.log('poem', this.ctx);
+    replace()(function() {
 
         var poems = this.ctx.poem;
 
-        return this.ctx.title && this.ctx.poem && this.ctx.author && [
-            {
-                elem: 'poem',
-                elemMods: {left: true},
-                content: [
-                    {
-                        elem: 'title-poem',
-                        content: this.ctx.title
-                    },
-                    this.ctx.poem.map(function (item) {
-                        return [
-                            {
-                                elem: 'line',
-                                mods: {
-                                    num: item.line_num
-                                },
-                                content: [
-                                    (item.line_num + 1) + '. ',
-                                    {
-                                        elem: 'hidden-line',
-                                        elemMods: {
-                                            'no-help': true
-                                        },
-                                        content: {
-                                            elem: 'hidden-text',
-                                            content: item.line
+        return {
+            elem: 'poems',
+            content: this.ctx.title && this.ctx.poem && this.ctx.author && [
+                {
+                    elem: 'poem',
+                    elemMods: {left: true},
+                    content: [
+                        {
+                            elem: 'title-poem',
+                            content: this.ctx.title
+                        },
+                        this.ctx.poem.map(function (item) {
+                            return [
+                                {
+                                    elem: 'line',
+                                    mods: {
+                                        num: item.line_num
+                                    },
+                                    content: [
+                                        //(item.line_num + 1) + '. ',
+                                        {
+                                            elem: 'hidden-line',
+                                            elemMods: {
+                                                'no-help': true
+                                            },
+                                            content: {
+                                                elem: 'hidden-text',
+                                                content: item.line
+                                            }
                                         }
-                                    }
-                                ]
-                            },
-                            item.nextEmpLine ? {
-                                tag: 'br'
-                            } : ''
-                        ];
-                    }.bind(this)),
-                    {
-                        elem: 'poem-author',
-                        content: this.ctx.author
-                    }
-                ]
-            },
-            {
-                elem: 'poem',
-                elemMods: {right: true},
-                content: [
-                    _.shuffle(this.ctx.poem).map(function(item) {
-                        return [
-                            {
-                                elem: 'line',
-                                mods: {
-                                    num: item.line_num
+                                    ]
                                 },
-                                content: {
-                                    tag: 'span',
-                                    elem: 'str',
-                                    content: item.line
-                                }
-                            },
-                            item.nextEmpLine ? {
-                                tag: 'br'
-                            } : ''
-                        ];
-                    }.bind(this))
-                ]
-            }
-        ] || '';
+                                item.nextEmpLine ? {
+                                    tag: 'br'
+                                } : ''
+                            ];
+                        }.bind(this)),
+                        {
+                            elem: 'poem-author',
+                            content: this.ctx.author
+                        }
+                    ]
+                },
+                {
+                    elem: 'poem',
+                    elemMods: {right: true},
+                    content: [
+                        _.shuffle(this.ctx.poem).map(function (item) {
+                            return [
+                                {
+                                    elem: 'line',
+                                    mods: {
+                                        num: item.line_num
+                                    },
+                                    content: {
+                                        tag: 'span',
+                                        elem: 'str',
+                                        content: item.line
+                                    }
+                                },
+                                item.nextEmpLine ? {
+                                    tag: 'br'
+                                } : ''
+                            ];
+                        }.bind(this))
+                    ]
+                }
+            ] || ''
+        };
     })
 );
