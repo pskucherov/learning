@@ -15,8 +15,7 @@ modules.define(
                         this.buttonSave = this.findBlockInside({ block: 'button', modName: 'button-save', modVal: true });
 
                         if (this.currentPoemId > 0) {
-                            this._toggleForm();
-                            window.socket.emit('select-poem:getPoemById', this.currentPoemId);
+                            this._begin();
                         }
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
@@ -28,6 +27,16 @@ modules.define(
 
                     }
                 }
+            },
+
+            /**
+             * Начать выполнять задание сначала.
+             * @private
+             */
+            _begin: function() {
+                this._toggleForm();
+                window.socket.emit('select-poem:getPoemById', this.currentPoemId);
+                return this;
             },
 
             bindEvents: function() {
@@ -228,6 +237,9 @@ modules.define(
                 this
                     .liveBindTo('button-help', 'pointerclick', function (e) {
                         this._onHelpButtonClick();
+                    })
+                    .liveBindTo('button-repeat', 'pointerclick', function (e) {
+                        this._begin();
                     })
                     .liveBindTo('button-save', 'pointerclick', function (e) {
                         this._save();

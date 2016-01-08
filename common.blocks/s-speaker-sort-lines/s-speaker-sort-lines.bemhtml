@@ -33,18 +33,18 @@ block('s-speaker-sort-lines')(
                         },
                         text: 'Подсказка'
                     },
-                    /*{
+                    {
                         block: 'button',
                         mix: {
                             block: 's-speaker-sort-lines',
-                            elem: 'button-check'
+                            elem: 'button-repeat'
                         },
                         mods: {
                             theme: 'islands',
                             size: 'l'
                         },
-                        text: 'Проверить'
-                    },*/
+                        text: 'Повторить'
+                    },
                     {
                         block: 'button',
                         mix: {
