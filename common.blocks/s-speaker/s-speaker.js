@@ -1,7 +1,7 @@
 modules.define(
     's-speaker',
-    ['i-bem__dom', 'jquery', 'BEMHTML', 'select-poem'],
-    function(provide, BEMDOM, $, BEMHTML, spoem) {
+    ['i-bem__dom', 'jquery', 'BEMHTML', 'select-poem', 's-speaker-read', 's-speaker-sort-lines'],
+    function(provide, BEMDOM, $, BEMHTML, spoem, sread, sortLines) {
 
         provide(BEMDOM.decl(this.name, {
             onSetMod: {
@@ -10,12 +10,16 @@ modules.define(
 
                         //this._getPoem(1);
 
+                        this.currentPoemId = this.params.poemId;
+
                         this.currentPoem = {};
                         this.modal = this.findBlockInside('modal');
 
                         window.socket.on('s-speaker:poem', this._sSpeakerPoem.bind(this));
 
-                        spoem.on('finish', this._startNextStep, this);
+                        [spoem, sread, sortLines].forEach(function(item) {
+                            item.on('finish', this._startNextStep, this);
+                        }.bind(this));
 
                     }
 
@@ -25,27 +29,46 @@ modules.define(
 
             unbindEvents: function() {
                 window.socket.removeAllListeners('s-speaker:poem');
-                spoem.un('finish', this._startNextStep, this);
+                [spoem, sread, sortLines].forEach(function(item) {
+                    item.un('finish', this._startNextStep, this);
+                });
             },
 
+            /**
+             * Отмечаем чекбоксом пройденный этап,
+             * включаем следующий этап
+             *
+             * @param e
+             * @param finishedStep
+             * @returns {_startNextStep}
+             * @private
+             */
             _startNextStep: function(e, finishedStep) {
 
-                var nextStep =  finishedStep.act === 'select-poem' ? 'read' : 'select-poem';
-                finishedStep.pId && (this.params.poemId = finishedStep.pId);
+                var nextStep = this.params.steps.indexOf(finishedStep.act) + 1,
+                    nextStepAct = this.params.steps[nextStep];
 
-                this.findBlockInside({ block: 'checkbox', modName: 'act', modVal: finishedStep.act }).setMod('checked', true);
+                if (this.currentPoemId !== finishedStep.pId) {
+                    this.currentPoemId = finishedStep.pId;
 
-                this.modal.setMod('visible', false);
-
-                switch(nextStep) {
-                    case 'select-poem':
-                        break;
-                    case 'read':
-                        break;
+                    this.setMod(this.elem('line'), 'disabled', 'yes');
+                    this.delMod(this.elem('line', 'act', finishedStep.act), 'disabled');
+                    _.forEach(this.findBlocksInside('checkbox'), function(checkbox) {
+                        checkbox.delMod('checked');
+                    });
                 }
 
+                this.findBlockInside({ block: 'checkbox', modName: 'act', modVal: finishedStep.act })
+                    .setMod('checked', true);
 
-                console.log('_startNextStep');
+                if (nextStepAct) {
+                    this.delMod(this.elem('line', 'act', nextStepAct), 'disabled');
+                    this._openStep(nextStepAct);
+                } else {
+                    this.modal.setMod('visible', false);
+                    this.modal.setContent('');
+                }
+
                 return this;
             },
 
@@ -176,33 +199,45 @@ modules.define(
              * Выбираем событие по клику на строку и передаём управление
              *
              * @param e
+             * @param {String} act
+             *
              * @returns {_onLinePointerClick}
              * @private
              */
-            _onLinePointerClick: function(e) {
+            _onLinePointerClick: function(e, act) {
 
                 if (this.hasMod($(e.currentTarget), 'disabled')) {
                     return this;
                 }
 
+                /*
                 if (this.hasMod($(e.currentTarget), 'num')) {
                     var num = +this.getMod($(e.currentTarget), 'num');
                 } else if (this.hasMod($(e.currentTarget), 'act')) {
                     var act = this.getMod($(e.currentTarget), 'act');
                 }
+                */
+
+                if (!act && this.hasMod($(e.currentTarget), 'act')) {
+                    act = this.getMod($(e.currentTarget), 'act');
+                }
 
                 if (act) {
-
-                    this.modal.setContent(BEMHTML.apply({
-                        block: act,
-                        js: {
-                            poemId: this.params.poemId
-                        }
-                    }));
-
-                    this.modal.setMod('visible', true);
-
+                    this._openStep(act);
                 }
+
+                return this;
+            },
+
+            _openStep: function(act) {
+                this.modal.setContent(BEMHTML.apply({
+                    block: act,
+                    js: {
+                        poemId: this.currentPoemId
+                    }
+                }));
+
+                this.modal.setMod('visible', true);
 
                 return this;
             },

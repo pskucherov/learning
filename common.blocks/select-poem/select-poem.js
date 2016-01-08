@@ -154,12 +154,11 @@ modules.define(
 
                     this._toggleForm();
 
-                    window.socket.emit('select-poem:saveFirstStep', this.currentPoemId
-                        ? {
+                    window.socket.emit('select-poem:saveFirstStep', /* this.currentPoemId? {
                             poemId: this.currentPoemId,
                             act: 'select-poem'
                         }
-                        : {
+                        : */ {
                             author: this.__self.getAuthor(),
                             name: this.__self.getPoemName(),
                             poem: this.__self.getTextareaVal(),

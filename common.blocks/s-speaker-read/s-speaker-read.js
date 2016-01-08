@@ -64,6 +64,9 @@ modules.define(
                 _.forEach(this.checkboxes, function(item) {
                     item.un({ modName: 'checked', modVal: '*' }, this._onCheckboxChanged, this);
                 }.bind(this));
+
+                window.socket.removeAllListeners('select-poem:getPoemById');
+                window.socket.removeAllListeners('s-speaker-read:save');
             },
 
             _destruct: function() {

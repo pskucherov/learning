@@ -249,9 +249,9 @@ models(function (err, db) {
             // Если стихотворения нет, то добавляем его в БД
             socket.on('select-poem:saveFirstStep', function (params) {
 
-                if (params.poemId) {
-                    createOrSaveProgress(params);
-                } else {
+                //if (params.poemId) {
+                //    createOrSaveProgress(params);
+                //} else {
 
                     _.forEach(params, function(item, k) {
                         params[k] = _.trim(item);
@@ -259,20 +259,28 @@ models(function (err, db) {
 
                     if (!_.isEmpty(params.author) && !_.isEmpty(params.name) && !_.isEmpty(params.poem)) {
 
-                        Authors.create(db.models['authors'], params.author, user.id).then(function(author) {
-                            Poems.create(db.models['poems'], params.name, author.id, user.id).then(function(poem) {
-                                PoemLines.create(db.models['poem-text'], poem.id, params.poem).then(function(lines) {
-                                    createOrSaveProgress({
-                                        poemId: poem.id
+                        Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user.id)
+                            .then(function (poem) {
+                                params.poemId = poem && poem[0] && poem[0].id;
+
+                                if (params.poemId) {
+                                    createOrSaveProgress(params);
+                                } else {
+                                    Authors.create(db.models['authors'], params.author, user.id).then(function(author) {
+                                        Poems.create(db.models['poems'], params.name, author.id, user.id).then(function(poem) {
+                                            PoemLines.create(db.models['poem-text'], poem.id, params.poem).then(function(lines) {
+                                                params.poemId = poem.id;
+                                                createOrSaveProgress(params);
+                                            });
+                                        });
                                     });
-                                });
+                                }
                             });
-                        });
 
                     } else {
                         socket.emit('select-poem:saveFirstStep', 0);
                     }
-                }
+                //}
 
             });
 

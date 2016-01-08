@@ -44,7 +44,8 @@ modules.define(
             },
 
             unbindEvents: function() {
-
+                window.socket.removeAllListeners('select-poem:getPoemById');
+                window.socket.removeAllListeners('s-speaker-sort-lines:save');
             },
 
             _destruct: function() {

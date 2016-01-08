@@ -38,7 +38,8 @@ BEMPRIV.decl('s-speaker', {
             finishedSteps = _.get(this.data, 'res.speakerLearnPoem.complitedSteps', '').split(',');
 
         this.js({
-            poemId: _.get(this.data, 'res.speakerLearnPoem.id', 0)
+            poemId: _.get(this.data, 'res.speakerLearnPoem.id', 0),
+            steps: _.pluck(LINE_ACTION_MOD, 'act')
         });
 
         this.content([
@@ -62,8 +63,11 @@ BEMPRIV.decl('s-speaker', {
                             return [
                                 {
                                     block: 'checkbox',
+                                    js: true,
                                     mods: {
-                                        disabled: 'yes',
+                                        disabled: true,
+                                        theme: 'islands',
+                                        size: 'm',
                                         act: item.act,
                                         checked: finishedSteps.indexOf(item.act) !== -1
                                     },
@@ -93,18 +97,7 @@ BEMPRIV.decl('s-speaker', {
                     }
                 ]
             }
-            /*{
-                block: 's-speaker',
-                elem: 'poem-text'
-            }
-            /*,{
-                block: 's-speaker',
-                elem: 'visual-container',
-                content: {
-                    block: 's-speaker',
-                    elem: 'visualisation'
-                }
-            }*/
+
         ]);
 
     }
