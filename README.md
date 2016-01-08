@@ -2,7 +2,7 @@
 
 ### Установка
 ```sh
-git clone https://github.com/phpprog/learning
+git clone https://github.com/pskucherov/learning
 npm i
 ```
 
