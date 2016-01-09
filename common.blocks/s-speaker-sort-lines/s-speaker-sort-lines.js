@@ -91,7 +91,6 @@ modules.define(
                 } else {
                     this.buttonSave.setMod('disabled', true);
                 }
-                this._showSortStatus();
             },
 
             /**

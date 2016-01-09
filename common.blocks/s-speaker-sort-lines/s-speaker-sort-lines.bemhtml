@@ -68,8 +68,6 @@ block('s-speaker-sort-lines')(
 block('s-speaker-sort-lines').elem('poems')(
     replace()(function() {
 
-        var poems = this.ctx.poem;
-
         return {
             elem: 'poems',
             content: this.ctx.title && this.ctx.poem && this.ctx.author && [

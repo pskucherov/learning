@@ -25,7 +25,8 @@ var PoemLines = function() {
 PoemLines.create = function(plModel, poemId, poemText) {
     var deferred = vow.defer(),
         prepareObjectToCreate,
-        finalText;
+        finalText,
+        lineNum = 0;
 
     poemText = utils.formatEmptyLines(poemText);
 
@@ -34,7 +35,7 @@ PoemLines.create = function(plModel, poemId, poemText) {
     prepareObjectToCreate = _.chain(finalText)
         .map(function(line, k) {
             return _.isEmpty(line) ? '' : {
-                line_num: k,
+                line_num: lineNum++,
                 line: line,
                 'fts-tokens': JSON.stringify(BM25.Tokenize(line)),
                 nextEmpLine: !_.isUndefined(finalText[k + 1]) && _.isEmpty(finalText[k + 1]),
