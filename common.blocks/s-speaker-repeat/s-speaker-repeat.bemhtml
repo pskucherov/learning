@@ -9,6 +9,10 @@ block('s-speaker-repeat')(
                 }
             },
             {
+                elem: 'title',
+                content: 'Расскажите стихотворение, следуя подсказкам'
+            },
+            {
                 elem: 'instruction',
                 mods: {
                     hidden: true
@@ -16,7 +20,7 @@ block('s-speaker-repeat')(
                 content: [
                     {
                         elem: 'title',
-                        content: 'Инструкция по запоминанию и визуализации'
+                        content: 'Инструкция'
                     },
                     [
                         'Вдумчиво прочитайте стихотворение',
