@@ -76,24 +76,6 @@ block('select-poem')(
             {
                 elem: 'buttons',
                 content: [
-                    /*{
-                        block: 'button',
-                        mix: {
-                            block: 'select-poem',
-                            elem: 'button-recognition',
-                            js: true
-                        },
-                        mods: {
-                            theme: 'islands',
-                            size: 'l',
-                            disabled: true
-                        },
-                        icon: {
-                            block : 'icon',
-                            url : '/images/i-speechkit-mic-off.svg'
-                        },
-                        text: 'Продиктовать'
-                    },*/
                     {
                         block: 'button',
                         mix: {

@@ -63,16 +63,32 @@ block('s-speaker-repeat')(
                     {
                         block: 'button',
                         mix: {
+                            block: 'select-poem',
+                            elem: 'button-recognition',
+                            js: true
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l'
+                        },
+                        icon: {
+                            block : 'icon',
+                            url : '/images/i-speechkit-mic-off.svg'
+                        },
+                        text: 'Начать'
+                    },
+                    {
+                        block: 'button',
+                        mix: {
                             block: 's-speaker-repeat',
                             elem: 'button-save'
                         },
                         mods: {
                             theme: 'islands',
                             size: 'l',
-                            'button-save': true,
-                            disabled: true
+                            'button-save': true
                         },
-                        text: 'Готово'
+                        text: 'Я запомнил' + (this.ctx.isFemale ? 'а' : '') + '!'
                     }
                 ]
             }
@@ -82,30 +98,32 @@ block('s-speaker-repeat')(
 
 block('s-speaker-repeat').elem('poem')(
     content()(function() {
-        console.log(this.ctx);
-        return this.ctx.title && this.ctx.poem && this.ctx.author && [
-            {
-                elem: 'title-poem',
-                content: this.ctx.title
-            },
-            this.ctx.poem.map(function(item) {
-                return [
-                    {
-                        elem: 'line',
-                        mods: {
-                            num: item.line_num
+        return {
+            elem: 'text',
+            content: this.ctx.title && this.ctx.poem && this.ctx.author && [
+                {
+                    elem: 'title-poem',
+                    content: this.ctx.title
+                },
+                this.ctx.poem.map(function (item) {
+                    return [
+                        {
+                            elem: 'line',
+                            mods: {
+                                num: item.line_num
+                            },
+                            content: item.line
                         },
-                        content: item.line
-                    },
-                    item.nextEmpLine ? {
-                        tag: 'br'
-                    } : ''
-                ];
-            }.bind(this)),
-            {
-                elem: 'poem-author',
-                content: this.ctx.author
-            }
-        ] || '';
+                        item.nextEmpLine ? {
+                            tag: 'br'
+                        } : ''
+                    ];
+                }.bind(this)),
+                {
+                    elem: 'poem-author',
+                    content: this.ctx.author
+                }
+            ] || ''
+        };
     })
 );

@@ -234,7 +234,8 @@ modules.define(
                     block: act,
                     js: {
                         poemId: this.currentPoemId
-                    }
+                    },
+                    isFemale: this.params.isFemale
                 }));
 
                 this.modal.setMod('visible', true);
