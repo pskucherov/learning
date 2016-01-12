@@ -83,7 +83,8 @@ block('s-speaker-repeat')(
                         mods: {
                             theme: 'islands',
                             size: 'l',
-                            'button-save': true
+                            'button-save': true,
+                            disabled: true
                         },
                         text: 'Я запомнил' + (this.ctx.isFemale ? 'а' : '') + '!'
                     }

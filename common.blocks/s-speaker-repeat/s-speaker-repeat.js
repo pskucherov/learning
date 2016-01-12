@@ -175,6 +175,9 @@ modules.define(
         }, {
             live: function() {
                 this
+                    .liveBindTo('line', 'pointerclick', function(e) {
+
+                    })
                     .liveBindTo('button-instruction', 'pointerclick', function(e) {
                         this._onInstructionButtonClick(e);
                     })
