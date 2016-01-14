@@ -10,6 +10,15 @@ modules.define(
                     inited: function() {
                         this.__base.apply(this, arguments);
 
+                        this.audio = null;
+
+                        this.tts = ya.speechkit.Tts({
+                            speaker: 'jane',
+                            emotion: 'good',
+                            gender: 'female',
+                            speed: 1
+                        });
+
                         this.currentPoemId = this.params.poemId;
                         this.spin = this.findBlockInside('spin');
 
@@ -67,10 +76,14 @@ modules.define(
 
                 window.socket.removeAllListeners('select-poem:getPoemById');
                 window.socket.removeAllListeners('s-speaker-repeat:save');
+
+                return this;
             },
 
             _destruct: function() {
-                this.unbindEvents();
+                this
+                    .unbindEvents()
+                    ._clearAudio();
                 this.__base.apply(this, arguments);
             },
 
@@ -108,6 +121,20 @@ modules.define(
                     author: p.author.name,
                     poem: p.poem
                 }));
+
+                /*
+                воспроизведение текста
+                var text = '';
+
+                p.poem.forEach(function(item) {
+                    text += item.line + ', ';
+                });
+
+                text = text.replace(/\.\, /ig, '. ');
+
+                console.log(text);
+                this.tts.say(text);
+                */
 
             },
 
@@ -169,6 +196,20 @@ modules.define(
                 }
 
                 return this;
+            },
+
+            /**
+             * Очистить объект audio (на всякий случай, чтобы память не текла)
+             * @returns {_clearAudio}
+             * @private
+             */
+            _clearAudio: function() {
+                if (this.audio) {
+                    this.audio.pause();
+                    $(this.audio).remove();
+                    this.audio = null;
+                }
+                return this;
             }
 
 
@@ -176,7 +217,16 @@ modules.define(
             live: function() {
                 this
                     .liveBindTo('line', 'pointerclick', function(e) {
+                        this.tts.speak($(e.currentTarget).text(),  {
+                            dataCallback: function (blob) {
 
+                                this._clearAudio();
+
+                                var url = URL.createObjectURL(blob);
+                                this.audio =  new Audio(url);
+                                this.audio.play();
+                            }.bind(this)
+                        });
                     })
                     .liveBindTo('button-instruction', 'pointerclick', function(e) {
                         this._onInstructionButtonClick(e);

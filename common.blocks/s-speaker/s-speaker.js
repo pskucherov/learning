@@ -15,7 +15,7 @@ modules.define(
                         this.currentPoem = {};
                         this.modal = this.findBlockInside('modal');
 
-                        window.socket.on('s-speaker:poem', this._sSpeakerPoem.bind(this));
+                        //window.socket.on('s-speaker:poem', this._sSpeakerPoem.bind(this));
 
                         [spoem, sread, sortLines].forEach(function(item) {
                             item.on('finish', this._startNextStep, this);
@@ -239,6 +239,8 @@ modules.define(
                 }));
 
                 this.modal.setMod('visible', true);
+
+                this.modal.on('close')
 
                 return this;
             },
