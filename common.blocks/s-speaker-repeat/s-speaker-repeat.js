@@ -12,9 +12,11 @@ modules.define(
 
                         this.audio = null;
 
+                        this.speakButton = this.findBlockInside({ block: 'button', modName: 'speak', modVal: true });
+
                         this.tts = ya.speechkit.Tts({
                             speaker: 'jane',
-                            emotion: 'good',
+                            emotion: 'mixed',
                             gender: 'female',
                             speed: 1
                         });
@@ -123,17 +125,17 @@ modules.define(
                 }));
 
                 /*
-                воспроизведение текста
+                //воспроизведение текста
                 var text = '';
 
                 p.poem.forEach(function(item) {
                     text += item.line + ', ';
                 });
 
-                text = text.replace(/\.\, /ig, '. ');
+                text = text.replace(/\.\, /ig, '. ').replace('покровом', 'покр+овом');
 
                 console.log(text);
-                this.tts.say(text);
+                this._speak(text);
                 */
 
             },
@@ -205,11 +207,38 @@ modules.define(
              */
             _clearAudio: function() {
                 if (this.audio) {
+                    this.speakButton.setMod('checked', false);
                     this.audio.pause();
                     $(this.audio).remove();
                     this.audio = null;
                 }
                 return this;
+            },
+
+            /**
+             * Воспроизвести текст
+             * @param text
+             * @private
+             */
+            _speak: function(text) {
+
+                this.speakButton.setMod('checked', true);
+
+                this.tts.speak(text,
+                    {
+                        dataCallback: function (blob) {
+                            this._clearAudio();
+                            var url = URL.createObjectURL(blob);
+                            this.audio = new Audio(url);
+                            this.audio.play();
+                            this.audio.onended = function() {
+                                this.speakButton.setMod('checked', false);
+                                this._clearAudio();
+                            }.bind(this)
+                        }.bind(this)
+                    }
+                );
+
             }
 
 
@@ -217,19 +246,16 @@ modules.define(
             live: function() {
                 this
                     .liveBindTo('line', 'pointerclick', function(e) {
-                        this.tts.speak($(e.currentTarget).text(),  {
-                            dataCallback: function (blob) {
-
-                                this._clearAudio();
-
-                                var url = URL.createObjectURL(blob);
-                                this.audio =  new Audio(url);
-                                this.audio.play();
-                            }.bind(this)
-                        });
+                        this._speak($(e.currentTarget).text());
                     })
                     .liveBindTo('button-instruction', 'pointerclick', function(e) {
                         this._onInstructionButtonClick(e);
+                    })
+                    .liveBindTo('button-speak', 'pointerclick', function(e) {
+                        this._clearAudio();
+
+                        this.speakButton.setMod('checked', false);
+                        // TODO: добавить чтение всего стиха
                     })
                     .liveBindTo('button-save', 'pointerclick', function (e) {
                         this._save();

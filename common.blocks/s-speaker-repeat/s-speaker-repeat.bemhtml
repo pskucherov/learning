@@ -60,13 +60,33 @@ block('s-speaker-repeat')(
                     {
                         block: 'button',
                         mix: {
-                            block: 'select-poem',
+                            block: this.block,
+                            elem: 'button-speak',
+                            js: true
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            togglable : 'check',
+                            speak: true
+                        },
+                        icon: {
+                            block : 'icon',
+                            url : '/images/i-speechkit-sound.svg'
+                        },
+                        text: 'Прослушать'
+                    },
+                    {
+                        block: 'button',
+                        mix: {
+                            block: this.block,
                             elem: 'button-recognition',
                             js: true
                         },
                         mods: {
                             theme: 'islands',
-                            size: 'l'
+                            size: 'l',
+                            togglable : 'check'
                         },
                         icon: {
                             block : 'icon',
