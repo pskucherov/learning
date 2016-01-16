@@ -11,6 +11,7 @@ modules.define(
                         this.__base.apply(this, arguments);
 
                         this.audio = null;
+                        this.poem = null;
 
                         this.speakButton = this.findBlockInside({ block: 'button', modName: 'speak', modVal: true });
 
@@ -113,31 +114,40 @@ modules.define(
                     return this;
                 }
 
-                var p = poem[0];
+                this.poem = poem[0];
 
 
                 BEMDOM.update(this.elem('poem'), BEMHTML.apply({
                     block: 's-speaker-repeat',
                     elem: 'poem',
-                    title: p.name,
-                    author: p.author.name,
-                    poem: p.poem
+                    title: this.poem.name,
+                    author: this.poem.author.name,
+                    poem: this.poem.poem
                 }));
 
                 /*
                 //воспроизведение текста
-                var text = '';
 
-                p.poem.forEach(function(item) {
-                    text += item.line + ', ';
-                });
-
-                text = text.replace(/\.\, /ig, '. ').replace('покровом', 'покр+овом');
-
-                console.log(text);
-                this._speak(text);
                 */
 
+            },
+
+            /**
+             * Воспроизвести стих целиком
+             * @returns {_speakPoem}
+             * @private
+             */
+            _speakPoem: function() {
+                var text = '';
+
+                if (this.poem) {
+                    this.poem.poem.forEach(function(item) {
+                        text += item.line + ', ';
+                    });
+                    this._speak(text);
+                }
+
+                return this;
             },
 
             /**
@@ -206,7 +216,7 @@ modules.define(
              * @private
              */
             _clearAudio: function() {
-                if (this.audio) {
+                if (this._isAudioInProcess()) {
                     this.speakButton.setMod('checked', false);
                     this.audio.pause();
                     $(this.audio).remove();
@@ -216,6 +226,16 @@ modules.define(
             },
 
             /**
+             * Проверка на то, что аудио воспроизводится.
+             * @returns {Boolean}
+             * @private
+             */
+            _isAudioInProcess: function() {
+                return !!this.audio;
+            },
+
+            /**
+             * TODO: порефакторить и вынести воспроизведение в отдельный блок
              * Воспроизвести текст
              * @param text
              * @private
@@ -252,10 +272,11 @@ modules.define(
                         this._onInstructionButtonClick(e);
                     })
                     .liveBindTo('button-speak', 'pointerclick', function(e) {
-                        this._clearAudio();
-
-                        this.speakButton.setMod('checked', false);
-                        // TODO: добавить чтение всего стиха
+                        if (this._isAudioInProcess()) {
+                            this._clearAudio();
+                        } else {
+                            this._speakPoem();
+                        }
                     })
                     .liveBindTo('button-save', 'pointerclick', function (e) {
                         this._save();
