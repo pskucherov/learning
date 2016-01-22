@@ -19,7 +19,8 @@ modules.define(
                             speaker: 'jane',
                             emotion: 'mixed',
                             gender: 'female',
-                            speed: 1
+                            speed: 1,
+                            apiKey: 'ee18d8a0-5813-4657-9469-972ba94af634'
                         });
 
                         this.currentPoemId = this.params.poemId;
