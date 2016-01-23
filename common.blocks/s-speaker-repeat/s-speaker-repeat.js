@@ -19,7 +19,7 @@ modules.define(
                             speaker: 'jane',
                             emotion: 'mixed',
                             gender: 'female',
-                            speed: 1,
+                            speed: 0.8,
                             apiKey: 'ee18d8a0-5813-4657-9469-972ba94af634'
                         });
 
@@ -260,8 +260,22 @@ modules.define(
                     }
                 );
 
-            }
+            },
 
+            /**
+             * Скрыть инструкцию
+             *
+             * @returns {_closeInstruction}
+             * @private
+             */
+            _closeInstruction: function() {
+                this
+                    .setMod(this.elem('instruction'), 'hidden', true)
+                    .delMod(this.elem('poem'), 'hidden');
+
+                this.findBlockInside({ block: 'button', modName: 'instruction', modVal: true }).delMod('checked');
+                return this;
+            }
 
         }, {
             live: function() {
@@ -272,7 +286,12 @@ modules.define(
                     .liveBindTo('button-instruction', 'pointerclick', function(e) {
                         this._onInstructionButtonClick(e);
                     })
+                    .liveBindTo('button-recognition', 'pointerclick', function(e) {
+                        this._closeInstruction();
+                        this._clearAudio();
+                    })
                     .liveBindTo('button-speak', 'pointerclick', function(e) {
+                        this._closeInstruction();
                         if (this._isAudioInProcess()) {
                             this._clearAudio();
                         } else {
