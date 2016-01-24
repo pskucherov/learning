@@ -23,6 +23,8 @@ modules.define(
                             apiKey: 'ee18d8a0-5813-4657-9469-972ba94af634'
                         });
 
+                        this.recognize = new ya.speechkit.SpeechRecognition();
+
                         this.currentPoemId = this.params.poemId;
                         this.spin = this.findBlockInside('spin');
 
@@ -88,6 +90,9 @@ modules.define(
                 this
                     .unbindEvents()
                     ._clearAudio();
+
+                delete this.bm;
+
                 this.__base.apply(this, arguments);
             },
 
@@ -115,8 +120,13 @@ modules.define(
                     return this;
                 }
 
+                this.bm = new BM25();
+
                 this.poem = poem[0];
 
+                this.poem.poem.forEach(function(item) {
+                    this.bm.addDocument({ id: item.line_num, body: item.line });
+                }.bind(this));
 
                 BEMDOM.update(this.elem('poem'), BEMHTML.apply({
                     block: 's-speaker-repeat',
@@ -275,6 +285,70 @@ modules.define(
 
                 this.findBlockInside({ block: 'button', modName: 'instruction', modVal: true }).delMod('checked');
                 return this;
+            },
+
+            _startLearning: function() {
+
+                var options = {
+                        resultCallBackBuf: function (text) {
+                            if (!text) {
+                                return;
+                            }
+                            var num = this.bm.search(text);
+
+                            if (typeof num === 'number' && num >= 0) {
+                                //this._setImage(num + 1);
+                                console.log(num);
+                            }
+
+                            console.log('here ' + text);
+
+                        }.bind(this),
+                        doneCallback: function (text) {
+                            console.log("You've said: " + text);
+                        },
+                        initCallback: function () {
+                            console.log("You may speak now");
+                        },
+                        errorCallback: function (err) {
+                            console.log("Something gone wrong: " + err);
+                        },
+                        model: 'freeform', // Model name for recognition process
+                        lang: 'ru-RU', //Language for recognition process
+                        apiKey: 'ee18d8a0-5813-4657-9469-972ba94af634'
+                    },
+                    opts = ya.speechkit._extend(
+                    ya.speechkit._extend(
+                        {},
+                        ya.speechkit._defaultOptions()
+                    ),
+                    options);
+
+                opts.doneCallback = options.doneCallback;
+
+                opts.dataCallback = function (text, uttr, merge) {
+
+                    //console.log('text ' + text);
+
+                    opts.resultCallBackBuf(text);
+
+                    if (uttr) {
+                        console.log('stop uttr');
+                        if (opts.doneCallback) {
+                            opts.doneCallback(text);
+                        }
+                        //dict.stop();
+                    }
+                };
+
+                opts.stopCallback = function () {
+                    dict = null;
+                };
+
+
+                this.recognize.start(opts);
+
+                return this;
             }
 
         }, {
@@ -287,8 +361,16 @@ modules.define(
                         this._onInstructionButtonClick(e);
                     })
                     .liveBindTo('button-recognition', 'pointerclick', function(e) {
-                        this._closeInstruction();
-                        this._clearAudio();
+
+                        console.log(this.recognize);
+                        if (this.recognize.send) {
+                            this.recognize.stop();
+                        } else {
+                            this
+                                ._closeInstruction()
+                                ._clearAudio()
+                                ._startLearning();
+                        }
                     })
                     .liveBindTo('button-speak', 'pointerclick', function(e) {
                         this._closeInstruction();

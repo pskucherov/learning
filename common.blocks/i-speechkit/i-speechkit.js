@@ -944,7 +944,7 @@
             this.socket.onmessage = function (e) {
                 var message = JSON.parse(e.data);
 
-                console.log(message);
+                //console.log(message);
 
                 if (message.type == 'InitResponse'){
                     this.sessionId = message.data.sessionId;
@@ -1360,11 +1360,11 @@
             opts.resultCallBackBuf(text);
 
             if (uttr) {
-                console.log('stop');
+                console.log('stop uttr');
                 if (opts.doneCallback) {
                     opts.doneCallback(text);
                 }
-                dict.stop();
+                //dict.stop();
             }
         };
 
