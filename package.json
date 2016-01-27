@@ -47,7 +47,7 @@
   "scripts": {
     "postinstall": "npm run deps",
     "deps": "bower install --non-interactive",
-    "start": "enb make && node --use-strict $(node --v8-options | grep harm | awk '{print $1}' | xargs) app",
+    "start": "enb make && YENV=dev node app",
     "test": "./node_modules/mocha/bin/mocha test/unit/* --delay"
   },
   "engines": {
