@@ -87,7 +87,8 @@ block('s-speaker-repeat')(
                         mods: {
                             theme: 'islands',
                             size: 'l',
-                            togglable : 'check'
+                            togglable : 'check',
+                            recognition: true
                         },
                         icon: {
                             block : 'icon',

@@ -249,9 +249,10 @@ modules.define(
              * TODO: порефакторить и вынести воспроизведение в отдельный блок
              * Воспроизвести текст
              * @param text
+             * @param {Function} onEnd
              * @private
              */
-            _speak: function(text) {
+            _speak: function(text, onEnd) {
 
                 this.speakButton.setMod('checked', true);
 
@@ -265,6 +266,7 @@ modules.define(
                             this.audio.onended = function() {
                                 this.speakButton.setMod('checked', false);
                                 this._clearAudio();
+                                onEnd && onEnd();
                             }.bind(this)
                         }.bind(this)
                     }
@@ -287,7 +289,18 @@ modules.define(
                 return this;
             },
 
+            _stopLearning: function() {
+                this.findBlockInside({ block: 'button', modName: 'recognition', modVal: true }).delMod('checked');
+                this.recognize.stop();
+                return this;
+            },
+
             _startLearning: function() {
+
+                this.recognize = new ya.speechkit.SpeechRecognition();
+
+                this.currentLine = 0;
+                this.uttrCount = 0;
 
                 var options = {
                         resultCallBackBuf: function (text) {
@@ -297,11 +310,8 @@ modules.define(
                             var num = this.bm.search(text);
 
                             if (typeof num === 'number' && num >= 0) {
-                                //this._setImage(num + 1);
-                                console.log(num);
+                                this.currentLine = num;
                             }
-
-                            console.log('here ' + text);
 
                         }.bind(this),
                         doneCallback: function (text) {
@@ -328,18 +338,31 @@ modules.define(
 
                 opts.dataCallback = function (text, uttr, merge) {
 
-                    //console.log('text ' + text);
+
+                    var line;
+                    console.log('text');
+                    console.log(arguments);
 
                     opts.resultCallBackBuf(text);
 
                     if (uttr) {
-                        console.log('stop uttr');
-                        if (opts.doneCallback) {
-                            opts.doneCallback(text);
+                        this.uttrCount++;
+                        if (this.uttrCount > 20) {
+                            this._stopLearning();
+                        } else {
+
+                            this._stopLearning();
+
+                            if (opts.doneCallback) {
+                                opts.doneCallback(text);
+                            }
+
+                            line = this.poem.poem[this.currentLine + 1];
+                            line && !_.isEmpty(line.line) && this._speak(line.line, this._startLearning.bind(this));
                         }
                         //dict.stop();
                     }
-                };
+                }.bind(this);
 
                 opts.stopCallback = function () {
                     dict = null;
@@ -362,9 +385,8 @@ modules.define(
                     })
                     .liveBindTo('button-recognition', 'pointerclick', function(e) {
 
-                        console.log(this.recognize);
                         if (this.recognize.send) {
-                            this.recognize.stop();
+                            this._stopLearning();
                         } else {
                             this
                                 ._closeInstruction()
