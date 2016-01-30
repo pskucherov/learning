@@ -292,6 +292,7 @@ modules.define(
             _stopLearning: function() {
                 this.findBlockInside({ block: 'button', modName: 'recognition', modVal: true }).delMod('checked');
                 this.recognize.stop();
+                delete this.recognize;
                 return this;
             },
 
@@ -358,7 +359,11 @@ modules.define(
                             }
 
                             line = this.poem.poem[this.currentLine + 1];
-                            line && !_.isEmpty(line.line) && this._speak(line.line, this._startLearning.bind(this));
+                            if (line && !_.isEmpty(line.line)) {
+                                this._speak(line.line, this._startLearning.bind(this));
+                            } else {
+                                this.findBlockInside({ block: 'button', modName: 'button-save', modVal: true }).setMod('view', 'action');
+                            }
                         }
                         //dict.stop();
                     }
@@ -385,7 +390,7 @@ modules.define(
                     })
                     .liveBindTo('button-recognition', 'pointerclick', function(e) {
 
-                        if (this.recognize.send) {
+                        if (this.recognize && this.recognize.send) {
                             this._stopLearning();
                         } else {
                             this
