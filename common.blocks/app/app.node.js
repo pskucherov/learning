@@ -245,6 +245,10 @@ models(function (err, db) {
                 createOrSaveProgress(params, 's-speaker-sort-lines:save');
             });
 
+            socket.on('s-speaker-repeat:save', function (params) {
+                createOrSaveProgress(params, 's-speaker-repeat:save');
+            });
+
             // Сохраняем статус для изучения стиха
             // Если стихотворения нет, то добавляем его в БД
             socket.on('select-poem:saveFirstStep', function (params) {
