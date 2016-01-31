@@ -89,7 +89,8 @@ modules.define(
             _destruct: function() {
                 this
                     .unbindEvents()
-                    ._clearAudio();
+                    ._clearAudio()
+                    ._stopLearning();
 
                 delete this.bm;
 
@@ -372,7 +373,6 @@ modules.define(
                 opts.stopCallback = function () {
                     dict = null;
                 };
-
 
                 this.recognize.start(opts);
 
