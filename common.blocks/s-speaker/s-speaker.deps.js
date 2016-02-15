@@ -28,6 +28,10 @@
             tech: 'bemhtml'
         },
         {
+            block: 's-speaker-finish',
+            tech: 'bemhtml'
+        },
+        {
             block: 'icon'
         },
         {
