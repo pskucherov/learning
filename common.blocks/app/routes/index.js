@@ -181,17 +181,18 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
     if ((!res.user || !res.user.isAuth)) {
         res.pageName = 'index';
         req.session.redirPage = '/speaker';
+        next();
     } else {
         res.pageName = 's-speaker';
+
+        req.session.pageName = 's-speaker';
+
+        SpeakerLearnPoem.getDataOfProgress(req.models['speaker-learn-poem'], res.user.id)
+            .then(function (progress) {
+                res.speakerLearnPoem = progress;
+                next();
+            });
     }
-
-    req.session.pageName = 's-speaker';
-
-    SpeakerLearnPoem.getDataOfProgress(req.models['speaker-learn-poem'], res.user.id)
-        .then(function(progress) {
-            res.speakerLearnPoem = progress;
-            next();
-        });
 
 });
 
