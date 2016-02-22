@@ -249,6 +249,15 @@ models(function (err, db) {
                 createOrSaveProgress(params, 's-speaker-repeat:save');
             });
 
+            // Отправить данные о прогрессе для завершения изучения стихотворения
+            socket.on('s-speaker-finish:get-progress', function (poemId) {
+                SpeakerLearnPoem
+                    .getDataOfProgressOrCreate(db.models['speaker-learn-poem'], poemId, '', user.id)
+                    .then(function(progress) {
+                        socket.emit('s-speaker-finish:progress', progress);
+                    });
+            });
+
             // Сохраняем статус для изучения стиха
             // Если стихотворения нет, то добавляем его в БД
             socket.on('select-poem:saveFirstStep', function (params) {

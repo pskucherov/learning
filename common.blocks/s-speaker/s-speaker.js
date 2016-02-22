@@ -1,7 +1,7 @@
 modules.define(
     's-speaker',
-    ['i-bem__dom', 'jquery', 'BEMHTML', 'select-poem', 's-speaker-read', 's-speaker-sort-lines'],
-    function(provide, BEMDOM, $, BEMHTML, spoem, sread, sortLines) {
+    ['i-bem__dom', 'jquery', 'BEMHTML', 'select-poem', 's-speaker-read', 's-speaker-sort-lines', 's-speaker-repeat'],
+    function(provide, BEMDOM, $, BEMHTML, spoem, sread, sortLines, sRepeat) {
 
         provide(BEMDOM.decl(this.name, {
             onSetMod: {
@@ -17,7 +17,7 @@ modules.define(
 
                         //window.socket.on('s-speaker:poem', this._sSpeakerPoem.bind(this));
 
-                        [spoem, sread, sortLines].forEach(function(item) {
+                        [spoem, sread, sortLines, sRepeat].forEach(function(item) {
                             item.on('finish', this._startNextStep, this);
                         }.bind(this));
 
@@ -240,7 +240,7 @@ modules.define(
 
                 this.modal.setMod('visible', true);
 
-                this.modal.on('close')
+                this.modal.on('close');
 
                 return this;
             },

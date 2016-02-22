@@ -256,6 +256,7 @@ modules.define(
             _speak: function(text, onEnd) {
 
                 this.speakButton.setMod('checked', true);
+                this._stopLearning();
 
                 this.tts.speak(text,
                     {
@@ -292,7 +293,7 @@ modules.define(
 
             _stopLearning: function() {
                 this.findBlockInside({ block: 'button', modName: 'recognition', modVal: true }).delMod('checked');
-                this.recognize.stop();
+                this.recognize && this.recognize.stop();
                 delete this.recognize;
                 return this;
             },
@@ -400,7 +401,10 @@ modules.define(
                         }
                     })
                     .liveBindTo('button-speak', 'pointerclick', function(e) {
-                        this._closeInstruction();
+                        this
+                            ._closeInstruction()
+                            ._stopLearning();
+
                         if (this._isAudioInProcess()) {
                             this._clearAudio();
                         } else {

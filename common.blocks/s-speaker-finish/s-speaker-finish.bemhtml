@@ -13,68 +13,23 @@ block('s-speaker-finish')(
                 content: 'Поделитесь с друзьями своим успехом'
             },
             {
-                elem: 'instruction',
-                mods: {
-                    hidden: true
-                },
-                content: [
-                    {
-                        elem: 'title',
-                        content: 'Инструкция'
-                    },
-                    [
-                        'Вдумчиво прочитайте стихотворение',
-                        'Запомните о чём повествуется',
-                        'Вникните в суть каждой строки',
-                        'Запомните последовательность действий',
-                        'Вообразите происходящее',
-                        'Мысленно нарисуйте картину для каждой строки *',
-                        'После того, как проделаете все эти пункты для строки, отметье её галкой'
-                    ].map(function (item) {
-                        return {
-                            elem: 'instruction-line',
-                            content: '— ' + item
-                        };
-                    }),
-                    {
-                        content: '<br>* Если строка сложная, можете воспользоваться Яндекс.Картинками, кликнув по строке'
-                    }
-                ]
-            },
-            {
                 elem: 'poem'
             },
             {
                 elem: 'buttons',
-                content: [
-                    {
-                        block: 'button',
-                        mix: {
-                            block: 's-speaker-read',
-                            elem: 'button-instruction'
-                        },
-                        mods: {
-                            theme: 'islands',
-                            size: 'l',
-                            togglable : 'check'
-                        },
-                        text: 'Инструкция'
+                content: {
+                    block: 'button',
+                    mix: {
+                        block: 's-speaker-finish',
+                        elem: 'button-save'
                     },
-                    {
-                        block: 'button',
-                        mix: {
-                            block: 's-speaker-read',
-                            elem: 'button-save'
-                        },
-                        mods: {
-                            theme: 'islands',
-                            size: 'l',
-                            'button-save': true,
-                            disabled: true
-                        },
-                        text: 'Готово'
-                    }
-                ]
+                    mods: {
+                        theme: 'islands',
+                        size: 'l',
+                        'button-save': true,
+                    },
+                    text: 'Готово'
+                }
             }
         ];
     })
