@@ -2,18 +2,19 @@ block('s-speaker-finish')(
     js()(true),
     content()(function() {
         return [
-            {
-                block: 'spin',
-                mods: {
-                    theme: 'islands', size: 'xl'
-                }
-            },
+
             {
                 elem: 'title',
                 content: 'Поделитесь с друзьями своим успехом'
             },
             {
                 elem: 'poem'
+            },
+            {
+                block: 'spin',
+                mods: {
+                    theme: 'islands', size: 'xl'
+                }
             },
             {
                 elem: 'buttons',

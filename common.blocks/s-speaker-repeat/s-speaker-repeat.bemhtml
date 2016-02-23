@@ -3,12 +3,6 @@ block('s-speaker-repeat')(
     content()(function() {
         return [
             {
-                block: 'spin',
-                mods: {
-                    theme: 'islands', size: 'xl'
-                }
-            },
-            {
                 elem: 'title',
                 content: 'Расскажите стихотворение, следуя подсказкам'
             },
@@ -40,6 +34,12 @@ block('s-speaker-repeat')(
             },
             {
                 elem: 'poem'
+            },
+            {
+                block: 'spin',
+                mods: {
+                    theme: 'islands', size: 'xl'
+                }
             },
             {
                 elem: 'buttons',

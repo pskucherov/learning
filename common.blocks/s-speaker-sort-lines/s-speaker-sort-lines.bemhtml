@@ -4,17 +4,17 @@ block('s-speaker-sort-lines')(
 
         return [
             {
-                block: 'spin',
-                mods: {
-                    theme: 'islands', size: 'xl'
-                }
-            },
-            {
                 elem: 'title',
                 content: 'Соберите из строк стихотворение'
             },
             {
                 elem: 'poems'
+            },
+            {
+                block: 'spin',
+                mods: {
+                    theme: 'islands', size: 'xl'
+                }
             },
             {
                 elem: 'buttons',

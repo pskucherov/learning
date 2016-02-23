@@ -3,12 +3,6 @@ block('s-speaker-read')(
     content()(function() {
         return [
             {
-                block: 'spin',
-                mods: {
-                    theme: 'islands', size: 'xl'
-                }
-            },
-            {
                 elem: 'title',
                 content: 'Прочитайте и запомните содержание'
             },
@@ -43,6 +37,12 @@ block('s-speaker-read')(
             },
             {
                 elem: 'poem'
+            },
+            {
+                block: 'spin',
+                mods: {
+                    theme: 'islands', size: 'xl'
+                }
             },
             {
                 elem: 'buttons',
