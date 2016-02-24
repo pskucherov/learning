@@ -20,9 +20,10 @@ modules.define(
                         }
 
                         window.socket.on('s-speaker-finish:progress', function(progress) {
-
-                            console.log('s-speaker-finish:progress');
+                            this._toggleForm();
                             console.log(progress);
+
+                            this._setDuration(progress.deltaTime);
 
                             this.bindEvents();
                         }.bind(this));
@@ -33,8 +34,6 @@ modules.define(
             },
 
             bindEvents: function() {
-
-
 
             },
 
@@ -48,11 +47,24 @@ modules.define(
             },
 
             /**
+             * Вставить время изучения стихотворения
+             * @param delta
+             * @private
+             */
+            _setDuration: function(delta) {
+                var duration = BEMDOM.blocks['i-utils'].parseMicroseconds(delta);
+
+                BEMDOM.update(this.elem('duration'), BEMHTML.apply({
+                    block: 'spent-time',
+                    duration: duration
+                }));
+            },
+
+            /**
              * Поменять состояние формы
              * @private
              */
             _toggleForm: function() {
-
                 this.spin.toggleMod('visible', true);
                 this.toggleMod(this.elem('buttons'), 'hidden', true);
 
