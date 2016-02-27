@@ -47,6 +47,29 @@ modules.define(
                 //document.cookie = cookieName + '=; domain=' + window.location.host + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; Path=/;';
                 //document.cookie = cookieName + '=; domain=.' + window.location.host + '; expires=Fri, 31 Dec 9999 23:59:59 GMT; Path=/;';
                 window.location.href = '/logout';
+            },
+
+            /**
+             * Получить кнопку поделяшки для вк
+             *
+             * @param {String} title
+             * @param {String} descr
+             * @param {String} image
+             *
+             * @returns {*}
+             */
+            getShareButton: function(title, descr, image) {
+                return VK.Share.button({
+                    url: location.protocol + '//' + location.hostname +
+                        '&title=' + encodeURIComponent(title || '') +
+                        '&description=' + encodeURIComponent(descr || '') +
+                        '&image=' + encodeURIComponent(image || ''),
+                    noparse: true
+                }, {
+                    type: 'round',
+                    text: 'Поделиться результатом',
+                    noparse: true
+                });
             }
         }));
     }

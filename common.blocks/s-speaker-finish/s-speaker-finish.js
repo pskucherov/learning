@@ -10,9 +10,9 @@ modules.define(
                     inited: function() {
                         this.__base.apply(this, arguments);
 
-
                         this.currentPoemId = this.params.poemId;
                         this.spin = this.findBlockInside('spin');
+                        this.progress = null;
 
                         if (this.currentPoemId > 0) {
                             this._toggleForm();
@@ -21,14 +21,18 @@ modules.define(
 
                         window.socket.on('s-speaker-finish:progress', function(progress) {
                             this._toggleForm();
-                            console.log(progress);
 
+                            this.progress = progress;
                             this._setDuration(progress.deltaTime);
+
+                            window.socket.emit('select-poem:getPoemById', this.currentPoemId);
 
                             this.bindEvents();
                         }.bind(this));
 
-
+                        window.socket.on('select-poem:getPoemById', function(poem) {
+                            this._setShareButtons(poem);
+                        }.bind(this));
                     }
                 }
             },
@@ -38,12 +42,30 @@ modules.define(
             },
 
             unbindEvents: function() {
-
+                window.socket.removeAllListeners('select-poem:getPoemById');
+                window.socket.removeAllListeners('s-speaker-finish:progress');
             },
 
             _destruct: function() {
                 this.unbindEvents();
                 this.__base.apply(this, arguments);
+            },
+
+            /**
+             * Добавить поделяшку с нужным текстом
+             * @param poem
+             * @private
+             */
+            _setShareButtons: function(poem) {
+                var title = 'Теперь я знаю стихотворение "' + poem.name + '" (' + poem.author.name + ')',
+                    duration = BEMDOM.blocks['i-utils'].parseMicroseconds(this.progress.deltaTime),
+                    descr = 'На изучение у меня ушло: ' + BEMHTML.apply({
+                        block: 'spent-time',
+                        duration: duration
+                    }) + '. А за сколько этот стих выучишь ты? ;)';
+
+                BEMDOM.update(this.elem('vk-share-button'), BEMDOM.blocks['vk'].getShareButton(title, descr));
+                return this;
             },
 
             /**

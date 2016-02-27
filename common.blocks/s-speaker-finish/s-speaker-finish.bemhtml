@@ -14,22 +14,15 @@ block('s-speaker-finish')(
                 }
             },
             {
+                content: 'На изучение стихотворения потребовалось'
+            },
+            {
                 elem: 'duration'
             },
             {
                 elem: 'buttons',
                 content: {
-                    block: 'button',
-                    mix: {
-                        block: 's-speaker-finish',
-                        elem: 'button-save'
-                    },
-                    mods: {
-                        theme: 'islands',
-                        size: 'l',
-                        'button-save': true,
-                    },
-                    text: 'Готово'
+                    elem: 'vk-share-button'
                 }
             }
         ];

@@ -82,6 +82,14 @@ blocks['page'] = function (data) {
                         block: 'page',
                         elem: 'script'
                     }
+                },
+                {
+                    elem: 'js',
+                    url: '//vk.com/js/api/share.js?93',
+                    attrs: {
+                        async: 'async',
+                        charset: 'utf-8'
+                    }
                 }
             ]
         };
