@@ -27,10 +27,10 @@ block('s-speaker-finish')(
                     }
                 }
                 /*
-                {
+                 content: {
                     elem: 'vk-share-button'
-                }
-                */
+                }*/
+
             }
         ];
     })

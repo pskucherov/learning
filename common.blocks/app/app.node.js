@@ -249,6 +249,10 @@ models(function (err, db) {
                 createOrSaveProgress(params, 's-speaker-repeat:save');
             });
 
+            socket.on('s-speaker-finish:save', function (params) {
+                createOrSaveProgress(params, 's-speaker-finish:save');
+            });
+
             // Отправить данные о прогрессе для завершения изучения стихотворения
             socket.on('s-speaker-finish:get-progress', function (poemId) {
                 SpeakerLearnPoem

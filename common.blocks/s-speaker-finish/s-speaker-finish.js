@@ -65,15 +65,20 @@ modules.define(
                     }) + '. А за сколько этот стих выучишь ты? ;)';
 
 
-                VK.Widgets.Like('vk_like', { width: 500, pageTitle: title, pageDescription: descr });
+                VK.Widgets.Like('vk_like', { width: 130, pageTitle: title, pageDescription: descr });
 
-                VK.Observer.subscribe('widgets.like.unliked', function(likeCount) {
-                    console.log('unlike');
+                /*
+                VK.Observer.subscribe('widgets.like.unshared', function() {
+                    console.log('unshared');
                 });
+                */
 
-                VK.Observer.subscribe('widgets.like.liked', function(likeCount) {
-                    console.log('like');
-                });
+                VK.Observer.subscribe('widgets.like.shared', function() {
+                    window.socket.emit('s-speaker-finish:save', {
+                        poemId: this.currentPoemId,
+                        act: 's-speaker-finish'
+                    });
+                }.bind(this));
 
                 //BEMDOM.update(this.elem('vk-share-button'), BEMDOM.blocks['vk'].getShareButton(title, descr));
                 return this;
