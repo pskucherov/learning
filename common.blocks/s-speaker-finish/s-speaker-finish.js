@@ -65,7 +65,7 @@ modules.define(
                     }) + '. А за сколько этот стих выучишь ты? ;)';
 
 
-                VK.Widgets.Like('vk_like', { width: 130, pageTitle: title, pageDescription: descr });
+                VK.Widgets.Like('vk_like', { width: 130, pageTitle: title + ' ' + descr, pageDescription: descr });
 
                 /*
                 VK.Observer.subscribe('widgets.like.unshared', function() {
