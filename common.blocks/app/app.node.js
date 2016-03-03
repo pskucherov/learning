@@ -252,7 +252,7 @@ models(function (err, db) {
             // Отправить данные о прогрессе для завершения изучения стихотворения
             socket.on('s-speaker-finish:get-progress', function (poemId) {
                 SpeakerLearnPoem
-                    .getDataOfProgressOrCreate(db.models['speaker-learn-poem'], poemId, '', user.id)
+                    .saveProgress(db.models['speaker-learn-poem'], poemId, '', user.id)
                     .then(function(progress) {
                         socket.emit('s-speaker-finish:progress', progress);
                     });
