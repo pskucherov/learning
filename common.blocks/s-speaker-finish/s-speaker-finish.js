@@ -64,7 +64,18 @@ modules.define(
                         duration: duration
                     }) + '. А за сколько этот стих выучишь ты? ;)';
 
-                BEMDOM.update(this.elem('vk-share-button'), BEMDOM.blocks['vk'].getShareButton(title, descr));
+
+                VK.Widgets.Like('vk_like', { width: 500, pageTitle: title, pageDescription: descr });
+
+                VK.Observer.subscribe('widgets.like.unliked', function(likeCount) {
+                    console.log('unlike');
+                });
+
+                VK.Observer.subscribe('widgets.like.liked', function(likeCount) {
+                    console.log('like');
+                });
+
+                //BEMDOM.update(this.elem('vk-share-button'), BEMDOM.blocks['vk'].getShareButton(title, descr));
                 return this;
             },
 

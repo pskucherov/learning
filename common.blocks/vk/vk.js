@@ -17,6 +17,9 @@ modules.define(
                         });
 
                         window.checkAuthInfo && VK.Auth.getLoginStatus(window.authInfo);
+
+                        this.emit('vk-inited');
+
                     }.bind(this);
 
                     window.authInfo || (window.authInfo = function (response) {

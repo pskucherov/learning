@@ -22,8 +22,15 @@ block('s-speaker-finish')(
             {
                 elem: 'buttons',
                 content: {
+                    attrs: {
+                        id: 'vk_like'
+                    }
+                }
+                /*
+                {
                     elem: 'vk-share-button'
                 }
+                */
             }
         ];
     })
