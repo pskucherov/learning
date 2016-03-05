@@ -17,6 +17,10 @@ modules.define(
 
                         window.socket.on('user:rating', this._setPopupContent.bind(this));
 
+                        window.socket.on('ev', function(i) {
+                            console.log(i);
+                        });
+
                     }
                 }
             },

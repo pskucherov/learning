@@ -134,6 +134,7 @@ server = http.listen(3000, function() {
     console.log('Listening on port %d', server.address().port);
 });
 
+var interval = 0;
 
 models(function (err, db) {
 
@@ -145,6 +146,11 @@ models(function (err, db) {
         socket.on('disconnect', function() {
             console.log('disconnected');
         });
+
+        setInterval(function() {
+            ++interval;
+            socket.emit('ev', interval);
+        }, 1000);
 
         var sid = session && session[settings.vk.cookieName];
 
