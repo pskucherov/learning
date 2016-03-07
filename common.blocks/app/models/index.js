@@ -12,7 +12,6 @@ var models = [
 var orm = require('orm'),
     modts = require('orm-timestamps'),
     path = require('path'),
-    fts = require('orm-mysql-fts'),
     settings = require(path.resolve('./common.blocks/app/settings'));
 
 var connection = null;
@@ -31,9 +30,7 @@ module.exports = function (cb) {
 
     orm.connect(settings.database, function (err, db) {
         if (err) return cb(err);
-
-        db.use(fts);
-
+        
         db.use(modts, {
             createdProperty: 'created_at',
             modifiedProperty: 'modified_at',
@@ -46,6 +43,10 @@ module.exports = function (cb) {
 
         connection = db;
         db.settings.set('instance.returnAllErrors', true);
+
+        db.settings.set('connection.debug', true);
+        db.settings.set('connection.pool', true);
+
         setup(db, cb);
     });
 };

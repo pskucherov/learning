@@ -16,21 +16,7 @@ var appId = 5076733,
         appSecret: 'bEvkKDmoH9jk0pb1kE4s',
         cookieName: 'vk_app_' + appId
     },
-    database   : {
-        database : 'learn-demo',
-        protocol : 'mysql',
-        host     : '127.0.0.1',
-        port     : 3306,         // optional, defaults to database default
-        user     : 'root',
-        password : ''
-        /*
-        , query    : {
-            pool     : true|false,   // optional, false by default
-            debug: true|false,
-            strdates : true|false    // optional, false by default
-        }
-        */
-    }
+    database: 'mongodb://localhost:27017/learn-demo'
 };
 
 module.exports = settings;
