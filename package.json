@@ -15,7 +15,7 @@
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "fts-js": "pskucherov/fts-js#0.0.2",
-    "lodash": "^3.10.1",
+    "lodash": "^4.0.0",
     "mocha": "^2.3.3",
     "mysql": "^2.10.0",
     "orm": "~2.1.24",
