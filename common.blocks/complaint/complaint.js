@@ -26,7 +26,7 @@ modules.define(
              * @private
              */
             _setQuestionId: function(e, qId) {
-                this.idToSend = qId;
+                this._idToSend = qId;
                 return this;
             },
 
@@ -56,7 +56,7 @@ modules.define(
                 }
 
                 formContent.push(
-                    { qId: this.idToSend },
+                    { qId: this._idToSend },
                     { type: 1 }
                 );
 

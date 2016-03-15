@@ -22,11 +22,11 @@ modules.define(
                                 return;
                             }
 
-                            this.emit('s-brain:new-question', data.id);
+                            this.emit('s-brain:new-question', data._id);
 
                             this
                                 ._setTitle(data.subj.name) // + ', ' + data.class + ' класс')
-                                ._setQuestionId(data.id)
+                                ._setQuestionId(data._id)
                                 ._setQuestion(data.question)
                                 ._setAnswers(data.answers);
                         }.bind(this));

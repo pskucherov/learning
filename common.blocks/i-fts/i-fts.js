@@ -29,7 +29,7 @@ BM25.Tokenize = function (text) {
 
 BM25.prototype.addDocument = function (doc) {
 
-    if (typeof doc.id === 'undefined') {
+    if (typeof doc._id === 'undefined') {
         throw new Error(1000, 'ID is a required property of documents.');
     }
 
@@ -44,7 +44,7 @@ BM25.prototype.addDocument = function (doc) {
     var _terms = {};
 
     // docObj will eventually be added to the documents database
-    var docObj = {id: doc.id, tokens: tokens, body: doc.body};
+    var docObj = {id: doc._id, tokens: tokens, body: doc.body};
 
     // Count number of terms
     docObj.termCount = tokens.length;
@@ -98,7 +98,7 @@ BM25.prototype.addDocument = function (doc) {
 
     // Add docObj to docs db
     docObj.terms = _terms;
-    this.documents[docObj.id] = docObj;
+    this.documents[docObj._id] = docObj;
 };
 
 BM25.prototype.updateIdf = function () {
@@ -107,7 +107,7 @@ BM25.prototype.updateIdf = function () {
         var term = keys[i];
         var num = (this.totalDocuments - this.terms[term].n + 0.5);
         var denom = (this.terms[term].n + 0.5);
-        this.terms[term].idf = Math.max(Math.log10(num / denom), 0.01);
+        this.terms[term]._idf = Math.max(Math.log10(num / denom), 0.01);
     }
 };
 
@@ -147,7 +147,7 @@ BM25.prototype.search = function (query) {
 
 
             // IDF is pre-calculated for the whole docset.
-            var idf = this.terms[queryTerm].idf;
+            var idf = this.terms[queryTerm]._idf;
             // Numerator of the TF portion.
             var num = this.documents[id].terms[queryTerm].count * (this.k1 + 1);
 
@@ -166,9 +166,9 @@ BM25.prototype.search = function (query) {
 
     //results.sort(function(a, b) { return b._score - a._score; });
     results.sort(function (a, b) {
-        return b.id - a.id;
+        return b._id - a._id;
     });
-    return results[0] && results[0].id || -1;
+    return results[0] && results[0]._id || -1;
 };
 
 

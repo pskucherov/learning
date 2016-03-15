@@ -54,8 +54,8 @@ var User = function(userModel, u, cb) {
  * @returns {User}
  */
 User.prototype.calcRating = function(ratingModel, io) {
-    ratingModel.count({ userId: this.id, answer: 1 }, function (err, rightAnswers) {
-        ratingModel.count({ userId: this.id }, function (err, answers) {
+    ratingModel.count({ userId: this._id, answer: 1 }, function (err, rightAnswers) {
+        ratingModel.count({ userId: this._id }, function (err, answers) {
             io.emit('user:rating', {
                 countAnswers: answers,
                 rightAnswers: rightAnswers
@@ -97,7 +97,7 @@ User.createByVKId = function(userModel, vkid) {
         function(user) {
             deferred.resolve({
                 status: User.ANSWER.OLD_USER,
-                id: user[0].id,
+                id: user[0]._id,
                 vkid: vkid
             });
         },

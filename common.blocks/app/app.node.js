@@ -154,7 +154,7 @@ models(function (err, db) {
 
         var user = new User(db.models['users'], { sid: sid }, function() {
 
-            if (!user || !user.id) {
+            if (!user || !user._id) {
                 user = {};
                 return;
             }
@@ -162,14 +162,14 @@ models(function (err, db) {
             /* DATA-PROVIDER START */
 
             socket.on('provider:act:find-author', function (query) {
-                Poems.findAuthorByQuery(db.models['authors'], query, user.id)
+                Poems.findAuthorByQuery(db.models['authors'], query, user._id)
                     .then(function (authors) {
                         socket.emit('provider:data:author', authors);
                     });
             });
 
             socket.on('provider:act:find-poem', function (query, author) {
-                Poems.findPoemByAuthorANDQuery(db.models['poems'], query, author, user.id)
+                Poems.findPoemByAuthorANDQuery(db.models['poems'], query, author, user._id)
                     .then(function(poems) {
                         socket.emit('provider:data:poem', poems);
                     });
@@ -183,8 +183,8 @@ models(function (err, db) {
 
             /* LANDING START */
 
-            db.models['brain-tests-answers'].count({userId: user.id, answer: 1}, function (err, rightAnswers) {
-                db.models['brain-tests-answers'].count({userId: user.id}, function (err, answers) {
+            db.models['brain-tests-answers'].count({userId: user._id, answer: 1}, function (err, rightAnswers) {
+                db.models['brain-tests-answers'].count({userId: user._id}, function (err, answers) {
                     socket.emit('user:rating', {
                         0: {
                             countAnswers: answers,
@@ -212,7 +212,7 @@ models(function (err, db) {
 
             // Получить стих по точному вхождению имени и автора
             socket.on('select-poem:getPoemByNameAndAuthor', function (params) {
-                Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user.id)
+                Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user._id)
                     .then(function (poem) {
                         socket.emit('select-poem:getPoem', poem);
                     });
@@ -229,7 +229,7 @@ models(function (err, db) {
 
             function createOrSaveProgress(params, answerName) {
                 SpeakerLearnPoem
-                    .getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, params.act, user.id)
+                    .getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, params.act, user._id)
                     .then(function (poem) {
                         socket.emit(answerName || 'select-poem:saveFirstStep', params.poemId);
                     });
@@ -256,7 +256,7 @@ models(function (err, db) {
             // Отправить данные о прогрессе для завершения изучения стихотворения
             socket.on('s-speaker-finish:get-progress', function (poemId) {
                 SpeakerLearnPoem
-                    .saveProgress(db.models['speaker-learn-poem'], poemId, '', user.id)
+                    .saveProgress(db.models['speaker-learn-poem'], poemId, '', user._id)
                     .then(function(progress) {
                         socket.emit('s-speaker-finish:progress', progress);
                     });
@@ -276,17 +276,17 @@ models(function (err, db) {
 
                     if (!_.isEmpty(params.author) && !_.isEmpty(params.name) && !_.isEmpty(params.poem)) {
 
-                        Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user.id)
+                        Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user._id)
                             .then(function (poem) {
-                                params.poemId = poem && poem[0] && poem[0].id;
+                                params.poemId = poem && poem[0] && poem[0]._id;
 
                                 if (params.poemId) {
                                     createOrSaveProgress(params);
                                 } else {
-                                    Authors.create(db.models['authors'], params.author, user.id).then(function(author) {
-                                        Poems.create(db.models['poems'], params.name, author.id, user.id).then(function(poem) {
-                                            PoemLines.create(db.models['poem-text'], poem.id, params.poem).then(function(lines) {
-                                                params.poemId = poem.id;
+                                    Authors.create(db.models['authors'], params.author, user._id).then(function(author) {
+                                        Poems.create(db.models['poems'], params.name, author._id, user._id).then(function(poem) {
+                                            PoemLines.create(db.models['poem-text'], poem._id, params.poem).then(function(lines) {
+                                                params.poemId = poem._id;
                                                 createOrSaveProgress(params);
                                             });
                                         });
@@ -321,7 +321,7 @@ models(function (err, db) {
             socket.on('s-braint:checkAnswer', function (answerData) {
 
                 db.models['brain-tests'].find({
-                    id: parseInt(answerData.id, 10),
+                    id: parseInt(answerData._id, 10),
                     rightanswernum: parseInt(answerData.num, 10)
                 }).limit(1).run(function (err, data) {
                     var isRight = false;
@@ -330,10 +330,10 @@ models(function (err, db) {
                         isRight = true;
 
                         db.models['brain-tests-answers'].count({
-                            userId: user.id,
+                            userId: user._id,
                             answer: 1
                         }, function (err, rightAnswers) {
-                            db.models['brain-tests-answers'].count({userId: user.id}, function (err, answers) {
+                            db.models['brain-tests-answers'].count({userId: user._id}, function (err, answers) {
                                 socket.emit('user:rating', {
                                     0: {
                                         countAnswers: answers,
@@ -345,7 +345,7 @@ models(function (err, db) {
 
                     }
 
-                    BrainTests.createAnswerRow(db.models['brain-tests-answers'], user.id, answerData.id, isRight)
+                    BrainTests.createAnswerRow(db.models['brain-tests-answers'], user._id, answerData._id, isRight)
                         .then(function () {
                             socket.emit('s-brain:setAnswer', isRight);
                         });
@@ -365,20 +365,20 @@ models(function (err, db) {
                     classNum >= 1 && classNum <= 11 && (find.class = classNum);
                 }
 
-                BrainTests.getUserForStat(db, user.id, classNum).then(function (data) {
+                BrainTests.getUserForStat(db, user._id, classNum).then(function (data) {
                     socket.emit('rating:rating', data);
                 });
 
-                BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user.id, classNum)
+                BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user._id, classNum)
                     .then(function (data) {
                         socket.emit('s-brain:question', data);
                     })
                     .fail(function () {
 
 
-                        BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 1)
+                        BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user._id, find.class, 1)
                             .then(function (rightAnswers) {
-                                BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user.id, find.class, 0)
+                                BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user._id, find.class, 0)
                                     .then(function (falseAnswers) {
                                         socket.emit('s-brain:question-end', {
                                             rightAnswers: rightAnswers,

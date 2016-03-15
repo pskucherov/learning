@@ -193,7 +193,7 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
         User.getById(db.models['users'], userIds, 'id,vkid,first_name,photo_100').then(function(users) {
             for (var i in uStat) {
                 for (var k in users) {
-                    if (uStat[i].userId === users[k].id) {
+                    if (uStat[i].userId === users[k]._id) {
                         uStat[i].user = users[k];
                     }
                 }

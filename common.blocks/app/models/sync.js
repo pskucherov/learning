@@ -356,7 +356,7 @@ models(function (err, db) {
                             {
                                 id: 1,
                                 name: 'Осень',
-                                author_id: author[0].id,
+                                author_id: author[0]._id,
                                 class: 0,
                                 userId: 1,
                                 moderate: '1'
@@ -383,7 +383,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[0])),
                                     imageUrl: 'https://im2-tub-ru.yandex.net/i?id=c8202e77d14c1983c9ea116b1b679987&n=13',
                                     nextEmpLine: false,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 },
                                 {
                                     id: 2,
@@ -392,7 +392,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[1])),
                                     imageUrl: 'https://avatars.yandex.net/get-images-search/keWT4CGsPPPhXgZ-qR_9TQ/preview',
                                     nextEmpLine: true,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 },
                                 {
                                     id: 3,
@@ -401,7 +401,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[2])),
                                     imageUrl: 'https://im1-tub-ru.yandex.net/i?id=f87931288ac819a4bfadfd1c270548bc&n=13',
                                     nextEmpLine: false,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 },
                                 {
                                     id: 4,
@@ -410,7 +410,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[3])),
                                     imageUrl: 'http://www.stihi.ru/pics/2013/09/13/820.jpg',
                                     nextEmpLine: true,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 },
 
 
@@ -421,7 +421,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[4])),
                                     imageUrl: 'http://rilmark.ru/catalog/20141005/20141005:965-167-341/855f1deaf55e4daf14e65655ae2feafe-download.jpg',
                                     nextEmpLine: false,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 },
                                 {
                                     id: 6,
@@ -430,7 +430,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[5])),
                                     imageUrl: 'http://cs403626.vk.me/v403626094/296c/vfYY72ekDP4.jpg',
                                     nextEmpLine: true,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 },
                                 {
                                     id: 7,
@@ -439,7 +439,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[6])),
                                     imageUrl: 'http://www.stihi.ru/pics/2013/10/23/6605.jpg',
                                     nextEmpLine: false,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 },
                                 {
                                     id: 8,
@@ -448,7 +448,7 @@ models(function (err, db) {
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[7])),
                                     imageUrl: 'http://www.supwom.ru/uploads/posts/2011-01/1294991868_7e71ca3e0b76f481174ce5baf49fd269_big.jpg',
                                     nextEmpLine: false,
-                                    poem_id: poem[0].id
+                                    poem_id: poem[0]._id
                                 }
                             ], function (err) {
                                 err && console.log("\n\n\ err ", err);

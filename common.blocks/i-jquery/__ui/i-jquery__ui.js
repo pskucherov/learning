@@ -74,8 +74,8 @@
 
             return function() {
                 return this.each(function() {
-                    if ( !this.id ) {
-                        this.id = "ui-id-" + ( ++uuid );
+                    if ( !this._id ) {
+                        this._id = "ui-id-" + ( ++uuid );
                     }
                 });
             };
@@ -83,7 +83,7 @@
 
         removeUniqueId: function() {
             return this.each(function() {
-                if ( /^ui-id-\d+$/.test( this.id ) ) {
+                if ( /^ui-id-\d+$/.test( this._id ) ) {
                     $( this ).removeAttr( "id" );
                 }
             });

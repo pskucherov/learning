@@ -62,7 +62,7 @@ modules.define(
 
                 this.__self.disableYaSearchButton();
 
-                this.currentPoemId = p.id;
+                this.currentPoemId = p._id;
 
                 this.__self.setPoemName(p.name);
                 this.__self.setAuthor(p.author.name);
