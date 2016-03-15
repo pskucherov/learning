@@ -159,7 +159,7 @@ User.updateFieldsByVKId = function(userModel, vkid, fields) {
         _.forEach(fields, function(value, key) {
             // Если такое поле существует в моделе — сохраняем его.
             // Удаляем уникальные поля, т.к. их нелья редактировать.
-            if (!_.isUndefined(user[0][key]) && key !== 'id' && key !== 'vkid') {
+            if (!_.isUndefined(user[0][key]) && key !== '_id' && key !== 'vkid') {
                 user[0][key] = fields[key];
             }
         });

@@ -80,7 +80,7 @@ Poems.findAuthorByQuery = function(authorModel, query, userId) {
             name: orm.like('%' + query + '%'),
             or: [{ userId: userId }, { moderate: '1' }]
         })
-        .only('id', 'name').limit(15).run(function (err, authors) {
+        .only('_id', 'name').limit(15).run(function (err, authors) {
             if (err) throw err;
 
             deferred.resolve(authors);
@@ -113,7 +113,7 @@ Poems.findPoemByAuthorANDQuery = function(pModel, query, author, userId) {
             name: orm.like('%' + query + '%'),
             or: [{ userId: userId }, { moderate: '1' }]
         })
-        .only('id', 'name', 'author_id')
+        .only('_id', 'name', 'author_id')
         .limit(15)
         .run(function(err, poems) {
             deferred.resolve(poems);
