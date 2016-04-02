@@ -237,6 +237,7 @@ User.getById = function(userModel, id, fields) {
  * @param {Number|String|Query} [userIds] - id пользователей, для которых надо сделать выборку, если параметр не зада - выбирается для всех.
  * @returns {*}
  */
+/*
 User.getPointInOneProcent = function(db, ids) {
     var deferred = vow.defer(),
         whereId = ids ? 'userId IN (' + ids + ') AND' : '';
@@ -256,5 +257,6 @@ User.getPointInOneProcent = function(db, ids) {
 
     return deferred.promise();
 };
+*/
 
 module.exports = User;
