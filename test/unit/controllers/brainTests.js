@@ -29,7 +29,7 @@ models(function (err, db) {
 
                 this.timeout(10000);
 
-                db.driver.execQuery('DELETE FROM `brain-tests-answers`', function() {
+                BTestsModel.find().remove(function (err) {
                     done();
                 });
 
@@ -62,15 +62,35 @@ models(function (err, db) {
                         classNum = 1,
                         userId = 123;
 
-                    db.driver.execQuery('INSERT INTO `brain-tests-answers` (userId, questionId) ' +
-                        'VALUES (123, 4), (123, 10), (123, 17), (123, 14), (123, 18);', function() {
+                    BTestsModel.proxy('insertMany', 'brain-tests-answers', [
+                        [
+                            {
+                                userId: 123,
+                                questionId: 4
+                            },
+                            {
+                                userId: 123,
+                                questionId: 10
+                            },
+                            {
+                                userId: 123,
+                                questionId: 17
+                            },
+                            {
+                                userId: 123,
+                                questionId: 14
+                            },
+                            {
+                                userId: 123,
+                                questionId: 18
+                            }
+                        ], function () {
 
-                        BrainTests.getRandomQuestionForUser(BTestsModel, userId, classNum)
-                            .then(function (data) {
-                                deferred.resolve(data.id);
-                            });
-
-                    });
+                            BrainTests.getRandomQuestionForUser(BTestsModel, userId, classNum)
+                                .then(function (data) {
+                                    deferred.resolve(data.id);
+                                });
+                        }]);
 
                     return assert.eventually.equal(
                         deferred.promise(),
@@ -86,12 +106,38 @@ models(function (err, db) {
                         classNum = 1,
                         userId = 123;
 
-                    db.driver.execQuery('INSERT INTO `brain-tests-answers` (userId, questionId) ' +
-                        'VALUES (123, 4), (123, 8), (123, 10), (123, 17), (123, 14), (123, 18);', function() {
-
-                        BrainTests.getRandomQuestionForUser(BTestsModel, userId, classNum)
-                            .fail(function() { deferred.reject(); });
-                    });
+                    BTestsModel.proxy('insertMany', 'brain-tests-answers', [
+                        [
+                            {
+                                userId: 123,
+                                questionId: 4
+                            },
+                            {
+                                userId: 123,
+                                questionId: 8
+                            },
+                            {
+                                userId: 123,
+                                questionId: 10
+                            },
+                            {
+                                userId: 123,
+                                questionId: 17
+                            },
+                            {
+                                userId: 123,
+                                questionId: 14
+                            },
+                            {
+                                userId: 123,
+                                questionId: 18
+                            }
+                        ], function () {
+                            BrainTests.getRandomQuestionForUser(BTestsModel, userId, classNum)
+                                .fail(function () {
+                                    deferred.reject();
+                                });
+                        }]);
 
                     return assert.isRejected(
                         deferred.promise(),
@@ -125,12 +171,36 @@ models(function (err, db) {
                         classNum = 1,
                         userId = 123;
 
-                    db.driver.execQuery('INSERT INTO `brain-tests-answers` (userId, questionId, answer) ' +
-                        'VALUES (123, 4, 1), (123, 10, 1), (123, 17, 1), (123, 14, 1);', function() {
-
-                        BrainTests.getStatsForUserClass(BAnswersModel, userId, classNum, 1)
-                            .then(function(rightAnswer) { deferred.resolve(rightAnswer); });
-                    });
+                    BTestsModel.proxy('insertMany', 'brain-tests-answers', [
+                        [
+                            {
+                                userId: 123,
+                                questionId: 4,
+                                answer: 1
+                            },
+                            {
+                                userId: 123,
+                                questionId: 10,
+                                answer: 1
+                            }
+                            ,
+                            {
+                                userId: 123,
+                                questionId: 17,
+                                answer: 1
+                            }
+                            ,
+                            {
+                                userId: 123,
+                                questionId: 14,
+                                answer: 1
+                            }
+                        ], function () {
+                            BrainTests.getStatsForUserClass(BAnswersModel, userId, classNum, 1)
+                                .then(function (rightAnswer) {
+                                    deferred.resolve(rightAnswer);
+                                });
+                        }]);
 
                     return assert.eventually.equal(
                         deferred.promise(),
@@ -146,12 +216,24 @@ models(function (err, db) {
                         classNum = 1,
                         userId = 123;
 
-                    db.driver.execQuery('INSERT INTO `brain-tests-answers` (userId, questionId, answer) ' +
-                        'VALUES (123, 8, 0), (123, 18, 0);', function() {
-
-                        BrainTests.getStatsForUserClass(BAnswersModel, userId, classNum, 0)
-                            .then(function(rightAnswer) { deferred.resolve(rightAnswer); });
-                    });
+                    BTestsModel.proxy('insertMany', 'brain-tests-answers', [
+                        [
+                            {
+                                userId: 123,
+                                questionId: 8,
+                                answer: 0
+                            },
+                            {
+                                userId: 123,
+                                questionId: 18,
+                                answer: 0
+                            }
+                        ], function () {
+                            BrainTests.getStatsForUserClass(BAnswersModel, userId, classNum, 0)
+                                .then(function (rightAnswer) {
+                                    deferred.resolve(rightAnswer);
+                                });
+                        }]);
 
                     return assert.eventually.equal(
                         deferred.promise(),
