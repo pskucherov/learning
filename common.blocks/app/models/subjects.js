@@ -1,10 +1,6 @@
 module.exports = function (orm, db) {
 
     var s = db.define('subjects', {
-            id: {
-                type: 'serial',
-                key: true
-            },
             name: {
                 type: 'text',
                 size: 255,
@@ -12,12 +8,6 @@ module.exports = function (orm, db) {
             }
         }),
         b = db.define('brain-tests', {
-
-            id: {
-                type: 'serial',
-                key: true
-            },
-
             class: {
                 type: 'integer',
                 size: 2,
@@ -58,14 +48,10 @@ module.exports = function (orm, db) {
         });
 
     db.define('brain-tests-answers', {
-        id: {
-            type: 'serial',
-            key: true
-        },
-
         userId: {
-            type: 'integer',
-            size: 4,
+            type: 'text',
+            size: 255,
+            defaultValue: '',
             index: true
         },
 
@@ -83,7 +69,4 @@ module.exports = function (orm, db) {
             modifiedProperty: false
         }
     });
-
-    b.hasOne('subj', s, { reverse: 'test', autoFetch: true });
-
 };
