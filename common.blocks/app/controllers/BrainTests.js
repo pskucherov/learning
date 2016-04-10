@@ -1,6 +1,7 @@
 var vow = require('vow'),
     _ = require('lodash'),
     User = require('./User'),
+    Subjects = require('./Subjects'),
     path = require('path'),
     utils = require('../utils');
 
@@ -23,21 +24,24 @@ var BrainTests = function() {
  *
  * @returns {Promise}
  */
-BrainTests.getRandomQuestionForUser = function(BTestsModel, userId, classNum) {
+BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
     var deferred = vow.defer();
 
-    BTestsModel.find({ class: classNum })
-        .where('id NOT IN (SELECT questionId FROM `brain-tests-answers` WHERE userId = ?)', [userId])
-        .orderRaw('rand()').limit(1).run(function (err, data) {
-
-        if (err) throw err;
-
+    db.models['brain-tests'].find({ class: classNum, _id: { $nin: [ 5, 15 ] } }).limit(1).run(function (err, data) {
         if (_.isEmpty(data)) {
             deferred.reject([]);
-        } else {
-            deferred.resolve(data[0]);
         }
 
+        Subjects.get(db.models['subjects'], data[0].subj_id).then(function(subj) {
+            if (err) throw err;
+
+            if (_.isEmpty(subj)) {
+                deferred.reject([]);
+            } else {
+                data[0].subj = subj;
+                deferred.resolve(data[0]);
+            }
+        });
     });
 
     return deferred.promise();
@@ -115,12 +119,16 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
 BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRightAnswer) {
     var deferred = vow.defer();
 
+    deferred.resolve([]);
+
+    /*
     BAnswersModel.find({ userId: userId, answer: toRightAnswer })
         .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [classNum])
         .count(function(err, data) {
             if (err) throw err;
             deferred.resolve(data);
         });
+*/
 
     return deferred.promise();
 };
@@ -135,6 +143,8 @@ BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRi
 BrainTests.getStatsRating = function(db, userId, classNum) {
     var deferred = vow.defer();
 
+    deferred.resolve([]);
+    /*
     db.driver.execQuery('SELECT @i:=@i+1 AS `RowNumber`, userId, cnt '
         + 'FROM (SELECT userId, COUNT(*) as cnt '
         + 'FROM `brain-tests-answers`, (SELECT @i:=0) AS `RowNumberTable` WHERE (`questionId` IN (SELECT id FROM `brain-tests` WHERE `class` = "' + classNum + '") AND answer=1)'
@@ -164,7 +174,7 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
 
             }
         });
-
+*/
     return deferred.promise();
 };
 

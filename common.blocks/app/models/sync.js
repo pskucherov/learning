@@ -12,30 +12,30 @@ models(function (err, db) {
         db.sync(function (err) {
             if (err) throw err;
 
-            db.models.subjects.find({id: 1}).limit(1).run(function (err, subj) {
+            db.models.subjects.find({/*id: 1*/}).limit(1).run(function (err, subj) {
 
                 if (_.isEmpty(subj)) {
 
                     db.models.subjects.create([
-                        {name: 'Английский язык'},
-                        {name: 'Биология'},
-                        {name: 'География'},
-                        {name: 'ИЗО'},
-                        {name: 'Информатика'},
-                        {name: 'История'},
-                        {name: 'Литература'},
-                        {name: 'Математика'},
-                        {name: 'Музыка'},
-                        {name: 'Немецкий язык'},
-                        {name: 'ОБЖ'},
-                        {name: 'Обществознание'},
-                        {name: 'Окружающий мир'},
-                        {name: 'ОРКСЭ'},
-                        {name: 'Русский язык'},
-                        {name: 'Технология'},
-                        {name: 'Физика'},
-                        {name: 'Физкультура'},
-                        {name: 'Химия'}
+                        { _id: 1, name: 'Английский язык'},
+                        { _id: 2, name: 'Биология'},
+                        { _id: 3, name: 'География'},
+                        { _id: 4, name: 'ИЗО'},
+                        { _id: 5, name: 'Информатика'},
+                        { _id: 6, name: 'История'},
+                        { _id: 7, name: 'Литература'},
+                        { _id: 8, name: 'Математика'},
+                        { _id: 9, name: 'Музыка'},
+                        { _id: 10, name: 'Немецкий язык'},
+                        { _id: 11, name: 'ОБЖ'},
+                        { _id: 12, name: 'Обществознание'},
+                        { _id: 13, name: 'Окружающий мир'},
+                        { _id: 14, name: 'ОРКСЭ'},
+                        { _id: 15, name: 'Русский язык'},
+                        { _id: 16, name: 'Технология'},
+                        { _id: 17, name: 'Физика'},
+                        { _id: 18, name: 'Физкультура'},
+                        { _id: 19, name: 'Химия'}
                     ], function (err) {
                         err && console.log("\n\n\ err ", err);
                     });
@@ -43,13 +43,13 @@ models(function (err, db) {
 
             });
 
-            db.models['brain-tests'].find({id: 1}).limit(1).run(function (err, tests) {
+            db.models['brain-tests'].find(/*{id: 1}*/).limit(1).run(function (err, tests) {
 
                 if (_.isEmpty(tests)) {
 
                     db.models['brain-tests'].create([
                         {
-                            id: 1,
+                            ////id: 1,
                             class: 10,
                             name: 'Тест по географии, 10 - 11 класс',
                             descr: 'Тест содержит вопросы, которые могут встретиться при тестировании на экзамене. Тест можно использовать на уроке во время повторения пройденного материала в 10 - 11 классах. За основу взяты вопросы для подготовки к тестированию. В тесте 14 вопросов, даются',
@@ -59,7 +59,7 @@ models(function (err, db) {
                             subj_id: 3
                         },
                         {
-                            id: 2,
+                            ////id: 2,
                             class: 10,
                             name: 'Die berьhmten Persцnlichkeiten',
                             descr: 'Landeskunde. 10-11 Klasse',
@@ -69,7 +69,7 @@ models(function (err, db) {
                             subj_id: 10
                         },
                         {
-                            id: 3,
+                            ////id: 3,
                             class: 10,
                             name: 'Multy chose',
                             descr: 'тест на множественный выбор',
@@ -79,7 +79,7 @@ models(function (err, db) {
                             subj_id: 1
                         },
                         {
-                            id: 4,
+                            ////id: 4,
                             class: 1,
                             name: 'Живая и неживая природа',
                             descr: 'Проверка знаний по теме: "Живая и неживая природа"',
@@ -89,7 +89,7 @@ models(function (err, db) {
                             subj_id: 13
                         },
                         {
-                            id: 5,
+                            ////id: 5,
                             class: 10,
                             name: 'Аминокислоты. Вариант 1.',
                             descr: 'Итоговый тест для подготовки к ГИА и ЕГЭ. Из предложенных вариантов ответов выбрать только один правильный.',
@@ -99,7 +99,7 @@ models(function (err, db) {
                             subj_id: 2
                         },
                         {
-                            id: 6,
+                            ////id: 6,
                             class: 11,
                             name: 'ЕГЭ по истории часть А',
                             descr: 'часть А',
@@ -109,7 +109,7 @@ models(function (err, db) {
                             subj_id: 6
                         },
                         {
-                            id: 7,
+                            ////id: 7,
                             class: 4,
                             name: 'Бог, Человек и Молитва',
                             descr: 'Весь путь человеческого развития - есть стремление познать бога.',
@@ -119,7 +119,7 @@ models(function (err, db) {
                             subj_id: 14
                         },
                         {
-                            id: 8,
+                            ////id: 8,
                             class: 1,
                             name: 'Сколько слогов в слове?',
                             descr: 'Проверить навыки определения количества слогов в слове.',
@@ -129,7 +129,7 @@ models(function (err, db) {
                             subj_id: 15
                         },
                         {
-                            id: 9,
+                            ////id: 9,
                             class: 11,
                             name: 'Вокал',
                             descr: 'Выражаем благодарность Виктории Полшковой за корректировку теста',
@@ -139,7 +139,7 @@ models(function (err, db) {
                             subj_id: 9
                         },
                         {
-                            id: 10,
+                            ////id: 10,
                             class: 1,
                             name: 'Задачи на разностное сравнение',
                             descr: 'Проверка умения решать задачи на разностное сравнение',
@@ -149,7 +149,7 @@ models(function (err, db) {
                             subj_id: 8
                         },
                         {
-                            id: 11,
+                            ////id: 11,
                             class: 10,
                             name: 'Основы термодинамики 10 класс',
                             descr: 'Итоговый тест термодинамика',
@@ -159,7 +159,7 @@ models(function (err, db) {
                             subj_id: 17
                         },
                         {
-                            id: 12,
+                            ////id: 12,
                             class: 10,
                             name: 'Химическое равновесие №2',
                             descr: 'Химическое равновесие',
@@ -169,7 +169,7 @@ models(function (err, db) {
                             subj_id: 19
                         },
                         {
-                            id: 13,
+                            ////id: 13,
                             class: 11,
                             name: 'Тест "Политическое поведение" 2 вариант',
                             descr: 'Тематический  тест',
@@ -179,7 +179,7 @@ models(function (err, db) {
                             subj_id: 12
                         },
                         {
-                            id: 14,
+                            ////id: 14,
                             class: 1,
                             name: 'Тест по Правилам дорожного движения',
                             descr: 'Данный тест позволит проверить знания учащихся по Правилам дорожного движения.',
@@ -189,7 +189,7 @@ models(function (err, db) {
                             subj_id: 11
                         },
                         {
-                            id: 15,
+                            ////id: 15,
                             class: 10,
                             name: '"Искусство народов доколумбовой Америки"',
                             descr: 'Тест по МХК 10 класс "Искусство народов доколумбовой Америки"',
@@ -199,7 +199,7 @@ models(function (err, db) {
                             subj_id: 4
                         },
                         {
-                            id: 16,
+                            //id: 16,
                             class: 10,
                             name: 'Информация',
                             descr: 'Тест по информатике',
@@ -209,7 +209,7 @@ models(function (err, db) {
                             subj_id: 5
                         },
                         {
-                            id: 17,
+                            //id: 17,
                             class: 1,
                             name: 'Доброта',
                             descr: 'Викторина на тему "Доброта"',
@@ -219,7 +219,7 @@ models(function (err, db) {
                             subj_id: 7
                         },
                         {
-                            id: 18,
+                            //id: 18,
                             class: 1,
                             name: 'Доброта',
                             descr: 'Викторина на тему "Доброта"',
@@ -229,7 +229,7 @@ models(function (err, db) {
                             subj_id: 7
                         },
                         {
-                            id: 19,
+                            //id: 19,
                             class: 10,
                             name: 'Аминокислоты. Вариант 1.',
                             descr: 'Итоговый тест для подготовки к ГИА и ЕГЭ. Из предложенных вариантов ответов выбрать только один правильный.',
@@ -239,7 +239,7 @@ models(function (err, db) {
                             subj_id: 2
                         },
                         {
-                            id: 20,
+                            //id: 20,
                             class: 8,
                             name: 'Мочевыделительная система',
                             descr: 'Строение и функции мочевыделительной системы',
@@ -249,7 +249,7 @@ models(function (err, db) {
                             subj_id: 2
                         },
                         {
-                            id: 21,
+                            //id: 21,
                             class: 4,
                             name: 'Отечественная Война 1812 года',
                             descr: 'Отечественная Война 1812 года',
@@ -259,7 +259,7 @@ models(function (err, db) {
                             subj_id: 6
                         },
                         {
-                            id: 22,
+                            //id: 22,
                             class: 2,
                             name: 'Артикли',
                             descr: 'Поставьте неопределенный артикль',
@@ -269,7 +269,7 @@ models(function (err, db) {
                             subj_id: 1
                         },
                         {
-                            id: 23,
+                            //id: 23,
                             class: 11,
                             name: 'Учение Ч. Дарвина.',
                             descr: 'Учение Ч. Дарвина и его развитие. Предпосылки учения: ламаркизм.',
@@ -279,7 +279,7 @@ models(function (err, db) {
                             subj_id: 2
                         },
                         {
-                            id: 24,
+                            //id: 24,
                             class: 6,
                             name: 'Почвенное питание растений',
                             descr: 'Выберите один верный ответ. "5" ставится, если вы набрали не менее 90%',
@@ -289,7 +289,7 @@ models(function (err, db) {
                             subj_id: 2
                         },
                         {
-                            id: 25,
+                            //id: 25,
                             class: 9,
                             name: 'Этапы развития жизни на Земле',
                             descr: 'Этапы развития жизни на Земле',
@@ -299,7 +299,7 @@ models(function (err, db) {
                             subj_id: 2
                         },
                         {
-                            id: 26,
+                            //id: 26,
                             class: 3,
                             name: 'Власть и народ Российской империи',
                             descr: 'Тест к уроку "Власть и народ Российской империи"',
@@ -309,7 +309,7 @@ models(function (err, db) {
                             subj_id: 6
                         },
                         {
-                            id: 27,
+                            //id: 27,
                             class: 7,
                             name: 'Итоговый за 1 полугодие по биологии 7 класса',
                             descr: 'Общие вопросы за первое полугодие.',
@@ -319,7 +319,7 @@ models(function (err, db) {
                             subj_id: 2
                         },
                         {
-                            id: 28,
+                            //id: 28,
                             class: 5,
                             name: 'Растения',
                             descr: 'Академик К.А.Тимирязев писал – «Растение – посредник между небом и Землёй. Оно поистине Прометей, похитивший огонь с неба. Похищенный им луч солнца приводит в движение и чудовищный маховик гигантской паровой машины и кисть художника, и перо поэта». Как',
@@ -337,14 +337,14 @@ models(function (err, db) {
             });
 
 
-            db.models['poems'].find({id: 1}).limit(1).run(function (err, poems) {
+            db.models['poems'].find(/*{id: 1}*/).limit(1).run(function (err, poems) {
 
                 if (_.isEmpty(poems)) {
 
 
                     db.models['authors'].create([
                         {
-                            id: 1,
+                            //id: 1,
                             name: 'С. А. Есенин',
                             userId: 1,
                             moderate: '1'
@@ -354,7 +354,7 @@ models(function (err, db) {
 
                         db.models['poems'].create([
                             {
-                                id: 1,
+                                //id: 1,
                                 name: 'Осень',
                                 author_id: author[0]._id,
                                 class: 0,
@@ -377,7 +377,7 @@ models(function (err, db) {
 
                             db.models['poem-text'].create([
                                 {
-                                    id: 1,
+                                    //id: 1,
                                     line_num: 0,
                                     line: lines[0],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[0])),
@@ -386,7 +386,7 @@ models(function (err, db) {
                                     poem_id: poem[0]._id
                                 },
                                 {
-                                    id: 2,
+                                    //id: 2,
                                     line_num: 1,
                                     line: lines[1],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[1])),
@@ -395,7 +395,7 @@ models(function (err, db) {
                                     poem_id: poem[0]._id
                                 },
                                 {
-                                    id: 3,
+                                    //id: 3,
                                     line_num: 2,
                                     line: lines[2],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[2])),
@@ -404,7 +404,7 @@ models(function (err, db) {
                                     poem_id: poem[0]._id
                                 },
                                 {
-                                    id: 4,
+                                    //id: 4,
                                     line_num: 3,
                                     line: lines[3],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[3])),
@@ -415,7 +415,7 @@ models(function (err, db) {
 
 
                                 {
-                                    id: 5,
+                                    //id: 5,
                                     line_num: 4,
                                     line: lines[4],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[4])),
@@ -424,7 +424,7 @@ models(function (err, db) {
                                     poem_id: poem[0]._id
                                 },
                                 {
-                                    id: 6,
+                                    //id: 6,
                                     line_num: 5,
                                     line: lines[5],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[5])),
@@ -433,7 +433,7 @@ models(function (err, db) {
                                     poem_id: poem[0]._id
                                 },
                                 {
-                                    id: 7,
+                                    //id: 7,
                                     line_num: 6,
                                     line: lines[6],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[6])),
@@ -442,7 +442,7 @@ models(function (err, db) {
                                     poem_id: poem[0]._id
                                 },
                                 {
-                                    id: 8,
+                                    //id: 8,
                                     line_num: 7,
                                     line: lines[7],
                                     'fts-tokens': JSON.stringify(BM25.Tokenize(lines[7])),

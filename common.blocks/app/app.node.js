@@ -369,7 +369,7 @@ models(function (err, db) {
                     socket.emit('rating:rating', data);
                 });
 
-                BrainTests.getRandomQuestionForUser(db.models['brain-tests'], user._id, classNum)
+                BrainTests.getRandomQuestionForUser(db, user._id, classNum)
                     .then(function (data) {
                         socket.emit('s-brain:question', data);
                     })
