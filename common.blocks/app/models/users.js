@@ -70,7 +70,8 @@ module.exports = function (orm, db) {
             type: 'text',
             size: 255,
             defaultValue: ''
-        }
+        },
+        brain_test_answers: []
 
     }, {
         timestamp: true

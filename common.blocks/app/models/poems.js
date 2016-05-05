@@ -21,9 +21,9 @@ module.exports = function (orm, db) {
                 index: true
             },
             userId: {
-                type: 'integer',
-                size: 8,
-                defaultValue: 0
+                type: 'text',
+                size: 255,
+                defaultValue: ''
             },
             moderate: {
                 type: 'enum',
@@ -79,9 +79,9 @@ module.exports = function (orm, db) {
                 defaultValue: ''
             },
             userId: {
-                type: 'integer',
-                size: 8,
-                defaultValue: 0
+                type: 'text',
+                size: 255,
+                defaultValue: ''
             },
             moderate: {
                 type: 'enum',
@@ -97,8 +97,9 @@ module.exports = function (orm, db) {
                 key: true
             },
             userId: {
-                type: 'integer',
-                size: 8,
+                type: 'text',
+                size: 255,
+                defaultValue: '',
                 index: true
             },
             // Эакончил учить стих или ещё в процессе
