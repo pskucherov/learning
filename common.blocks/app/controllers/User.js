@@ -216,7 +216,7 @@ User.getById = function(userModel, id, fields) {
     // TODO: переписать на выборку нужных полей из БД
     fields = Utils.parseUserFields(fields);
 
-    userModel.find({ id: id }).run(function(err, user) {
+    userModel.find({ _id: id }).run(function(err, user) {
         if (err) throw err;
 
         if (_.isEmpty(user)) {

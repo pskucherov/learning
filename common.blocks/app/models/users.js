@@ -1,11 +1,6 @@
 module.exports = function (orm, db) {
 
     db.define("users", {
-
-        id: {
-            type: 'serial',
-            key: true
-        },
         vkid: {
             type: 'integer',
             unique: true,
