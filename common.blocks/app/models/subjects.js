@@ -45,7 +45,10 @@ module.exports = function (orm, db) {
                 size: 2,
                 defaultValue: 0
             },
-
+            subj: {
+                type: 'text',
+                defaultValue: ''
+            },
             subj_id: {
                 type: 'text',
                 defaultValue: ''
