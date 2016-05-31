@@ -25,25 +25,32 @@ var BrainTests = function() {
  * @returns {Promise}
  */
 BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
-    var deferred = vow.defer();
+    var deferred = vow.defer(),
+        // TODO: выборка вопросов, на которые пользователь ещё не отвечал
+        query = { class: classNum };
 
-    db.models['brain-tests'].find({ class: classNum, _id: { $nin: [ 5, 15 ] } }).limit(1).run(function (err, data) {
-        if (_.isEmpty(data)) {
-            deferred.reject([]);
-        }
+    db.models['brain-tests'].count(query, function(err, n) {
+        var r = Math.floor(Math.random() * n);
 
-        //Subjects.get(db.models['subjects'], data[0].subj_id).then(function(subj) {
-          //  if (err) throw err;
+        db.models['brain-tests'].find(query).limit(1).skip(r).run(function (err, data) {
+            if (_.isEmpty(data)) {
+                deferred.reject([]);
+            }
 
-        //    if (_.isEmpty(subj)) {
-        //        deferred.reject([]);
-        //    } else {
-        //        data[0].subj = subj;
-                // TODO: нормализовать данные с предметами
-                data[0].subj = { name: data[0].subj };
-                deferred.resolve(data[0]);
-        //    }
-        //});
+            //Subjects.get(db.models['subjects'], data[0].subj_id).then(function(subj) {
+            //  if (err) throw err;
+
+            //    if (_.isEmpty(subj)) {
+            //        deferred.reject([]);
+            //    } else {
+            //        data[0].subj = subj;
+                    // TODO: нормализовать данные с предметами
+                    data[0].subj = { name: data[0].subj };
+                    deferred.resolve(data[0]);
+            //    }
+            //});
+        });
+
     });
 
     return deferred.promise();
