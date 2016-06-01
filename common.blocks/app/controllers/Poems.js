@@ -51,7 +51,7 @@ Poems.create = function(pModel, name, authorId, userId) {
 Poems.getPoemById = function(pModel, poemId) {
     var deferred = vow.defer();
 
-    pModel.find({ id: poemId }).limit(1).run(function (err, poem) {
+    pModel.find({ _id: poemId }).limit(1).run(function (err, poem) {
         if (err) throw err;
 
         if (_.isEmpty(poem)) {

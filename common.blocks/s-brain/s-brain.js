@@ -247,7 +247,7 @@ modules.define(
                 var num = parseInt(num, 10);
 
                 window.socket.emit('s-braint:checkAnswer', {
-                    id: this.currentQuestionId,
+                    _id: this.currentQuestionId,
                     num: typeof num === 'number' ? num : -1
                 });
 

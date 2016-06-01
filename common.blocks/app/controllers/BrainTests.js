@@ -67,7 +67,7 @@ BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
 BrainTests.incQuestionComplaints = function(BTestsModel, qId) {
     var deferred = vow.defer();
 
-    BTestsModel.find({ id: qId }).limit(1).run(function (err, data) {
+    BTestsModel.find({ _id: qId }).limit(1).run(function (err, data) {
 
         if (err) throw err;
 
