@@ -97,7 +97,7 @@ User.createByVKId = function(userModel, vkid) {
         function(user) {
             deferred.resolve({
                 status: User.ANSWER.OLD_USER,
-                id: user[0]._id,
+                _id: user[0]._id,
                 vkid: vkid
             });
         },

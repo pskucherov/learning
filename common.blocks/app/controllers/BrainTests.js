@@ -153,37 +153,41 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
     var deferred = vow.defer();
 
     deferred.resolve([]);
-    /*
-    db.driver.execQuery('SELECT @i:=@i+1 AS `RowNumber`, userId, cnt '
-        + 'FROM (SELECT userId, COUNT(*) as cnt '
-        + 'FROM `brain-tests-answers`, (SELECT @i:=0) AS `RowNumberTable` WHERE (`questionId` IN (SELECT id FROM `brain-tests` WHERE `class` = "' + classNum + '") AND answer=1)'
-        + ' GROUP BY userId ORDER BY cnt DESC)x '
-        + ' LIMIT 3',
-        function(err, data) {
 
-            if (err) throw err;
-
-            if (_.isEmpty(data)) {
-                deferred.resolve([]);
-            } else {
-
-                // Если юзер есть в одном из трёх первых, то возвращаем их и выходим
-                for (var k in data) {
-                    if (data[k]['userId'] === userId) {
-                        deferred.resolve(data);
-                        return;
-                    }
-                }
-
-                BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], userId, classNum, 1)
-                    .then(function(uStat) {
-                        data.push({ RowNumber: 100500, userId: userId, cnt: uStat });
-                        deferred.resolve(data);
-                    });
-
+    db.models['brain-tests-answers'].proxy('aggregate', 'brain-tests-answers', [[
+        { $match: { answer : true } },
+        {
+            $group : {
+                _id: "$userId",
+                cnt: { "$sum": 1 }
             }
-        });
-*/
+        },
+        { $sort : { cnt: -1 } },
+        { $limit : 3 }
+    ], function (err, data) {
+        if (err) throw err;
+
+        if (_.isEmpty(data)) {
+            deferred.resolve([]);
+        } else {
+
+            // Если юзер есть в одном из трёх первых, то возвращаем их и выходим
+            for (var k in data) {
+                if (data[k]['_id'] === userId) {
+                    deferred.resolve(data);
+                    return;
+                }
+            }
+
+            BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], userId, classNum, 1)
+                .then(function(uStat) {
+                    data.push({ RowNumber: 100500, userId: userId, cnt: uStat });
+                    deferred.resolve(data);
+                });
+        }
+
+    }]);
+
     return deferred.promise();
 };
 
@@ -206,7 +210,7 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
         var userIds = [];
 
         for (var k in uStat) {
-            userIds.push(uStat[k].userId);
+            userIds.push(uStat[k]._id); // Здесь вписано _id, но это в group подставляется userId
         }
 
         User.getById(db.models['users'], userIds, '_id,vkid,first_name,photo_100').then(function(users) {
