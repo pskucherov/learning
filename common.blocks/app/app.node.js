@@ -321,7 +321,7 @@ models(function (err, db) {
             socket.on('s-braint:checkAnswer', function (answerData) {
 
                 db.models['brain-tests'].find({
-                    _id: parseInt(answerData._id, 10),
+                    _id: answerData._id,
                     rightanswernum: parseInt(answerData.num, 10)
                 }).limit(1).run(function (err, data) {
                     var isRight = false;
