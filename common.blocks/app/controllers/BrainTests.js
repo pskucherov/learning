@@ -152,8 +152,6 @@ BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRi
 BrainTests.getStatsRating = function(db, userId, classNum) {
     var deferred = vow.defer();
 
-    deferred.resolve([]);
-
     db.models['brain-tests-answers'].proxy('aggregate', 'brain-tests-answers', [[
         { $match: { answer : true } },
         {
@@ -170,6 +168,10 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
         if (_.isEmpty(data)) {
             deferred.resolve([]);
         } else {
+
+	    _.forEach(data, function(item, k) {
+                data[k].RowNumber = k;
+            });
 
             // Если юзер есть в одном из трёх первых, то возвращаем их и выходим
             for (var k in data) {
@@ -216,7 +218,8 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
         User.getById(db.models['users'], userIds, '_id,vkid,first_name,photo_100').then(function(users) {
             for (var i in uStat) {
                 for (var k in users) {
-                    if (uStat[i].userId === users[k]._id) {
+                    // Здесь вписано _id, но это в group подставляется userId
+                    if (uStat[i]._id === users[k]._id) {
                         uStat[i].user = users[k];
                     }
                 }
