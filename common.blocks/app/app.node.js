@@ -345,7 +345,7 @@ models(function (err, db) {
 
                     }
 
-                    BrainTests.createAnswerRow(db.models['brain-tests-answers'], user._id, answerData._id, isRight)
+                    BrainTests.createAnswerRow(db.models['brain-tests-answers'], user._id, answerData._id, isRight, cookie.classNum)
                         .then(function () {
                             socket.emit('s-brain:setAnswer', isRight);
                         });

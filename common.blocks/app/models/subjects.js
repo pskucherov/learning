@@ -70,6 +70,11 @@ module.exports = function (orm, db) {
 
         answer: {
             type: 'boolean'
+        },
+
+        classNum: {
+            type: 'integer',
+            size: 4
         }
 
     }, {

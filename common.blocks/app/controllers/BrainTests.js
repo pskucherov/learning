@@ -97,14 +97,16 @@ BrainTests.incQuestionComplaints = function(BTestsModel, qId) {
  * @param {Number} userId
  * @param {Number} questionId
  * @param {Boolean} isRight
+ * @param {Number} classNum
  * @returns {*}
  */
-BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight) {
+BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight, classNum) {
     var deferred = vow.defer();
 
     BAnswersModel.create({
         userId: userId,
         questionId: questionId,
+        classNum: classNum,
         answer: isRight
     }, function (err) {
         if (err) throw err;
