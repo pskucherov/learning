@@ -130,16 +130,11 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
 BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRightAnswer) {
     var deferred = vow.defer();
 
-    deferred.resolve([]);
-
-    /*
-    BAnswersModel.find({ userId: userId, answer: toRightAnswer })
-        .where('questionId IN (SELECT id FROM `brain-tests` WHERE class = ?)', [classNum])
+    BAnswersModel.find({ userId: userId, answer: toRightAnswer, classNum: classNum })
         .count(function(err, data) {
             if (err) throw err;
             deferred.resolve(data);
         });
-*/
 
     return deferred.promise();
 };
@@ -155,7 +150,7 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
     var deferred = vow.defer();
 
     db.models['brain-tests-answers'].proxy('aggregate', 'brain-tests-answers', [[
-        { $match: { answer : true } },
+        { $match: { answer : true, classNum: classNum } },
         {
             $group : {
                 _id: "$userId",
