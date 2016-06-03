@@ -106,7 +106,7 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
     BAnswersModel.create({
         userId: userId,
         questionId: questionId,
-        classNum: classNum,
+        classNum: parseInt(classNum, 10),
         answer: isRight
     }, function (err) {
         if (err) throw err;
@@ -150,7 +150,7 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
     var deferred = vow.defer();
 
     db.models['brain-tests-answers'].proxy('aggregate', 'brain-tests-answers', [[
-        { $match: { answer : true, classNum: classNum } },
+        { $match: { answer: true , classNum: classNum } },
         {
             $group : {
                 _id: "$userId",
@@ -160,6 +160,7 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
         { $sort : { cnt: -1 } },
         { $limit : 3 }
     ], function (err, data) {
+
         if (err) throw err;
 
         if (_.isEmpty(data)) {
