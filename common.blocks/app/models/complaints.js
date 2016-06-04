@@ -2,10 +2,6 @@ module.exports = function (orm, db) {
 
     db.define('complaints', {
 
-        id: {
-            type: 'serial',
-            key: true
-        },
         tablename: {
             type: 'text',
             size: 50,
