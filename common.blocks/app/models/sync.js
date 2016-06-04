@@ -371,7 +371,7 @@ models(function (err, db) {
                                 class: 0,
                                 userId: 1,
                                 moderate: '1',
-                                'poem-text': [{
+                                poem: [{
                                         //id: 1,
                                         line_num: 0,
                                         line: lines[0],
@@ -439,13 +439,6 @@ models(function (err, db) {
                                 ]
                             }, function (err, poem) {
                             err && console.log("\n\n\ err ", JSON.stringify(err));
-
-    /*
-                            db.models['poem-text'].create([
-                            ], function (err) {
-                                err && console.log("\n\n\ err ", err);
-                            });
-*/
                         }]);
                     });
                 }

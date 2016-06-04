@@ -162,14 +162,14 @@ models(function (err, db) {
             /* DATA-PROVIDER START */
 
             socket.on('provider:act:find-author', function (query) {
-                Poems.findAuthorByQuery(db.models['authors'], query, user._id)
+                Authors.findByQuery(db.models['authors'], query, user._id)
                     .then(function (authors) {
                         socket.emit('provider:data:author', authors);
                     });
             });
 
             socket.on('provider:act:find-poem', function (query, author) {
-                Poems.findPoemByAuthorANDQuery(db.models['poems'], query, author, user._id)
+                Poems.findPoemByAuthorANDQuery(db.models['poems'], db.models['authors'], query, author, user._id)
                     .then(function(poems) {
                         socket.emit('provider:data:poem', poems);
                     });
@@ -212,7 +212,7 @@ models(function (err, db) {
 
             // Получить стих по точному вхождению имени и автора
             socket.on('select-poem:getPoemByNameAndAuthor', function (params) {
-                Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user._id)
+                Poems.getPoemByNameAndAuthor(db.models['poems'], db.models['authors'], params.name, params.author, user._id)
                     .then(function (poem) {
                         socket.emit('select-poem:getPoem', poem);
                     });
@@ -276,7 +276,7 @@ models(function (err, db) {
 
                     if (!_.isEmpty(params.author) && !_.isEmpty(params.name) && !_.isEmpty(params.poem)) {
 
-                        Poems.getPoemByNameAndAuthor(db.models['poems'], params.name, params.author, user._id)
+                        Poems.getPoemByNameAndAuthor(db.models['poems'], db.models['authors'], params.name, params.author, user._id)
                             .then(function (poem) {
                                 params.poemId = poem && poem[0] && poem[0]._id;
 
@@ -284,11 +284,9 @@ models(function (err, db) {
                                     createOrSaveProgress(params);
                                 } else {
                                     Authors.create(db.models['authors'], params.author, user._id).then(function(author) {
-                                        Poems.create(db.models['poems'], params.name, author._id, user._id).then(function(poem) {
-                                            PoemLines.create(db.models['poem-text'], poem._id, params.poem).then(function(lines) {
-                                                params.poemId = poem._id;
-                                                createOrSaveProgress(params);
-                                            });
+                                        Poems.create(db.models['poems'], params.name, author._id, user._id, params.poem).then(function(poem) {
+                                            params.poemId = poem._id;
+                                            createOrSaveProgress(params);
                                         });
                                     });
                                 }

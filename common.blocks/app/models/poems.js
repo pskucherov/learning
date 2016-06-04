@@ -26,7 +26,7 @@ module.exports = function (orm, db) {
                 values: MODERATE_ENUM,
                 defaultValue: MODERATE_ENUM[0]
             },
-            'poem-text': [
+            poem: [
                 {
                     line_num: {
                         type: 'integer',
@@ -53,15 +53,17 @@ module.exports = function (orm, db) {
                         defaultValue: ''
                     }
                 }
-            ]
+            ],
+            author_id: {
+                type: 'text',
+                size: 255,
+                defaultValue: ''
+            }
         }, {
             timestamp: {
                 modifiedProperty: false
             }
         }),
-        /* b = db.define('poem-text', , {
-            timestamp: false
-        }),*/
         a = db.define('authors', {
             name: {
                 type: 'text',
@@ -111,6 +113,10 @@ module.exports = function (orm, db) {
                 type: 'integer',
                 size: 4,
                 defaultValue: 0
+            },
+            poemId: {
+                type: 'integer',
+                size: 4
             }
         }, {
             timestamp: true
