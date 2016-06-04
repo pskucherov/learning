@@ -3,7 +3,6 @@
 
 var models = [
         'users',
-        'pagesname',
         'subjects',
         'complaints',
         'poems'
