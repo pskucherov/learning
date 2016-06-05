@@ -14,7 +14,7 @@ modules.define(
                         this.spin = this.findBlockInside('spin');
                         this.buttonSave = this.findBlockInside({ block: 'button', modName: 'button-save', modVal: true });
 
-                        if (this.currentPoemId > 0) {
+                        if (!_.isEmpty(this.currentPoemId)) {
                             this._begin();
                         }
 

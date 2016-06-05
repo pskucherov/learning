@@ -26,7 +26,7 @@ SpeakerLearnPoem.createProgress = function(slpModel, poemId, userId) {
 
     slpModel.create({
         userId: utils.oId(userId),
-        poem_id: utils.oId(poemId)
+        poemId: utils.oId(poemId)
     }, function (err, progress) {
         if (err) throw err;
         deferred.resolve(progress);
@@ -47,7 +47,7 @@ SpeakerLearnPoem.createProgress = function(slpModel, poemId, userId) {
 SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, act, userId) {
     var deferred = vow.defer();
 
-    slpModel.find({ userId: utils.oId(userId), poem_id: utils.oId(poemId) }).limit(1).run(function (err, progress) {
+    slpModel.find({ userId: utils.oId(userId), poemId: utils.oId(poemId) }).limit(1).run(function (err, progress) {
         if (err) throw err;
 
         if (_.isEmpty(progress)) {
@@ -81,7 +81,7 @@ SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, act, use
 SpeakerLearnPoem.saveProgress = function(slpModel, poemId, act, userId) {
     var deferred = vow.defer();
 
-    slpModel.find({ userId: utils.oId(userId), poem_id: utils.oId(poemId) }).limit(1).run(function (err, progress) {
+    slpModel.find({ userId: utils.oId(userId), poemId: utils.oId(poemId) }).limit(1).run(function (err, progress) {
         if (err) throw err;
 
         if (_.isEmpty(progress)) {
@@ -112,22 +112,16 @@ SpeakerLearnPoem.saveProgress = function(slpModel, poemId, act, userId) {
 SpeakerLearnPoem.getDataOfProgress = function(slpModel, userId) {
     var deferred = vow.defer();
 
-    console.log('getDataOfProgress')
-
-    slpModel
-        .find({ userId: utils.oId(userId), finished: false })
-        .limit(1)
-        .orderRaw("?? DESC", ['modified_at'])
-        .run(function (err, progress) {
-            if (err) throw err;
-
-            console.log(JSON.stringify(progress));
-
-            deferred.resolve(progress[0] || []);
-        });
+    slpModel.proxy('aggregate', 'speaker-learn-poem', [[
+        { $match: { userId: utils.oId(userId), finished: false } },
+        { $sort : { modified_at: -1 } },
+        { $limit : 1 }
+    ], function (err, progress) {
+        if (err) throw err;
+        deferred.resolve(progress[0] || []);
+    }]);
 
     return deferred.promise();
 };
-
 
 module.exports = SpeakerLearnPoem;

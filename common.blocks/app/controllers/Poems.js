@@ -30,16 +30,17 @@ var Poems = function() {
 Poems.create = function(pModel, name, authorId, userId, poem) {
     var deferred = vow.defer();
 
-    db.models['poems'].proxy('insertOne', 'poems', [{
+    pModel.proxy('insertOne', 'poems', [{
         name: name,
         author_id: utils.oId(authorId),
         class: 0,
         userId: utils.oId(userId),
         moderate: '0',
         poem: this._getLinesFromPoem(poem)
-    }, function (err, poem) {
+    }, function (err) {
         if (err) throw err;
-        deferred.resolve(poem);
+
+        deferred.resolve(true);
     }]);
 
     return deferred.promise();
@@ -82,7 +83,7 @@ Poems._getLinesFromPoem = function(poemText) {
  * @param poemId
  * @returns {*}
  */
-Poems.getPoemById = function(pModel, poemId) {
+Poems.getById = function(pModel, authorModel, poemId) {
     var deferred = vow.defer();
 
     pModel.find({ _id: utils.oId(poemId) }).limit(1).run(function (err, poem) {
@@ -91,7 +92,15 @@ Poems.getPoemById = function(pModel, poemId) {
         if (_.isEmpty(poem)) {
             deferred.reject([]);
         } else {
-            deferred.resolve(poem[0]);
+            var poemItem = poem[0];
+
+            Authors
+                .getById(authorModel, poemItem.author_id)
+                .then(function(author) {
+                    poemItem.author = author;
+
+                    deferred.resolve(poemItem);
+                });
         }
     });
 
@@ -163,7 +172,9 @@ Poems.getPoemByNameAndAuthor = function(pModel, authorModel, name, author, userI
                 }, function(err, poem) {
                     if (err) throw err;
 
-                    poem.author = { name: authorIds[poem.author_id] };
+                    if (!_.isEmpty(authorIds) && !_.isEmpty(poem)) {
+                        poem.author = {name: authorIds[poem.author_id]};
+                    }
 
                     deferred.resolve(poem);
                 }

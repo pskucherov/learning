@@ -14,7 +14,7 @@ modules.define(
                         this.spin = this.findBlockInside('spin');
                         this.progress = null;
 
-                        if (this.currentPoemId > 0) {
+                        if (!_.isEmpty(this.currentPoemId)) {
                             this._toggleForm();
                             window.socket.emit('s-speaker-finish:get-progress', this.currentPoemId);
                         }

@@ -28,7 +28,7 @@ modules.define(
                         this.currentPoemId = this.params.poemId;
                         this.spin = this.findBlockInside('spin');
 
-                        if (this.currentPoemId > 0) {
+                        if (!_.isEmpty(this.currentPoemId)) {
                             this._toggleForm();
                             window.socket.emit('select-poem:getPoemById', this.currentPoemId);
                         }

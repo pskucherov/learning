@@ -23,7 +23,7 @@ modules.define(
 
                         window.socket.on('select-poem:saveFirstStep', this._saveFirstStep.bind(this));
 
-                        if (this.currentPoemId > 0) {
+                        if (!_.isEmpty(this.currentPoemId)) {
                             this._toggleForm();
                             window.socket.emit('select-poem:getPoemById', this.currentPoemId);
                         }

@@ -98,4 +98,25 @@ Authors.getIdsByQuery = function(authorModel, author, userId) {
     return deferred.promise();
 };
 
+/**
+ * Получить автора по  id
+ *
+ * @param authorModel
+ * @param authorId
+ */
+Authors.getById = function(authorModel, authorId) {
+    var deferred = vow.defer();
+
+    authorModel
+        .find({_id: utils.oId(authorId)})
+        .only('_id', 'name')
+        .run(function (err, author) {
+            if (err) throw err;
+
+            deferred.resolve(author && author[0] || []);
+        });
+
+    return deferred.promise();
+};
+
 module.exports = Authors;

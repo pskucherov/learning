@@ -201,7 +201,7 @@ models(function (err, db) {
             /* S-SPEAKER START */
 
             socket.on('s-speaker:get-poem', function (poemId) {
-                Poems.getPoemById(db.models['poems'], poemId)
+                Poems.getById(db.models['poems'], db.models['authors'], poemId)
                     .then(function (poem) {
                         socket.emit('s-speaker:poem', poem);
                     });
@@ -221,8 +221,8 @@ models(function (err, db) {
 
             // Получить стих по ID
             socket.on('select-poem:getPoemById', function (id) {
-                db.models['poems']
-                    .get(utils.oId(id), function (err, poem) {
+                Poems.getById(db.models['poems'], db.models['authors'], id)
+                    .then(function (poem) {
                         if (err) throw err;
                         socket.emit('select-poem:getPoemById', poem);
                     });
@@ -284,9 +284,16 @@ models(function (err, db) {
                                     createOrSaveProgress(params);
                                 } else {
                                     Authors.create(db.models['authors'], params.author, user._id).then(function(author) {
-                                        Poems.create(db.models['poems'], params.name, author._id, user._id, params.poem).then(function(poem) {
-                                            params.poemId = poem._id;
-                                            createOrSaveProgress(params);
+
+                                        Poems.create(db.models['poems'], params.name, author._id, user._id, params.poem).then(function(success) {
+                                            if (success) {
+                                                Poems.getPoemByNameAndAuthor(db.models['poems'], db.models['authors'], params.name, params.author, user._id)
+                                                    .then(function (poem) {
+                                                        params.poemId = poem._id;
+
+                                                        createOrSaveProgress(params);
+                                                    });
+                                            }
                                         });
                                     });
                                 }
