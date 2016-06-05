@@ -17,13 +17,13 @@ modules.define(
                         window.socket.on('select-poem:getPoem', this.setSelectedPoemInModal.bind(this));
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
-                            poem && this.setSelectedPoemInModal([poem]);
+                            poem && this.setSelectedPoemInModal(poem);
                             this._toggleForm();
                         }.bind(this));
 
                         window.socket.on('select-poem:saveFirstStep', this._saveFirstStep.bind(this));
 
-                        if (this.currentPoemId > 0) {
+                        if (!_.isEmpty(this.currentPoemId)) {
                             this._toggleForm();
                             window.socket.emit('select-poem:getPoemById', this.currentPoemId);
                         }
@@ -58,11 +58,11 @@ modules.define(
                     return this;
                 }
 
-                var p = poem[0];
+                var p = poem;
 
                 this.__self.disableYaSearchButton();
 
-                this.currentPoemId = p.id;
+                this.currentPoemId = p._id;
 
                 this.__self.setPoemName(p.name);
                 this.__self.setAuthor(p.author.name);

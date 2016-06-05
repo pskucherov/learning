@@ -85,7 +85,7 @@ modules.define(
              */
             _getElem: function(elName, u) {
                 return u.RowNumber <= 3
-                    ? this.elem(elName, 'pos', (u.RowNumber-1))
+                    ? this.elem(elName, 'pos', u.RowNumber)
                     : this.elem(elName, 'pos', 100500);
             },
 

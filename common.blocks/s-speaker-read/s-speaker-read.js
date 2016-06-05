@@ -13,13 +13,13 @@ modules.define(
                         this.currentPoemId = this.params.poemId;
                         this.spin = this.findBlockInside('spin');
 
-                        if (this.currentPoemId > 0) {
+                        if (!_.isEmpty(this.currentPoemId)) {
                             this._toggleForm();
                             window.socket.emit('select-poem:getPoemById', this.currentPoemId);
                         }
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
-                            poem && this.setSelectedPoemInModal([poem]);
+                            poem && this.setSelectedPoemInModal(poem);
                             this._toggleForm();
 
                             this.bindEvents();
@@ -98,7 +98,7 @@ modules.define(
                     return this;
                 }
 
-                var p = poem[0];
+                var p = poem;
 
 
                 BEMDOM.update(this.elem('poem'), BEMHTML.apply({

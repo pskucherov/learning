@@ -12,8 +12,7 @@ var express = require('express'),
     cookieName = settings.vk.cookieName,
 
     SpeakerLearnPoem = require('../controllers/SpeakerLearnPoem'),
-    Authors = require('../controllers/Authors'),
-    PoemLines = require('../controllers/PoemLines');
+    Authors = require('../controllers/Authors');
 
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
@@ -63,7 +62,7 @@ router.post(/^\/ajax\/complaint-send\/?$/, function(req, res, next) {
         // Жалоба на вопросы в s-brain
         case 1:
             BrainTests.incQuestionComplaints(req.models['brain-tests'], p.qId);
-            Complaints.createComplaint(req.models.complaints, 'brain-tests', p.qId, p.complaint, p.comment, res.user.id);
+            Complaints.createComplaint(req.models.complaints, 'brain-tests', p.qId, p.complaint, p.comment, res.user._id);
             break;
 
     }
@@ -187,7 +186,7 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
 
         req.session.pageName = 's-speaker';
 
-        SpeakerLearnPoem.getDataOfProgress(req.models['speaker-learn-poem'], res.user.id)
+        SpeakerLearnPoem.getDataOfProgress(req.models['speaker-learn-poem'], res.user._id)
             .then(function (progress) {
                 res.speakerLearnPoem = progress;
                 next();

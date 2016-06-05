@@ -78,14 +78,17 @@ models(function (err, db) {
                 it('should get several users from BD', function () {
                     var deferred = vow.defer();
 
-                    db.driver.execQuery("INSERT INTO `users` (vkid) VALUES (" + VK_USER_ID + "), (" + VK_USER_ID_1 + "), (" + VK_USER_ID_2 + "); ", function() {
-
-                        User.getByVKId(usersModel, [VK_USER_ID, VK_USER_ID_1, VK_USER_ID_2])
+                        User.getByVKId(usersModel, [1, 2, 3])
                             .then(function (users) {
                                 deferred.resolve(users);
                             });
 
-                    });
+                    usersModel.proxy('insertMany', 'users', [[{ vkid: VK_USER_ID }, { vkid: VK_USER_ID_1 }, { vkid: VK_USER_ID_2 }], function() {
+                        User.getByVKId(usersModel, [VK_USER_ID, VK_USER_ID_1, VK_USER_ID_2])
+                            .then(function (users) {
+                                deferred.resolve(users);
+                            });
+                    }]);
 
                     return assert.eventually.lengthOf(
                         deferred.promise(),
@@ -174,6 +177,7 @@ models(function (err, db) {
 
             describe('Calc rating methods', function () {
 
+                /*
                 it('should return points in one percent', function () {
 
                     var deferred = vow.defer();
@@ -194,6 +198,7 @@ models(function (err, db) {
                     );
 
                 });
+                */
 
             });
 

@@ -4,10 +4,6 @@ module.exports = function (orm, db) {
     var MODERATE_ENUM = ['0', '1', '2'];
 
     var s = db.define('poems', {
-            id: {
-                type: 'serial',
-                key: true
-            },
             name: {
                 type: 'text',
                 size: 50,
@@ -21,57 +17,54 @@ module.exports = function (orm, db) {
                 index: true
             },
             userId: {
-                type: 'integer',
-                size: 8,
-                defaultValue: 0
+                type: 'text',
+                size: 255,
+                defaultValue: ''
             },
             moderate: {
                 type: 'enum',
                 values: MODERATE_ENUM,
                 defaultValue: MODERATE_ENUM[0]
+            },
+            poem: [
+                {
+                    line_num: {
+                        type: 'integer',
+                        size: 4,
+                        defaultValue: 0
+                    },
+                    line: {
+                        type: 'text',
+                        size: 255,
+                        defaultValue: ''
+                    },
+                    'fts-tokens': {
+                        type: 'text',
+                        size: 4000,
+                        defaultValue: ''
+                    },
+                    nextEmpLine: {
+                        type: 'boolean',
+                        defaultValue: false
+                    },
+                    imageUrl: {
+                        type: 'text',
+                        size: 255,
+                        defaultValue: ''
+                    }
+                }
+            ],
+            author_id: {
+                type: 'text',
+                size: 255,
+                defaultValue: ''
             }
         }, {
             timestamp: {
                 modifiedProperty: false
             }
         }),
-        b = db.define('poem-text', {
-            id: {
-                type: 'serial',
-                key: true
-            },
-            line_num: {
-                type: 'integer',
-                size: 4,
-                defaultValue: 0
-            },
-            line: {
-                type: 'text',
-                size: 255,
-                defaultValue: ''
-            },
-            'fts-tokens': {
-                type: 'text',
-                size: 4000,
-                defaultValue: ''
-            },
-            nextEmpLine: {
-                type: 'boolean',
-                defaultValue: false
-            },
-            imageUrl: {
-                type: 'text',
-                size: 255,
-                defaultValue: ''
-            }
-        }, {
-            timestamp: false
-        }),
         a = db.define('authors', {
-            id: {
-                type: 'serial',
-                key: true
-            },
             name: {
                 type: 'text',
                 size: 255,
@@ -79,9 +72,9 @@ module.exports = function (orm, db) {
                 defaultValue: ''
             },
             userId: {
-                type: 'integer',
-                size: 8,
-                defaultValue: 0
+                type: 'text',
+                size: 255,
+                defaultValue: ''
             },
             moderate: {
                 type: 'enum',
@@ -92,13 +85,10 @@ module.exports = function (orm, db) {
             timestamp: false
         }),
         selectPoem = db.define('speaker-learn-poem', {
-            id: {
-                type: 'serial',
-                key: true
-            },
             userId: {
-                type: 'integer',
-                size: 8,
+                type: 'text',
+                size: 255,
+                defaultValue: '',
                 index: true
             },
             // Эакончил учить стих или ещё в процессе
@@ -123,16 +113,18 @@ module.exports = function (orm, db) {
                 type: 'integer',
                 size: 4,
                 defaultValue: 0
+            },
+            poemId: {
+                type: 'text',
+                size: 255,
+                defaultValue: ''
             }
         }, {
             timestamp: true
         });
 
     // TODO: убрать autoFetch
-
-    s.hasOne('author', a, { reverse: 'author', autoFetch: true });
-
-    b.hasOne('poem', s, { reverse: 'poem', autoFetch: true });
-
-    selectPoem.hasOne('poem', s);
+    //s.hasOne('author', a, { reverse: 'author', autoFetch: true });
+    //b.hasOne('poem', s, { reverse: 'poem', autoFetch: true });
+    //selectPoem.hasOne('poem', s);
 };

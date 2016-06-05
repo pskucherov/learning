@@ -1,11 +1,6 @@
 module.exports = function (orm, db) {
 
     db.define("users", {
-
-        id: {
-            type: 'serial',
-            key: true
-        },
         vkid: {
             type: 'integer',
             unique: true,
@@ -71,6 +66,8 @@ module.exports = function (orm, db) {
             size: 255,
             defaultValue: ''
         }
+        //,
+        //brain_test_answers: []
 
     }, {
         timestamp: true

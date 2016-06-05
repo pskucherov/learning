@@ -49,7 +49,7 @@ blocks['page'] = function (data) {
                     elem: 'js',
                     url: isLocalServer
                         ? '/socket.io/socket.io.js'
-                        : 'https://cdn.socket.io/socket.io-1.2.0.js',
+                        : 'https://cdn.socket.io/socket.io-1.4.5.js',
                     mix: {
                         block: 'page',
                         elem: 'script'

@@ -14,12 +14,12 @@ modules.define(
                         this.spin = this.findBlockInside('spin');
                         this.buttonSave = this.findBlockInside({ block: 'button', modName: 'button-save', modVal: true });
 
-                        if (this.currentPoemId > 0) {
+                        if (!_.isEmpty(this.currentPoemId)) {
                             this._begin();
                         }
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
-                            poem && this.setSelectedPoemInModal([poem]);
+                            poem && this.setSelectedPoemInModal(poem);
                             this._toggleForm();
                         }.bind(this));
 
@@ -66,7 +66,7 @@ modules.define(
                     return this;
                 }
 
-                var p = poem[0];
+                var p = poem;
 
 
                 BEMDOM.update(this.elem('poems'), BEMHTML.apply({

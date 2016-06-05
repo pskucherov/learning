@@ -2,7 +2,9 @@ var vow = require('vow'),
     _ = require('lodash'),
     path = require('path'),
     utils = require('../utils'),
-    orm = require('orm');
+    orm = require('orm'),
+    BM25 = require('fts-js'),
+    Authors = require('./Authors');
 
 /**
  * Контроллер, для работы со стихами
@@ -21,24 +23,57 @@ var Poems = function() {
  * @param name
  * @param authorId
  * @param userId
+ * @param {String} poem
  *
  * @returns {*}
  */
-Poems.create = function(pModel, name, authorId, userId) {
+Poems.create = function(pModel, name, authorId, userId, poem) {
     var deferred = vow.defer();
 
-    pModel.create({
+    pModel.proxy('insertOne', 'poems', [{
         name: name,
-        author_id: authorId,
+        author_id: utils.oId(authorId),
         class: 0,
-        userId: userId,
-        moderate: '0'
-    }, function (err, poem) {
+        userId: utils.oId(userId),
+        moderate: '0',
+        poem: this._getLinesFromPoem(poem)
+    }, function (err) {
         if (err) throw err;
-        deferred.resolve(poem);
-    });
+
+        deferred.resolve(true);
+    }]);
 
     return deferred.promise();
+};
+
+/**
+ * Подготавливает текст стихотворения для добавления в БД в виде строк с полнотекстовым поиском
+ *
+ * @param poemText
+ * @returns {*}
+ * @private
+ */
+Poems._getLinesFromPoem = function(poemText) {
+    var finalText,
+        lineNum = 0;
+
+    poemText = utils.formatEmptyLines(poemText);
+
+    finalText = typeof poemText === 'string' ? poemText.split('\n') : poemText;
+
+    return _.chain(finalText)
+        .map(function(line, k) {
+            return _.isEmpty(line) ? '' : {
+                line_num: lineNum++,
+                line: line,
+                'fts-tokens': JSON.stringify(BM25.Tokenize(line)),
+                nextEmpLine: !_.isUndefined(finalText[k + 1]) && _.isEmpty(finalText[k + 1])
+            };
+        })
+        .filter(function(item) {
+            return !_.isEmpty(item);
+        })
+        .value();
 };
 
 /**
@@ -48,43 +83,26 @@ Poems.create = function(pModel, name, authorId, userId) {
  * @param poemId
  * @returns {*}
  */
-Poems.getPoemById = function(pModel, poemId) {
+Poems.getById = function(pModel, authorModel, poemId) {
     var deferred = vow.defer();
 
-    pModel.find({ id: poemId }).limit(1).run(function (err, poem) {
+    pModel.find({ _id: utils.oId(poemId) }).limit(1).run(function (err, poem) {
         if (err) throw err;
 
         if (_.isEmpty(poem)) {
             deferred.reject([]);
         } else {
-            deferred.resolve(poem[0]);
+            var poemItem = poem[0];
+
+            Authors
+                .getById(authorModel, poemItem.author_id)
+                .then(function(author) {
+                    poemItem.author = author;
+
+                    deferred.resolve(poemItem);
+                });
         }
     });
-
-    return deferred.promise();
-};
-
-/**
- * Найти автора по заданному параметру
- *
- * @param pModel
- * @param query
- * @param userId
- * @returns {*}
- */
-Poems.findAuthorByQuery = function(authorModel, query, userId) {
-    var deferred = vow.defer();
-
-    authorModel
-        .find({
-            name: orm.like('%' + query + '%'),
-            or: [{ userId: userId }, { moderate: '1' }]
-        })
-        .only('id', 'name').limit(15).run(function (err, authors) {
-            if (err) throw err;
-
-            deferred.resolve(authors);
-        });
 
     return deferred.promise();
 };
@@ -93,30 +111,37 @@ Poems.findAuthorByQuery = function(authorModel, query, userId) {
  * Найти стих по автору и названию
  *
  * @param pModel
+ * @param authorModel
  * @param query
  * @param {String} author
  * @param userId
  *
  * @returns {*}
  */
-Poems.findPoemByAuthorANDQuery = function(pModel, query, author, userId) {
-    var deferred = vow.defer(),
-        authorObj = {
-            or: [{ userId: userId }, { moderate: '1' }]
-        };
+Poems.findPoemByAuthorANDQuery = function(pModel, authorModel, query, author, userId) {
+    var deferred = vow.defer();
 
-    !_.isEmpty(author) && (authorObj.name = author);
+    Authors
+        .getIdsByQuery(authorModel, author, userId)
+        .then(function(authorIds) {
 
-    pModel
-        .findByAuthor(authorObj)
-        .find({
-            name: orm.like('%' + query + '%'),
-            or: [{ userId: userId }, { moderate: '1' }]
-        })
-        .only('id', 'name', 'author_id')
-        .limit(15)
-        .run(function(err, poems) {
-            deferred.resolve(poems);
+            pModel
+                .find({
+                    name: { $regex: new RegExp(query, 'i') },
+                    author_id: { $in: _.map(authorIds, function(a, k) { return utils.oId(k); }) },
+                    $or: [{ userId: userId }, { moderate: '1' } ]
+                })
+                .only('_id', 'name', 'author_id')
+                .limit(15)
+                .run(function (err, poems) {
+                    if (err) throw err;
+
+                    _.forEach(poems, function(p, k) {
+                        poems[k].author = { name: authorIds[p.author_id] };
+                    });
+
+                    deferred.resolve(poems);
+                });
         });
 
     return deferred.promise();
@@ -126,24 +151,34 @@ Poems.findPoemByAuthorANDQuery = function(pModel, query, author, userId) {
  * Получить стих по точному вхождению названию и автора
  *
  * @param pModel
+ * @param authorModel
  * @param {String} name
  * @param {String} author
  * @param userId
  * @returns {*}
  */
-Poems.getPoemByNameAndAuthor = function(pModel, name, author, userId) {
+Poems.getPoemByNameAndAuthor = function(pModel, authorModel, name, author, userId) {
     var deferred = vow.defer();
 
-    pModel
-        .findByAuthor({
-            name: author,
-            or: [{ userId: userId }, { moderate: '1' }]
-        }).find({
-            name: name,
-            or: [{ userId: userId }, { moderate: '1' }]
-        }).limit(1).run(function (err, poems) {
-            if (err) throw err;
-            deferred.resolve(poems);
+    Authors
+        .getIdsByQuery(authorModel, author, userId)
+        .then(function(authorIds) {
+
+            pModel.proxy('findOne', 'poems', [
+                {
+                    name: name,
+                    author_id: { $in: _.map(authorIds, function(a, k) { return utils.oId(k); }) },
+                    $or: [{userId: utils.oId(userId)}, {moderate: '1'}]
+                }, function(err, poem) {
+                    if (err) throw err;
+
+                    if (!_.isEmpty(authorIds) && !_.isEmpty(poem)) {
+                        poem.author = {name: authorIds[poem.author_id]};
+                    }
+
+                    deferred.resolve(poem);
+                }
+            ]);
         });
 
     return deferred.promise();
