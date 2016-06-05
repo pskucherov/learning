@@ -29,26 +29,34 @@ BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
         // TODO: выборка вопросов, на которые пользователь ещё не отвечал
         query = { class: classNum };
 
-    db.models['brain-tests'].count(query, function(err, n) {
-        var r = Math.floor(Math.random() * n);
+    db.models['brain-tests-answers'].count({ classNum: classNum, userId: utils.oId(userId) }, function(err, answerN) {
 
-        db.models['brain-tests'].find(query).limit(1).skip(r).run(function (err, data) {
-            if (_.isEmpty(data)) {
-                deferred.reject([]);
+        db.models['brain-tests'].count(query, function (err, n) {
+            var r = Math.floor(Math.random() * n);
+
+            if (answerN >= n) {
+                return deferred.reject();
             }
 
-            //Subjects.get(db.models['subjects'], data[0].subj_id).then(function(subj) {
-            //  if (err) throw err;
+            db.models['brain-tests'].find(query).limit(1).skip(r).run(function (err, data) {
+                if (_.isEmpty(data)) {
+                    deferred.reject([]);
+                }
 
-            //    if (_.isEmpty(subj)) {
-            //        deferred.reject([]);
-            //    } else {
-            //        data[0].subj = subj;
-                    // TODO: нормализовать данные с предметами
-                    data[0].subj = { name: data[0].subj };
-                    deferred.resolve(data[0]);
-            //    }
-            //});
+                //Subjects.get(db.models['subjects'], data[0].subj_id).then(function(subj) {
+                //  if (err) throw err;
+
+                //    if (_.isEmpty(subj)) {
+                //        deferred.reject([]);
+                //    } else {
+                //        data[0].subj = subj;
+                // TODO: нормализовать данные с предметами
+                data[0].subj = {name: data[0].subj};
+                deferred.resolve(data[0]);
+                //    }
+                //});
+            });
+
         });
 
     });
@@ -107,7 +115,7 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
         userId: utils.oId(userId),
         questionId: utils.oId(questionId),
         classNum: parseInt(classNum, 10),
-        answer: isRight
+        answer: Boolean(isRight)
     }, function (err) {
         if (err) throw err;
 
@@ -130,7 +138,7 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
 BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRightAnswer) {
     var deferred = vow.defer();
 
-    BAnswersModel.find({ userId: utils.oId(userId), answer: toRightAnswer, classNum: classNum })
+    BAnswersModel.find({ userId: utils.oId(userId), answer: Boolean(toRightAnswer), classNum: classNum })
         .count(function(err, data) {
             if (err) throw err;
             deferred.resolve(data);

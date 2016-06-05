@@ -54,7 +54,7 @@ var User = function(userModel, u, cb) {
  * @returns {User}
  */
 User.prototype.calcRating = function(ratingModel, io) {
-    ratingModel.count({ userId: utils.oId(this._id), answer: 1 }, function (err, rightAnswers) {
+    ratingModel.count({ userId: utils.oId(this._id), answer: true }, function (err, rightAnswers) {
         ratingModel.count({ userId: utils.oId(this._id) }, function (err, answers) {
             io.emit('user:rating', {
                 countAnswers: answers,
