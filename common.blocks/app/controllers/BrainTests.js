@@ -222,7 +222,9 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
 
         User.getById(db.models['users'], userIds, '_id,vkid,first_name,photo_100').then(function(users) {
             for (var i in uStat) {
+                uStat[i]._id = utils.oId(uStat[i]._id);
                 for (var k in users) {
+                    users[k]._id = utils.oId(users[k]._id);
                     // Здесь вписано _id, но это в group подставляется userId
                     if (uStat[i]._id.equals(users[k]._id)) {
                         uStat[i].user = users[k];
