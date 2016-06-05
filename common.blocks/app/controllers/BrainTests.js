@@ -189,7 +189,8 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
 
             BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], userId, classNum, 1)
                 .then(function(uStat) {
-                    data.push({ RowNumber: 100500, userId: utils.oId(userId), cnt: uStat });
+                    // Здесь вписано _id, но это в group подставляется userId
+                    data.push({ RowNumber: 100500, _id: userId, cnt: uStat });
                     deferred.resolve(data);
                 });
         }
