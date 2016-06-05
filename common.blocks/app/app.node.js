@@ -44,6 +44,8 @@ var fs = require('fs'),
 
     bodyParser = require("body-parser"),
 
+    utils = require('./utils'),
+
     server;
 
 // html/css/js кэшируем на день, картинки на год.
@@ -182,8 +184,8 @@ models(function (err, db) {
 
             /* LANDING START */
 
-            db.models['brain-tests-answers'].count({userId: user._id, answer: 1}, function (err, rightAnswers) {
-                db.models['brain-tests-answers'].count({userId: user._id}, function (err, answers) {
+            db.models['brain-tests-answers'].count({userId: utils.oId(user._id), answer: 1}, function (err, rightAnswers) {
+                db.models['brain-tests-answers'].count({userId: utils.oId(user._id)}, function (err, answers) {
                     socket.emit('user:rating', {
                         0: {
                             countAnswers: answers,
@@ -220,7 +222,7 @@ models(function (err, db) {
             // Получить стих по ID
             socket.on('select-poem:getPoemById', function (id) {
                 db.models['poems']
-                    .get(id, function (err, poem) {
+                    .get(utils.oId(id), function (err, poem) {
                         if (err) throw err;
                         socket.emit('select-poem:getPoemById', poem);
                     });
@@ -317,7 +319,7 @@ models(function (err, db) {
             socket.on('s-braint:checkAnswer', function (answerData) {
 
                 db.models['brain-tests'].find({
-                    _id: answerData._id,
+                    _id: utils.oId(answerData._id),
                     rightanswernum: parseInt(answerData.num, 10)
                 }).limit(1).run(function (err, data) {
                     var isRight = false;
@@ -326,10 +328,10 @@ models(function (err, db) {
                         isRight = true;
 
                         db.models['brain-tests-answers'].count({
-                            userId: user._id,
+                            userId: utils.oId(user._id),
                             answer: 1
                         }, function (err, rightAnswers) {
-                            db.models['brain-tests-answers'].count({userId: user._id}, function (err, answers) {
+                            db.models['brain-tests-answers'].count({userId: utils.oId(user._id) }, function (err, answers) {
                                 socket.emit('user:rating', {
                                     0: {
                                         countAnswers: answers,
@@ -369,7 +371,7 @@ models(function (err, db) {
                     .then(function (data) {
                         socket.emit('s-brain:question', data);
                     })
-                    .fail(function () {
+                    .fail(function() {
 
 
                         BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user._id, find.class, 1)

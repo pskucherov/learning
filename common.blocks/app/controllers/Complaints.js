@@ -29,10 +29,10 @@ Complaints.createComplaint = function(CModel, tablename, rowId, checkboxes, comm
 
     CModel.create({
         tablename: tablename,
-        rowId: rowId,
+        rowId: utils.oId(rowId),
         checkboxes: checkboxes,
         comment: comment,
-        userId: userId
+        userId: utils.oId(userId)
     }, function (err) {
         if (err) throw err;
 

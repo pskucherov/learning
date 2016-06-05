@@ -1,8 +1,7 @@
 var vow = require('vow'),
     _ = require('lodash'),
     path = require('path'),
-    utils = require('../utils'),
-    ObjectID = require('mongodb').ObjectID;
+    utils = require('../utils');
 
 /**
  * Контроллер, для работы с авторами
@@ -27,7 +26,7 @@ Authors.create = function(aModel, author, userId) {
 
     aModel.create({
         name: author,
-        userId: userId,
+        userId: utils.oId(userId),
         moderate: '0'
     }, function (err, author) {
         if (err) throw err;
@@ -52,7 +51,7 @@ Authors.findByQuery = function(authorModel, query, userId) {
     authorModel
         .find({
             name: { $regex: new RegExp(query, 'i') },
-            $or: [{ userId: userId }, { moderate: '1' }]
+            $or: [{ userId: utils.oId(userId) }, { moderate: '1' }]
         })
         .only('_id', 'name')
         .limit(15).run(function (err, authors) {
@@ -75,7 +74,7 @@ Authors.findByQuery = function(authorModel, query, userId) {
 Authors.getIdsByQuery = function(authorModel, author, userId) {
     var deferred = vow.defer(),
         authorObj = {
-            $or: [{ userId: userId }, { moderate: '1' }]
+            $or: [{ userId: utils.oId(userId) }, { moderate: '1' }]
         };
 
     // Если автор не указан, то выбираем всех доступных пользователю авторов

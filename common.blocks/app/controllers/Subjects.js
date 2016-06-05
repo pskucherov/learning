@@ -23,7 +23,7 @@ var Subjects = function() {
 Subjects.get = function(sModel, id) {
     var deferred = vow.defer();
 
-    sModel.find({ _id: id }, function (err, subject) {
+    sModel.find({ _id: utils.oId(id) }, function (err, subject) {
         if (err) throw err;
         deferred.resolve(_.get(subject, '0', []));
     });

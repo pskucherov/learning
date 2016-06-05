@@ -4,8 +4,7 @@ var vow = require('vow'),
     utils = require('../utils'),
     orm = require('orm'),
     BM25 = require('fts-js'),
-    Authors = require('./Authors'),
-    ObjectID = require('mongodb').ObjectID;
+    Authors = require('./Authors');
 
 /**
  * Контроллер, для работы со стихами
@@ -33,9 +32,9 @@ Poems.create = function(pModel, name, authorId, userId, poem) {
 
     db.models['poems'].proxy('insertOne', 'poems', [{
         name: name,
-        author_id: authorId,
+        author_id: utils.oId(authorId),
         class: 0,
-        userId: userId,
+        userId: utils.oId(userId),
         moderate: '0',
         poem: this._getLinesFromPoem(poem)
     }, function (err, poem) {
@@ -86,7 +85,7 @@ Poems._getLinesFromPoem = function(poemText) {
 Poems.getPoemById = function(pModel, poemId) {
     var deferred = vow.defer();
 
-    pModel.find({ _id: poemId }).limit(1).run(function (err, poem) {
+    pModel.find({ _id: utils.oId(poemId) }).limit(1).run(function (err, poem) {
         if (err) throw err;
 
         if (_.isEmpty(poem)) {
@@ -120,7 +119,7 @@ Poems.findPoemByAuthorANDQuery = function(pModel, authorModel, query, author, us
             pModel
                 .find({
                     name: { $regex: new RegExp(query, 'i') },
-                    author_id: { $in: _.map(authorIds, function(a, k) { return new ObjectID(k); }) },
+                    author_id: { $in: _.map(authorIds, function(a, k) { return utils.oId(k); }) },
                     $or: [{ userId: userId }, { moderate: '1' } ]
                 })
                 .only('_id', 'name', 'author_id')
@@ -159,8 +158,8 @@ Poems.getPoemByNameAndAuthor = function(pModel, authorModel, name, author, userI
             pModel.proxy('findOne', 'poems', [
                 {
                     name: name,
-                    author_id: { $in: _.map(authorIds, function(a, k) { return new ObjectID(k); }) },
-                    $or: [{userId: userId}, {moderate: '1'}]
+                    author_id: { $in: _.map(authorIds, function(a, k) { return utils.oId(k); }) },
+                    $or: [{userId: utils.oId(userId)}, {moderate: '1'}]
                 }, function(err, poem) {
                     if (err) throw err;
 

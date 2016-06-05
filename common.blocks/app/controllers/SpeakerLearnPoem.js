@@ -25,8 +25,8 @@ SpeakerLearnPoem.createProgress = function(slpModel, poemId, userId) {
     var deferred = vow.defer();
 
     slpModel.create({
-        userId: userId,
-        poem_id: poemId
+        userId: utils.oId(userId),
+        poem_id: utils.oId(poemId)
     }, function (err, progress) {
         if (err) throw err;
         deferred.resolve(progress);
@@ -47,7 +47,7 @@ SpeakerLearnPoem.createProgress = function(slpModel, poemId, userId) {
 SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, act, userId) {
     var deferred = vow.defer();
 
-    slpModel.find({ userId: userId, poem_id: poemId }).limit(1).run(function (err, progress) {
+    slpModel.find({ userId: utils.oId(userId), poem_id: utils.oId(poemId) }).limit(1).run(function (err, progress) {
         if (err) throw err;
 
         if (_.isEmpty(progress)) {
@@ -81,7 +81,7 @@ SpeakerLearnPoem.getDataOfProgressOrCreate = function(slpModel, poemId, act, use
 SpeakerLearnPoem.saveProgress = function(slpModel, poemId, act, userId) {
     var deferred = vow.defer();
 
-    slpModel.find({ userId: userId, poem_id: poemId }).limit(1).run(function (err, progress) {
+    slpModel.find({ userId: utils.oId(userId), poem_id: utils.oId(poemId) }).limit(1).run(function (err, progress) {
         if (err) throw err;
 
         if (_.isEmpty(progress)) {
@@ -112,12 +112,17 @@ SpeakerLearnPoem.saveProgress = function(slpModel, poemId, act, userId) {
 SpeakerLearnPoem.getDataOfProgress = function(slpModel, userId) {
     var deferred = vow.defer();
 
+    console.log('getDataOfProgress')
+
     slpModel
-        .find({ userId: userId, finished: false })
+        .find({ userId: utils.oId(userId), finished: false })
         .limit(1)
         .orderRaw("?? DESC", ['modified_at'])
         .run(function (err, progress) {
             if (err) throw err;
+
+            console.log(JSON.stringify(progress));
+
             deferred.resolve(progress[0] || []);
         });
 

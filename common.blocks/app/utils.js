@@ -1,5 +1,6 @@
 var vow = require('vow'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    ObjectID = require('mongodb').ObjectID;
 
 /**
  * Сборная методов
@@ -102,6 +103,29 @@ Utils.addStringInTextAfterComma = function(text, str) {
     }
 
     return text.join(',');
+};
+
+/**
+ * Приводит id к mongodb id-объекту
+ *
+ * @param {*} id
+ * @returns {Object|undefined}
+ */
+Utils.oId = function(id) {
+
+    if (!id) {
+        return id;
+    }
+
+    if (Array.isArray(id)) {
+        return _.map(id, function(item) {
+            return Utils.oId(item);
+        });
+    }
+
+    return typeof id === 'object' ?
+        id :
+        new ObjectID(id);
 };
 
 module.exports = Utils;

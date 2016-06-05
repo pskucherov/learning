@@ -1,7 +1,7 @@
 var vow = require('vow'),
     _ = require('lodash'),
     path = require('path'),
-    Utils = require('../utils'),
+    utils = require('../utils'),
     vk = require('../controllers/vk');
 
 
@@ -54,8 +54,8 @@ var User = function(userModel, u, cb) {
  * @returns {User}
  */
 User.prototype.calcRating = function(ratingModel, io) {
-    ratingModel.count({ userId: this._id, answer: 1 }, function (err, rightAnswers) {
-        ratingModel.count({ userId: this._id }, function (err, answers) {
+    ratingModel.count({ userId: utils.oId(this._id), answer: 1 }, function (err, rightAnswers) {
+        ratingModel.count({ userId: utils.oId(this._id) }, function (err, answers) {
             io.emit('user:rating', {
                 countAnswers: answers,
                 rightAnswers: rightAnswers
@@ -97,7 +97,7 @@ User.createByVKId = function(userModel, vkid) {
         function(user) {
             deferred.resolve({
                 status: User.ANSWER.OLD_USER,
-                _id: user[0]._id,
+                _id: utils.oId(user[0]._id),
                 vkid: vkid
             });
         },
@@ -214,9 +214,9 @@ User.getById = function(userModel, id, fields) {
     var deferred = vow.defer();
 
     // TODO: переписать на выборку нужных полей из БД
-    fields = Utils.parseUserFields(fields);
+    fields = utils.parseUserFields(fields);
 
-    userModel.find({ _id: id }).run(function(err, user) {
+    userModel.find({ _id: { $in: utils.oId(id) } }).run(function(err, user) {
         if (err) throw err;
 
         if (_.isEmpty(user)) {

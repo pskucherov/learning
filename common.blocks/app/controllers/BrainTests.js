@@ -18,7 +18,7 @@ var BrainTests = function() {
 /**
  * Возвращает вопрос для заданного класса, на который пользователь ещё не отвечал
  *
- * @param BTestsModel
+ * @param {Object} db
  * @param {Number} userId - id пользователя
  * @param {Number} classNum - класс [1..11]
  *
@@ -67,7 +67,7 @@ BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
 BrainTests.incQuestionComplaints = function(BTestsModel, qId) {
     var deferred = vow.defer();
 
-    BTestsModel.find({ _id: qId }).limit(1).run(function (err, data) {
+    BTestsModel.find({ _id: utils.oId(qId) }).limit(1).run(function (err, data) {
 
         if (err) throw err;
 
@@ -104,8 +104,8 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
     var deferred = vow.defer();
 
     BAnswersModel.create({
-        userId: userId,
-        questionId: questionId,
+        userId: utils.oId(userId),
+        questionId: utils.oId(questionId),
         classNum: parseInt(classNum, 10),
         answer: isRight
     }, function (err) {
@@ -130,7 +130,7 @@ BrainTests.createAnswerRow = function(BAnswersModel, userId, questionId, isRight
 BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRightAnswer) {
     var deferred = vow.defer();
 
-    BAnswersModel.find({ userId: userId, answer: toRightAnswer, classNum: classNum })
+    BAnswersModel.find({ userId: utils.oId(userId), answer: toRightAnswer, classNum: classNum })
         .count(function(err, data) {
             if (err) throw err;
             deferred.resolve(data);
@@ -142,8 +142,9 @@ BrainTests.getStatsForUserClass = function(BAnswersModel, userId, classNum, toRi
 
 /**
  * Получить первый трёх человек из рейтинга
- *
  * @param db
+ * @param userId
+ * @param classNum
  * @returns {*}
  */
 BrainTests.getStatsRating = function(db, userId, classNum) {
@@ -166,14 +167,13 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
         if (_.isEmpty(data)) {
             deferred.resolve([]);
         } else {
-
-	    _.forEach(data, function(item, k) {
+            _.forEach(data, function(item, k) {
                 data[k].RowNumber = k;
             });
 
             // Если юзер есть в одном из трёх первых, то возвращаем их и выходим
             for (var k in data) {
-                if (data[k]['_id'] === userId) {
+                if (utils.oId(userId).equals(data[k]['_id'])) {
                     deferred.resolve(data);
                     return;
                 }
@@ -181,7 +181,7 @@ BrainTests.getStatsRating = function(db, userId, classNum) {
 
             BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], userId, classNum, 1)
                 .then(function(uStat) {
-                    data.push({ RowNumber: 100500, userId: userId, cnt: uStat });
+                    data.push({ RowNumber: 100500, userId: utils.oId(userId), cnt: uStat });
                     deferred.resolve(data);
                 });
         }
@@ -206,9 +206,7 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
     var deferred = vow.defer();
 
     BrainTests.getStatsRating(db, userId, classNum).then(function(uStat) {
-
         var userIds = [];
-
         for (var k in uStat) {
             userIds.push(uStat[k]._id); // Здесь вписано _id, но это в group подставляется userId
         }
@@ -217,7 +215,7 @@ BrainTests.getUserForStat = function(db, userId, classNum) {
             for (var i in uStat) {
                 for (var k in users) {
                     // Здесь вписано _id, но это в group подставляется userId
-                    if (uStat[i]._id === users[k]._id) {
+                    if (uStat[i]._id.equals(users[k]._id)) {
                         uStat[i].user = users[k];
                     }
                 }

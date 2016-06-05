@@ -115,8 +115,9 @@ module.exports = function (orm, db) {
                 defaultValue: 0
             },
             poemId: {
-                type: 'integer',
-                size: 4
+                type: 'text',
+                size: 255,
+                defaultValue: ''
             }
         }, {
             timestamp: true
