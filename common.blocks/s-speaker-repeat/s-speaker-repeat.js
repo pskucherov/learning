@@ -126,7 +126,7 @@ modules.define(
                 this.poem = poem;
 
                 this.poem.poem.forEach(function(item) {
-                    this.bm.addDocument({ id: item.line_num, body: item.line });
+                    this.bm.addDocument({ _id: item.line_num, body: item.line });
                 }.bind(this));
 
                 BEMDOM.update(this.elem('poem'), BEMHTML.apply({

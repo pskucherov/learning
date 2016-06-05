@@ -91,7 +91,7 @@ modules.define(
 
                         i.src = item.imageUrl;
 
-                        this.bm.addDocument({ id: item.line_num, body: item.line });
+                        this.bm.addDocument({ _id: item.line_num, body: item.line });
 
                         return [
                             {
