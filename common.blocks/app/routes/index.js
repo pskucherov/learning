@@ -12,8 +12,7 @@ var express = require('express'),
     cookieName = settings.vk.cookieName,
 
     SpeakerLearnPoem = require('../controllers/SpeakerLearnPoem'),
-    Authors = require('../controllers/Authors'),
-    PoemLines = require('../controllers/PoemLines');
+    Authors = require('../controllers/Authors');
 
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.

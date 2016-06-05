@@ -31,7 +31,7 @@ var Poems = function() {
 Poems.create = function(pModel, name, authorId, userId, poem) {
     var deferred = vow.defer();
 
-    pModel.create({
+    db.models['poems'].proxy('insertOne', 'poems', [{
         name: name,
         author_id: authorId,
         class: 0,
@@ -41,7 +41,7 @@ Poems.create = function(pModel, name, authorId, userId, poem) {
     }, function (err, poem) {
         if (err) throw err;
         deferred.resolve(poem);
-    });
+    }]);
 
     return deferred.promise();
 };
@@ -155,17 +155,20 @@ Poems.getPoemByNameAndAuthor = function(pModel, authorModel, name, author, userI
     Authors
         .getIdsByQuery(authorModel, author, userId)
         .then(function(authorIds) {
-            pModel
-                .find({
+
+            pModel.proxy('findOne', 'poems', [
+                {
                     name: name,
                     author_id: { $in: _.map(authorIds, function(a, k) { return new ObjectID(k); }) },
-                    or: [{userId: userId}, {moderate: '1'}]
-                })
-                .limit(1)
-                .run(function (err, poems) {
+                    $or: [{userId: userId}, {moderate: '1'}]
+                }, function(err, poem) {
                     if (err) throw err;
-                    deferred.resolve(poems);
-                });
+
+                    poem.author = { name: authorIds[poem.author_id] };
+
+                    deferred.resolve(poem);
+                }
+            ]);
         });
 
     return deferred.promise();

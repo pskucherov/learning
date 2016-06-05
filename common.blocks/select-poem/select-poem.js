@@ -17,7 +17,7 @@ modules.define(
                         window.socket.on('select-poem:getPoem', this.setSelectedPoemInModal.bind(this));
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
-                            poem && this.setSelectedPoemInModal([poem]);
+                            poem && this.setSelectedPoemInModal(poem);
                             this._toggleForm();
                         }.bind(this));
 
@@ -58,7 +58,7 @@ modules.define(
                     return this;
                 }
 
-                var p = poem[0];
+                var p = poem;
 
                 this.__self.disableYaSearchButton();
 

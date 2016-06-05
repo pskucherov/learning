@@ -22,7 +22,6 @@ var fs = require('fs'),
     Poems = require('./controllers/Poems'),
     SpeakerLearnPoem = require('./controllers/SpeakerLearnPoem'),
     Authors = require('./controllers/Authors'),
-    PoemLines = require('./controllers/PoemLines'),
 
     settings = require('./settings'),
 
@@ -213,7 +212,7 @@ models(function (err, db) {
             // Получить стих по точному вхождению имени и автора
             socket.on('select-poem:getPoemByNameAndAuthor', function (params) {
                 Poems.getPoemByNameAndAuthor(db.models['poems'], db.models['authors'], params.name, params.author, user._id)
-                    .then(function (poem) {
+                    .then(function(poem) {
                         socket.emit('select-poem:getPoem', poem);
                     });
             });
@@ -269,7 +268,6 @@ models(function (err, db) {
                 //if (params.poemId) {
                 //    createOrSaveProgress(params);
                 //} else {
-
                     _.forEach(params, function(item, k) {
                         params[k] = _.trim(item);
                     });
@@ -278,7 +276,7 @@ models(function (err, db) {
 
                         Poems.getPoemByNameAndAuthor(db.models['poems'], db.models['authors'], params.name, params.author, user._id)
                             .then(function (poem) {
-                                params.poemId = poem && poem[0] && poem[0]._id;
+                                params.poemId = poem && poem._id;
 
                                 if (params.poemId) {
                                     createOrSaveProgress(params);
