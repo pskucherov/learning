@@ -19,7 +19,7 @@ modules.define(
                         }
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
-                            poem && this.setSelectedPoemInModal([poem]);
+                            poem && this.setSelectedPoemInModal(poem);
                             this._toggleForm();
 
                             this.bindEvents();
@@ -98,7 +98,7 @@ modules.define(
                     return this;
                 }
 
-                var p = poem[0];
+                var p = poem;
 
 
                 BEMDOM.update(this.elem('poem'), BEMHTML.apply({

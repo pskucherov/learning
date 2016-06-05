@@ -34,7 +34,7 @@ modules.define(
                         }
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
-                            poem && this.setSelectedPoemInModal([poem]);
+                            poem && this.setSelectedPoemInModal(poem);
                             this._toggleForm();
 
                             this.bindEvents();
@@ -123,7 +123,7 @@ modules.define(
 
                 this.bm = new BM25();
 
-                this.poem = poem[0];
+                this.poem = poem;
 
                 this.poem.poem.forEach(function(item) {
                     this.bm.addDocument({ id: item.line_num, body: item.line });
