@@ -7,7 +7,7 @@ var path = require('path'),
 models(function (err, db) {
     if (err) throw err;
 
-    db.drop(function() {
+    //db.drop(function() {
 
         db.sync(function (err) {
             if (err) throw err;
@@ -446,6 +446,6 @@ models(function (err, db) {
 
         });
 
-    });
+    //});
 
 });

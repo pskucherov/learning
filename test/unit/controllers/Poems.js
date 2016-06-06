@@ -2,17 +2,17 @@ var chai = require('chai'),
     chaiAsPromised = require('chai-as-promised');
 
 chai.use(chaiAsPromised);
-
-var assert = chai.assert,
+let assert = chai.assert,
     _ = require('lodash'),
     path = require('path'),
     express = require('express'),
     app = express(),
     vow = require('vow');
 
-var appDir = './common.blocks/app/',
+let appDir = './common.blocks/app/',
     models = require(path.resolve(appDir + 'models/')),
-    Poems = require(path.resolve(appDir + 'controllers/Poems'));
+    Poems = require(path.resolve(appDir + 'controllers/Poems')),
+    Authors = require(path.resolve(appDir + 'controllers/Authors'));
 
 models(function (err, db) {
     if (err) throw err;
@@ -20,14 +20,17 @@ models(function (err, db) {
     db.sync(function (err) {
         if (err) throw err;
 
-        var pModel = db.models['poems'];
+        let pModel = db.models['poems'],
+            aModel = db.models['authors'];
 
         describe('Controller: Poems', function () {
 
             beforeEach(function (done) {
                 this.timeout(10000);
                 pModel.find().remove(function() {
-                    done();
+                    aModel.find().remove(function() {
+                        done();
+                    });
                 });
             });
 
@@ -37,7 +40,7 @@ models(function (err, db) {
 
                     var deferred = vow.defer();
 
-                    Poems.create(pModel, 'name', 1, 123)
+                    Poems.create(pModel, 'name', 1, 123, 'текст стихотворения\n<Br>состоящий из нескольких строк ;":№%')
                         .then(function (data) {
                             deferred.resolve(data);
                         });
@@ -45,6 +48,29 @@ models(function (err, db) {
                     return assert.isFulfilled(
                         deferred.promise(),
                         'Should be resolved'
+                    );
+
+                });
+
+                it('should create two line text in poem', function () {
+
+                    let deferred = vow.defer(),
+                        uId = 'b12345678902';
+
+                    Authors.create(aModel, 'a12345678901', uId).then(a => {
+                        Poems.create(pModel, 'name', a._id, uId, 'текст стихотворения\n<Br>состоящий из нескольких строк ;":№%')
+                            .then(function (data) {
+                                Poems.getPoemByNameAndAuthor(pModel, db.models['authors'], 'name', a.name, uId)
+                                    .then(function (poem) {
+                                        deferred.resolve(poem.poem.length);
+                                    });
+                            });
+                    });
+
+                    return assert.eventually.equal(
+                        deferred.promise(),
+                        2,
+                        'Shouild be equal 2'
                     );
 
                 });
