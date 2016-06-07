@@ -51,6 +51,71 @@ models(function (err, db) {
 
                 });
 
+                it('should find by regexp query', function () {
+
+                    var deferred = vow.defer(),
+                        authorName = 'AName',
+                        userId = 'a12345678901';
+
+                    Authors.create(authorModel, authorName, userId)
+                        .then(function (data) {
+                            Authors.findByQuery(authorModel, 'Na', userId)
+                                .then(function(author) {
+                                    deferred.resolve(author);
+                                });
+                        });
+
+                    return assert.eventually.lengthOf(
+                        deferred.promise(),
+                        1,
+                        'Length should be equal 1'
+                    );
+
+                });
+
+                it('should find author, which added by user', function () {
+
+                    var deferred = vow.defer(),
+                        authorName = 'AName',
+                        userId = 'a12345678901';
+
+                    Authors.create(authorModel, authorName, userId)
+                        .then(function (data) {
+                            Authors.findByQuery(authorModel, '', userId)
+                                .then(function(author) {
+                                    deferred.resolve(author);
+                                });
+                        });
+
+                    return assert.eventually.lengthOf(
+                        deferred.promise(),
+                        1,
+                        'Length should be equal 1'
+                    );
+
+                });
+
+                it('should find author by _id', function () {
+
+                    var deferred = vow.defer(),
+                        authorName = 'AName',
+                        userId = 'a12345678901';
+
+                    Authors.create(authorModel, authorName, userId)
+                        .then(function (data) {
+                            Authors.getById(authorModel, data._id)
+                                .then(function(author) {
+                                    deferred.resolve(!_.isEmpty(author));
+                                });
+                        });
+
+                    return assert.eventually.ok(
+                        deferred.promise(),
+                        'Should be not empty'
+                    );
+
+                });
+
             });
 
         });

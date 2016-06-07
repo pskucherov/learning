@@ -55,10 +55,9 @@ Authors.findByQuery = function(authorModel, query, userId) {
         })
         .only('_id', 'name')
         .limit(15).run(function (err, authors) {
-        if (err) throw err;
-
-        deferred.resolve(authors);
-    });
+            if (err) throw err;
+            deferred.resolve(authors);
+        });
 
     return deferred.promise();
 };
