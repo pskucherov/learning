@@ -26,7 +26,6 @@ var BrainTests = function() {
  */
 BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
     var deferred = vow.defer(),
-        // TODO: выборка вопросов, на которые пользователь ещё не отвечал
         query = { class: classNum };
 
     db.models['brain-tests-answers'].count({ classNum: classNum, userId: utils.oId(userId) }, function(err, answerN) {

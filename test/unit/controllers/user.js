@@ -182,12 +182,12 @@ models(function (err, db) {
 
                     var deferred = vow.defer();
 
-                    db.driver.execQuery("DELETE FROM `brain-tests-answers` WHERE userId IN (123, 124, 125); ", function() {
-                        db.driver.execQuery("INSERT INTO `brain-tests-answers` (userId, answer) VALUES (123, 1), (123, 1), (123, 0), (123, 0)," +
+                    db.driver.execQuery("DELETE FROM `brain-tests-answers` WHERE userId IN ('a12345678901', 124, 125); ", function() {
+                        db.driver.execQuery("INSERT INTO `brain-tests-answers` (userId, answer) VALUES ('a12345678901', 1), ('a12345678901', 1), ('a12345678901', 0), ('a12345678901', 0)," +
                             "(124, 1), (124, 1), (124, 0), (124, 0), " +
                             "(125, 1), (125, 1), (125, 1), (125, 0);",
                             function () {
-                                deferred.resolve(User.getPointInOneProcent(db, '123,124,125'));
+                                deferred.resolve(User.getPointInOneProcent(db, ''a12345678901',124,125'));
                             });
                     });
 

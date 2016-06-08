@@ -54,7 +54,7 @@ models(function (err, db) {
                 it('should get empty subject', function () {
                     var deferred = vow.defer();
 
-                    Subjects.get(sModel, 123).then(function(subj) {
+                    Subjects.get(sModel, 'a12345678901').then(function(subj) {
                         deferred.resolve(subj);
                     });
 

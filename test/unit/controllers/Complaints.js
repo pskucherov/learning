@@ -37,7 +37,7 @@ models(function (err, db) {
 
                     var deferred = vow.defer();
 
-                    Complaints.createComplaint(complaintsModel, 'tname', 1, '1,2,3,4,5', 'comment', 123)
+                    Complaints.createComplaint(complaintsModel, 'tname', 1, '1,2,3,4,5', 'comment', 'a12345678901')
                         .then(function (data) {
                             deferred.resolve(data);
                         });

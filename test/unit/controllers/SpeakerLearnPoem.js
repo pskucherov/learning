@@ -37,7 +37,7 @@ models(function (err, db) {
 
                     var deferred = vow.defer();
 
-                    SpeakerLearnPoem.createProgress(slpModel, 1, 123)
+                    SpeakerLearnPoem.createProgress(slpModel, 1, 'a12345678901')
                         .then(function (data) {
                             deferred.resolve(data);
                         });

@@ -37,7 +37,7 @@ models(function (err, db) {
 
                     var deferred = vow.defer(),
                         authorName = 'AName',
-                        userId = 123;
+                        userId = 'a12345678901';
 
                     Authors.create(authorModel, authorName, userId)
                         .then(function (data) {

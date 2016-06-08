@@ -40,7 +40,7 @@ models(function (err, db) {
 
                     var deferred = vow.defer();
 
-                    Poems.create(pModel, 'name', 1, 123, 'текст стихотворения\n<Br>состоящий из нескольких строк ;":№%')
+                    Poems.create(pModel, 'name', 1, 'a12345678901', 'текст стихотворения\n<Br>состоящий из нескольких строк ;":№%')
                         .then(function (data) {
                             deferred.resolve(data);
                         });
