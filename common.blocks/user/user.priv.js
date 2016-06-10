@@ -6,7 +6,8 @@ BEMPRIV.decl('user', {
         this.js(true);
 
         this.mods({
-            pos: 'header-right'
+            pos: 'header-right',
+            auth: user.isAuth ? 'yes' : ''
         });
 
         this.content([
