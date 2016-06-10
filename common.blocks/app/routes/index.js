@@ -195,6 +195,23 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
 
 });
 
+/**
+ * Советчик
+ */
+router.get(/^\/consultor\/?$/, function(req, res, next) {
+
+    if (!res.user || !res.user.isAuth) {
+        res.pageName = 'index';
+        req.session.redirPage = '/consultor';
+    } else {
+        res.pageName = 's-consultor';
+    }
+
+    req.session.pageName = 's-consultor';
+
+    next();
+
+});
 
 /**
  * Оратор

@@ -27,7 +27,18 @@ BEMPRIV.decl('statuses', {
                 descr: 'Необходимо изучать стихотворения, уметь быстро и внятно читать. ' +
                     'Чем больше читаешь, изучаешь, пересказываешь, тем выше рейтинг.',
                 defVal: 86
-            }/*,
+            },
+            {
+                name: 's-consultor',
+                m: { name: 'Советчик', img: p + 'borschik:include:./lernt2_b.png' },
+                f: { name: 'Советчица', img: p + 'borschik:include:./lernt2_b.png' },
+                url: '/consultor',
+                descr: 'Необходимо задавать вопросы и давать советы. ' +
+                    'Вопросы и советы, которые наберут больше всего лайков в течение дня — ' +
+                    'будут размещены на доске почёта.',
+                defVal: 40
+            }
+            /*,
             {
                 name: 's-warden',
                 m: { name: 'Староста', img: p + 'borschik:include:./starosta4_b.png' },
@@ -47,8 +58,7 @@ BEMPRIV.decl('statuses', {
                     'Чем больше у тебя будет оценок и внимания, тем выше твой рейтинг.',
                 defVal: 76
             },
-
-             */
+            */
         ];
     },
     listLength: 3

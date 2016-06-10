@@ -11,6 +11,7 @@
         { block: 'verify' },
         { block: 's-speaker' },
         { block: 's-warden' },
+        { block: 's-consultor' },
 
         { block: 'i-vow' },
         { block: 'i-utils' }
