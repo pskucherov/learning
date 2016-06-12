@@ -7,7 +7,11 @@ modules.define(
             onSetMod: {
                 js: {
                     inited: function () {
-
+                        this.modals = {};
+                        _.forEach(this.findBlocksInside('modal') || [], function(item) {
+                            var mod = item.getMod('add');
+                            this.modals[mod] = item;
+                        }.bind(this));
                     }
                 }
             },
@@ -24,7 +28,10 @@ modules.define(
 
         }, {
             live: function() {
-                return false;
+                this
+                    .liveBindTo('item', 'pointerclick', function(e) {
+                        this._onPointerClick(e);
+                    });
             }
         }));
     }
