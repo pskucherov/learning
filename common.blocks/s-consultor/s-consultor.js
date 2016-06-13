@@ -32,6 +32,8 @@ modules.define(
                     .liveBindTo('item', 'pointerclick', function(e) {
                         this._onPointerClick(e);
                     });
+
+                return false;
             }
         }));
     }
