@@ -5,7 +5,14 @@ BEMPRIV.decl('s-consultor', {
 
         this.content([
             {
-                block: 's-consultor'
+                block: 's-consultor',
+                elem: 'show-popup-button',
+                js: { add: 'question' },
+                content: {
+                    block: 'button',
+                    mods: { theme: 'islands', size: 'l' },
+                    text: 'Задать вопрос'
+                }
             },
             {
                 block: 'modal',

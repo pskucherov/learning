@@ -23,14 +23,30 @@ modules.define(
             _destruct: function() {
                 this.unbindEvents();
                 this.__base.apply(this, arguments);
+            },
+
+            /**
+             * @param e
+             * @returns {_onPointerClick}
+             * @private
+             */
+            _showQuestionButtonClick: function(e) {
+                var params = this.elemParams('show-popup-button'),
+                    mod = params && params.add;
+
+                if (mod && !_.isEmpty(this.modals[mod])) {
+                    this.modals[mod].setMod('visible', true);
+                }
+
+                return this;
             }
 
 
         }, {
             live: function() {
                 this
-                    .liveBindTo('item', 'pointerclick', function(e) {
-                        this._onPointerClick(e);
+                    .liveBindTo('show-popup-button', 'pointerclick', function(e) {
+                        this._showQuestionButtonClick(e);
                     });
 
                 return false;
