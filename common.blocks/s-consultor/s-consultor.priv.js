@@ -5,11 +5,7 @@ BEMPRIV.decl('s-consultor', {
 
         this.content([
             {
-                block: 's-consultor',
-                elem: 'column',
-                title: 'Добавь свой вопросы',
-                items: [
-                ]
+                block: 's-consultor'
             },
             {
                 block: 'modal',
