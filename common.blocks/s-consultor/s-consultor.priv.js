@@ -16,7 +16,8 @@ BEMPRIV.decl('s-consultor', {
             },
             {
                 block: 'modal',
-                mods: { theme : 'islands', autoclosable: true, add: 's-consultor-question' },
+                mods: { theme : 'islands', //autoclosable: true,
+                    add: 's-consultor-question' },
                 mix: { block: 's-consultor', elem: 'modal' },
                 content: [
                     {

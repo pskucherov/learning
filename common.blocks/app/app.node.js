@@ -20,6 +20,7 @@ var fs = require('fs'),
     BrainTests = require('./controllers/BrainTests'),
     Complaints = require('./controllers/Complaints'),
     Poems = require('./controllers/Poems'),
+    Consultor = require('./controllers/Consultor'),
     SpeakerLearnPoem = require('./controllers/SpeakerLearnPoem'),
     Authors = require('./controllers/Authors'),
 
@@ -398,6 +399,20 @@ models(function (err, db) {
             }
 
             /* BRAIN-TEST END */
+
+            /* S-CONSULTOR START */
+
+                socket.on('s-consultor:sendQuestion', function(data) {
+                    Consultor.create(db.models['consultor'], data.question, user._id)
+                        .then(function(question) {
+                            socket.emit('s-consultor:addedQuestion', true);
+                        })
+                        .fail(function() {
+                            socket.emit('s-consultor:addedQuestion', false);
+                        });
+                });
+
+            /* S-CONSULTOR END */
 
         });
 
