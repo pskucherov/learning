@@ -12,7 +12,8 @@ var express = require('express'),
     cookieName = settings.vk.cookieName,
 
     SpeakerLearnPoem = require('../controllers/SpeakerLearnPoem'),
-    Authors = require('../controllers/Authors');
+    Authors = require('../controllers/Authors'),
+    Consultor = require('../controllers/Consultor');
 
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
@@ -209,7 +210,11 @@ router.get(/^\/consultor\/?$/, function(req, res, next) {
 
     req.session.pageName = 's-consultor';
 
-    next();
+    Consultor.getAllQuestions(req.models['s-consultor'])
+        .then(function (questions) {
+            res.consultorQuestions = questions;
+            next();
+        });
 
 });
 

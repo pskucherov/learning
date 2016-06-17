@@ -98,8 +98,6 @@ app.use(routes, function(req, res) {
         content = res.html;
     } else if (res.priv) {
 
-        //res.user.isAuth = true;
-
         _.assign(req.session, req.cookies);
 
         content = res.priv.main({
@@ -403,7 +401,7 @@ models(function (err, db) {
             /* S-CONSULTOR START */
 
                 socket.on('s-consultor:sendQuestion', function(data) {
-                    Consultor.create(db.models['consultor'], data.question, user._id)
+                    Consultor.create(db.models['s-consultor'], data.question, user._id)
                         .then(function(question) {
                             socket.emit('s-consultor:addedQuestion', true);
                         })

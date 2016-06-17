@@ -3,7 +3,7 @@ module.exports = function (orm, db) {
     // 0 - модератор ещё не смотрел, 1 - всё ок, 2 - отклонено
     var MODERATE_ENUM = ['0', '1', '2'];
 
-    db.define('consultor', {
+    db.define('s-consultor', {
         question: {
             type: 'text',
             size: 2048,

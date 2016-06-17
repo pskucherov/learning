@@ -15,8 +15,19 @@ BEMPRIV.decl('s-consultor', {
                 }
             },
             {
+                block: 's-consultor',
+                elem: 'list',
+                content: _.map(this.data.res.consultorQuestions, function (q) {
+                    return {
+                        block: 's-consultor',
+                        elem: 'item',
+                        content: q.question
+                    };
+                })
+            },
+            {
                 block: 'modal',
-                mods: { theme : 'islands', //autoclosable: true,
+                mods: { theme : 'islands',
                     add: 's-consultor-question' },
                 mix: { block: 's-consultor', elem: 'modal' },
                 content: [

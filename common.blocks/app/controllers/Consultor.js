@@ -36,4 +36,24 @@ Consultor.create = function(cModel, question, userId) {
     return deferred.promise();
 };
 
+/**
+ * Получает все вопросы, заданные пользователями
+ *
+ * @param cModel
+ *
+ * @returns {Promise}
+ */
+Consultor.getAllQuestions = function(cModel) {
+    var deferred = vow.defer();
+
+    cModel.proxy('aggregate', 's-consultor', [[
+        { $sort : { created_at: -1 } }
+    ], function (err, data) {
+        if (err) throw err;
+        deferred.resolve(data);
+    }]);
+
+    return deferred.promise();
+};
+
 module.exports = Consultor;
