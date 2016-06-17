@@ -93,7 +93,7 @@ modules.define(
              * @returns {setContent}
              */
             setContent: function(html) {
-                this.modal.elem('content').html(html);
+                this.modal.elem('content').html(BEMHTML.apply({ block: 'modal', elem: 'close' }) + html);
                 return this;
             },
 
