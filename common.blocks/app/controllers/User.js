@@ -205,12 +205,12 @@ User.getByVKId = function(userModel, vkid) {
  *
  * @param {Model} userModel - модель таблицы user
  * @param {Number|Array} id - id анкеты
- * @param {String[]} fields - какие значения надо вернуть
+ * @param {String[]} [fields='_id,vkid,first_name,photo_100'] - какие значения надо вернуть
  * @returns {Deferred} - promise
  *
  * @static
  */
-User.getById = function(userModel, id, fields) {
+User.getById = function(userModel, id, fields = '_id,vkid,first_name,photo_100') {
     var deferred = vow.defer();
 
     // TODO: переписать на выборку нужных полей из БД
