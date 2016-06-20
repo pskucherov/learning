@@ -230,6 +230,29 @@ User.getById = function(userModel, id, fields = '_id,vkid,first_name,photo_100')
 };
 
 /**
+ * Получить пользователей и вернуть как объект ключ - значение
+ *
+ * @returns {Deferred} - promise
+ *
+ * @static
+ */
+User.getByIdKeyValue = function() {
+    var deferred = vow.defer();
+
+    User.getById.apply(this, arguments).then(user => {
+        var usersObj = {};
+
+        for(var k in user) {
+            usersObj[utils.oId(user[k]._id)] = user;
+        }
+
+        deferred.resolve(usersObj);
+    });
+
+    return deferred.promise();
+};
+
+/**
  * Возвращает количество баллов в одном процентре,
  * для рассчёта рейтинга пользователей
  *

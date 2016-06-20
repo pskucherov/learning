@@ -210,8 +210,8 @@ router.get(/^\/consultor\/?$/, function(req, res, next) {
 
     req.session.pageName = 's-consultor';
 
-    Consultor.getAllQuestions(req.models['s-consultor'])
-        .then(function (questions) {
+    Consultor.getAllQuestions(req.db)
+        .then(function(questions) {
             res.consultorQuestions = questions;
             next();
         });

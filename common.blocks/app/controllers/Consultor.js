@@ -1,6 +1,7 @@
 var vow = require('vow'),
     _ = require('lodash'),
     path = require('path'),
+    User = require('./User'),
     utils = require('../utils');
 
 /**
@@ -43,14 +44,24 @@ Consultor.create = function(cModel, question, userId) {
  *
  * @returns {Promise}
  */
-Consultor.getAllQuestions = function(cModel) {
+Consultor.getAllQuestions = function(db) {
     var deferred = vow.defer();
 
-    cModel.proxy('aggregate', 's-consultor', [[
+    db.models['s-consultor'].proxy('aggregate', 's-consultor', [[
         { $sort : { created_at: -1 } }
     ], function (err, data) {
         if (err) throw err;
-        deferred.resolve(data);
+
+        User.getByIdKeyValue(db.models['users'], _.map(data, u => utils.oId(u.userId))).then(users => {
+
+            deferred.resolve(_.map(data, question => {
+                question.user = users[utils.oId(question.userId)];
+                return question;
+            }));
+
+        });
+
+
     }]);
 
     return deferred.promise();
