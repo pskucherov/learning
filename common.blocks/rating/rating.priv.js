@@ -7,46 +7,52 @@ BEMPRIV.decl('rating', {
 
     },
 
+    getUser: function(i, img) {
+        return {
+            elem: 'user',
+            elemMods: { pos: i, hidden: 'yes' },
+            content: {
+                block: 'rating',
+                elem: 'stats',
+                elemMods: { pos: i },
+                content: [
+                    this._getFadeAndStat(i),
+                    img && {
+                        block: 'image',
+                        url: img
+                    } || ''
+                ]
+            }
+        };
+    },
+
     getContent: function() {
-        var p = 'data:image/png;base64,';
+
         return [
             'borschik:include:./first-place_size_sb.png',
             'borschik:include:./second-place_size_sb.png',
             'borschik:include:./third-place_size_sb.png',
             ''
         ].map(function(img, i) {
-            return img
-                ? {
-                    elem: 'user',
-                    elemMods: { pos: i, hidden: 'yes' },
-                    content: {
-                        block: 'rating',
-                        elem: 'stats',
-                        elemMods: { pos: i },
-                        content: [
-                            this._getFadeAndStat(i),
-                            {
-                                block: 'image',
-                                url: p + img
-                            }
-                        ]
+            var p = 'data:image/png;base64,';
+            return img ? this.getUser(i, p + img) :
+                [
+                    {
+                        elem: 'dots',
+                        elemMods: {hidden: 'yes'},
+                        content: '...'
+                    },
+                    {
+                        elem: 'user',
+                        elemMods: {pos: 100500, hidden: 'yes'},
+                        content: {
+                            block: 'rating',
+                            elem: 'stats',
+                            elemMods: {pos: 100500},
+                            content: this._getFadeAndStat(100500)
+                        }
                     }
-                }
-                : [{
-                    elem: 'dots',
-                    elemMods: { hidden: 'yes' },
-                    content: '...'
-                },
-                {
-                    elem: 'user',
-                    elemMods: { pos: 100500, hidden: 'yes' },
-                    content: {
-                        block: 'rating',
-                        elem: 'stats',
-                        elemMods: { pos: 100500 },
-                        content: this._getFadeAndStat(100500)
-                    }
-                }];
+                ];
         }.bind(this));
     },
 
