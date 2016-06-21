@@ -18,6 +18,16 @@ module.exports = function (orm, db) {
             type: 'enum',
             values: MODERATE_ENUM,
             defaultValue: MODERATE_ENUM[0]
+        },
+        answersCount: {
+            type: 'integer',
+            size: 4,
+            defaultValue: 0
+        },
+        likeCount: {
+            type: 'integer',
+            size: 4,
+            defaultValue: 0
         }
     }, {
         timestamp: true
