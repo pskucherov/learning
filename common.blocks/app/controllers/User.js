@@ -243,7 +243,7 @@ User.getByIdKeyValue = function() {
         var usersObj = {};
 
         for(var k in user) {
-            usersObj[utils.oId(user[k]._id)] = user;
+            usersObj[utils.oId(user[k]._id)] = user[k];
         }
 
         deferred.resolve(usersObj);

@@ -21,7 +21,35 @@ BEMPRIV.decl('s-consultor', {
                     return {
                         block: 's-consultor',
                         elem: 'item',
-                        content: q.question
+                        content: [
+                            {
+                                block: 'rating',
+                                elem: 'user',
+                                attrs: {
+                                    style: "background-image: url(" + q.user.photo_100 + "); background-size: cover;"
+                                },
+                                content: {
+                                    block: 'rating',
+                                    elem: 'stats',
+                                    content: [
+                                        {
+                                            block: 'rating',
+                                            elem: 'stat-text',
+                                            content: _.trim(parseInt(q.answersCount || 0, 10) + ' 💬 <br>' + parseInt(q.likeCount || 0, 10)
+                                                + ' 💌')
+                                        },
+                                        {
+                                            block: 'rating',
+                                            elem: 'fade'
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                elem: 'question-text',
+                                content: q.question
+                            }
+                        ]
                     };
                 })
             },
