@@ -1,0 +1,27 @@
+block('s-consultor').elem('popup-add-question')(
+
+    content()(function() {
+        return [
+            {
+                block: 's-consultor',
+                elem: 'add-question',
+                content: {
+                    block: 'textarea',
+                    mods: {
+                        theme: 'islands',
+                        size: 'm'
+                    },
+                    mix: { block: 's-consultor', elem: 'textarea' },
+                    placeholder: 'Введите свой вопрос'
+                }
+            },
+            {
+                block: 'button',
+                mods: { theme: 'islands', size: 'l' },
+                mix: { block: 's-consultor', elem: 'send-question' },
+                text: 'Отправить на модерацию'
+            }
+        ];
+    })
+
+);
