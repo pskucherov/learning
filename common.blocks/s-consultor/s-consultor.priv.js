@@ -21,6 +21,7 @@ BEMPRIV.decl('s-consultor', {
                     return {
                         block: 's-consultor',
                         elem: 'item',
+                        js: { id: q._id },
                         content: [
                             {
                                 block: 'rating',
@@ -55,12 +56,26 @@ BEMPRIV.decl('s-consultor', {
             },
             {
                 block: 'modal',
-                mods: { theme : 'islands',
-                    add: 's-consultor-question' },
+                mods: {
+                    theme : 'islands',
+                    add: 's-consultor-question'
+                },
                 mix: { block: 's-consultor', elem: 'modal' },
                 content: {
                     block: 's-consultor',
                     elem: 'popup-add-question'
+                }
+            },
+            {
+                block: 'modal',
+                mods: {
+                    theme : 'islands',
+                    show: 'question'
+                },
+                mix: { block: 's-consultor', elem: 'modal' },
+                content: {
+                    block: 's-consultor',
+                    elem: 'popup-show-question'
                 }
             }
         ]);

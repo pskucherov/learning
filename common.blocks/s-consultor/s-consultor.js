@@ -112,6 +112,26 @@ modules.define(
 
                 return this;
 
+            },
+
+            /**
+             * Клик по вопросу
+             *
+             * @param e
+             * @returns {_onItemClick}
+             * @private
+             */
+            _onItemClick: function(e) {
+                var params = this.elemParams('item');
+
+                /*
+                if (mod && !_.isEmpty(this.modals[mod])) {
+                    this.modal = this.modals[mod];
+                    this.modals[mod].setMod('visible', true);
+                }
+                */
+
+                return this;
             }
 
         }, {
@@ -119,6 +139,9 @@ modules.define(
                 this
                     .liveBindTo('show-popup-button', 'pointerclick', function(e) {
                         this._showQuestionButtonClick(e);
+                    })
+                    .liveBindTo('item', 'pointerclick', function(e) {
+                        this._onItemClick(e);
                     });
 
                 return false;
