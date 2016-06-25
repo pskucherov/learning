@@ -17,8 +17,9 @@ npm start
 Тестовая база данных расположена на удалённом сервере. Параметры для подключения уже прописаны в конфиге.
 Так как база для разработки является общей, не нужно рассчитывать, что в ней будет что-то долго храниться.
 
-Была возможность заиспользовать модуль подключения orm к express из коробки, но такая схема не подошла для тестов,
-из-за чего переписал всё на ручное подключение. По мотивам [issue в orm].
+Так как изначально использовался orm для mysql, после чего мигрировали на mongodb — часть новых методов orm не поддерживает,
+в следствии чего пришлось дописать в API проксирующий метод, который пробрасывает запрос из orm напрямую в БД.
+https://github.com/pskucherov/node-orm2/pull/1/files
 
 Синхронизация моделей, данных в БД
 ```sh
@@ -27,8 +28,7 @@ node common.blocks/app/models/sync.js
 
 ###### Технологии
 * [Orm]:  Object Relational Mapping 
-* [MySQL]: Единственное, что сподвигло использовать MySQL — быстрая настройка на удалённом сервере + [phpMyAdmin]
-* [phpMyAdmin]: Возможность посмотреть, как выглядит БД и потыкать на разные кнопочки — иногда бесценно
+* [MongoDb]: ...
 
 ### Тестирование
 Запускаем тесты командой
@@ -71,8 +71,7 @@ jquery.ui.touch-punch.js -> common.blocks/i-jquery/__ui/_touch/i-jquery__ui_touc
 
 [issue в orm]: <https://github.com/dresende/node-orm2/issues/524>
 [Orm]: <http://dresende.github.io/node-orm2/>
-[MySQL]: <http://www.mysql.com/>
-[phpMyAdmin]: <http://77.120.103.67/myadmin/>
+[MongoDb]: <https://docs.mongodb.com/manual/>
 [Mocha]: <http://mochajs.org/>
 [Chai]: <http://chaijs.com/api/assert/>
 [Chai as Promised]: <https://github.com/domenic/chai-as-promised>
