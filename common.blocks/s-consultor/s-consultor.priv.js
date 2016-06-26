@@ -21,7 +21,7 @@ BEMPRIV.decl('s-consultor', {
                     return {
                         block: 's-consultor',
                         elem: 'item',
-                        js: { id: q._id },
+                        mix: { block: 's-consultor-item', js: { id: q._id } },
                         content: [
                             {
                                 block: 'rating',
@@ -70,7 +70,7 @@ BEMPRIV.decl('s-consultor', {
                 block: 'modal',
                 mods: {
                     theme : 'islands',
-                    show: 'question'
+                    add: 'question'
                 },
                 mix: { block: 's-consultor', elem: 'modal' },
                 content: {

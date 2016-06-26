@@ -23,6 +23,8 @@ modules.define(
 
                 this.bindTo(this.elem('send-question'), 'pointerclick', this._sendQuestionButtonClick, this);
 
+                BEMDOM.blocks['s-consultor-item'].on('click', this._onItemClick, this);
+
                 window.socket.on('s-consultor:addedQuestion', function(isAdded) {
                     if (!isAdded) {
                         return;
@@ -39,6 +41,7 @@ modules.define(
 
             unbindEvents: function() {
                 this.unbindFrom(this.elem('send-question'), 'pointerclick', this._sendQuestionButtonClick, this);
+                BEMDOM.blocks['s-consultor-item'].un('click', this._onItemClick, this);
             },
 
             _destruct: function() {
@@ -118,18 +121,19 @@ modules.define(
              * Клик по вопросу
              *
              * @param e
+             * @param id
              * @returns {_onItemClick}
              * @private
              */
-            _onItemClick: function(e) {
-                var params = this.elemParams('item');
+            _onItemClick: function(e, id) {
+                var mod = 'question';
 
-                /*
-                if (mod && !_.isEmpty(this.modals[mod])) {
-                    this.modal = this.modals[mod];
+                if (!_.isEmpty(this.modals[mod])) {
+                    window.socket.emit('s-consultor:showQuestion', {
+                        id: id
+                    });
                     this.modals[mod].setMod('visible', true);
                 }
-                */
 
                 return this;
             }
@@ -139,9 +143,6 @@ modules.define(
                 this
                     .liveBindTo('show-popup-button', 'pointerclick', function(e) {
                         this._showQuestionButtonClick(e);
-                    })
-                    .liveBindTo('item', 'pointerclick', function(e) {
-                        this._onItemClick(e);
                     });
 
                 return false;
