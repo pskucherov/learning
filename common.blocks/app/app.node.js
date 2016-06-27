@@ -410,6 +410,13 @@ models(function (err, db) {
                         });
                 });
 
+                socket.on('s-consultor:showQuestion', function(data) {
+                    Consultor.getById(db.models['s-consultor'], data.id)
+                        .then(function(question) {
+                            socket.emit('s-consultor:question', question);
+                        });
+                });
+
             /* S-CONSULTOR END */
 
         });

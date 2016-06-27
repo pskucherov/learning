@@ -37,9 +37,20 @@ modules.define(
                     }));
 
                 }.bind(this));
+
+                window.socket.on('s-consultor:question', function(q) {
+                    this.setContent(BEMHTML.apply({
+                        block: 's-consultor',
+                        elem: 'answer',
+                        content: q.question
+                    }));
+                }.bind(this));
             },
 
             unbindEvents: function() {
+                window.socket.removeAllListeners('s-consultor:question');
+                window.socket.removeAllListeners('s-consultor:addedQuestion');
+
                 this.unbindFrom(this.elem('send-question'), 'pointerclick', this._sendQuestionButtonClick, this);
                 BEMDOM.blocks['s-consultor-item'].un('click', this._onItemClick, this);
             },
@@ -129,10 +140,14 @@ modules.define(
                 var mod = 'question';
 
                 if (!_.isEmpty(this.modals[mod])) {
+                    this.modal = this.modals[mod];
+
                     window.socket.emit('s-consultor:showQuestion', {
                         id: id
                     });
-                    this.modals[mod].setMod('visible', true);
+                    this.modal.setMod('visible', true);
+
+                    this.setSpin();
                 }
 
                 return this;

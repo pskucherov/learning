@@ -67,4 +67,25 @@ Consultor.getAllQuestions = function(db) {
     return deferred.promise();
 };
 
+/**
+ * Получает вопрос по id
+ *
+ * @param cModel
+ *
+ * @returns {Promise}
+ */
+Consultor.getById = function(cModel, id) {
+    var deferred = vow.defer();
+
+    cModel
+        .find({_id: utils.oId(id)})
+        .run(function (err, question) {
+            if (err) throw err;
+
+            deferred.resolve(question && question[0] || []);
+        });
+
+    return deferred.promise();
+};
+
 module.exports = Consultor;
