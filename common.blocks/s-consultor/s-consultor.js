@@ -33,7 +33,9 @@ modules.define(
                     this.setContent(BEMHTML.apply({
                         block: 's-consultor',
                         elem: 'answer',
-                        content: 'Вопрос отправлен на модерацию<br><br>Проверка произойдёт в течение суток'
+                        content: 'Вопрос отправлен на модерацию'
+                            + '<br><br>'
+                            + 'Проверка произойдёт в течение суток'
                     }));
 
                 }.bind(this));
