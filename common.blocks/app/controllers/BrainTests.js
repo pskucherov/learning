@@ -42,18 +42,9 @@ BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
                     deferred.reject([]);
                 }
 
-                //Subjects.get(db.models['subjects'], data[0].subj_id).then(function(subj) {
-                //  if (err) throw err;
-
-                //    if (_.isEmpty(subj)) {
-                //        deferred.reject([]);
-                //    } else {
-                //        data[0].subj = subj;
                 // TODO: нормализовать данные с предметами
                 data[0].subj = {name: data[0].subj};
                 deferred.resolve(data[0]);
-                //    }
-                //});
             });
 
         });
