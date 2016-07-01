@@ -13,7 +13,6 @@ BEMPRIV.decl('user', {
         this.content([
             user.isAuth && this._getInfo(user) || '',
             BEMPRIV.create('vk', this.data).json()
-            //BEMPRIV.create('vk-button', this.data).json()
         ]);
 
     },
@@ -29,5 +28,4 @@ BEMPRIV.decl('user', {
     }
 
 }, {
-    // static
 });
