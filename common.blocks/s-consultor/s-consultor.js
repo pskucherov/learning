@@ -4,15 +4,13 @@ modules.define(
     function(provide, BEMDOM, $, BEMHTML) {
 
         provide(BEMDOM.decl(this.name, {
-            onSetMod: {
-                js: {
-                    inited: function () {
-                        this.bindAll();
-                    }
-                }
-            },
-
             bindAll: function() {
+                if (this.isInited) {
+                    return this;
+                }
+
+                this.isInited = true;
+
                 this.modals = {};
                 this.textField = this.elem('textarea');
 
@@ -68,6 +66,8 @@ modules.define(
              * @private
              */
             _showQuestionButtonClick: function(e) {
+                this.bindAll();
+
                 var params = this.elemParams('show-popup-button'),
                     mod = params && params.add;
 
@@ -162,9 +162,7 @@ modules.define(
                         this._showQuestionButtonClick(e);
                     });
 
-                // Здесь не live инициализация, т.к. ищем все попап блоки и сохраняем
-                // Они выпиливаются из домноды и вставляются ниже, потом их не найти
-                return false;
+                return true;
             }
         }));
     }
