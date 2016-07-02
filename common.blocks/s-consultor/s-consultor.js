@@ -39,11 +39,22 @@ modules.define(
                 }.bind(this));
 
                 window.socket.on('s-consultor:question', function(q) {
-                    this.setContent(BEMHTML.apply({
-                        block: 's-consultor',
-                        elem: 'answer',
-                        content: q.question
-                    }));
+                    var qBlockId = 'vk_comments_question';
+
+                    this.setContent(BEMHTML.apply([
+                        {
+                            block: 's-consultor',
+                            elem: 'answer',
+                            content: q.question
+                        },
+                        { tag: 'br' },
+                        {
+                            attrs: { id: qBlockId }
+                        }
+                    ]));
+
+                    VK.Widgets.Comments(qBlockId, { width: 500, limit: 20 }, q._id);
+
                 }.bind(this));
             },
 
