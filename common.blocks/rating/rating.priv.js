@@ -1,10 +1,7 @@
 BEMPRIV.decl('rating', {
     init: function() {
-
         this.js(true);
-
         this.content(this.getContent());
-
     },
 
     getUser: function(i, img) {

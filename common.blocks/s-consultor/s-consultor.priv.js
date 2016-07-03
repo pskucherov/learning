@@ -17,42 +17,46 @@ BEMPRIV.decl('s-consultor', {
             {
                 block: 's-consultor',
                 elem: 'list',
-                content: _.map(this.data.res.consultorQuestions, function (q) {
-                    return {
-                        block: 's-consultor',
-                        elem: 'item',
-                        mix: { block: 's-consultor-item', js: { id: q._id } },
-                        content: [
-                            {
-                                block: 'rating',
-                                elem: 'user',
-                                attrs: {
-                                    style: "background-image: url(" + q.user.photo_100 + "); background-size: cover;"
-                                },
-                                content: {
+                content:
+                {
+                    block: 'rating',
+                    content: _.map(this.data.res.consultorQuestions, function(q) {
+                        return {
+                            block: 's-consultor',
+                            elem: 'item',
+                            mix: {block: 's-consultor-item', js: {id: q._id}},
+                            content: [
+                                {
                                     block: 'rating',
-                                    elem: 'stats',
-                                    content: [
-                                        {
-                                            block: 'rating',
-                                            elem: 'stat-text',
-                                            content: _.trim(parseInt(q.answersCount || 0, 10) + ' 💬 <br>' + parseInt(q.likeCount || 0, 10)
-                                                + ' 💌')
-                                        },
-                                        {
-                                            block: 'rating',
-                                            elem: 'fade'
-                                        }
-                                    ]
+                                    elem: 'user',
+                                    attrs: {
+                                        style: "background-image: url(" + q.user.photo_100 + "); background-size: cover;"
+                                    },
+                                    content: {
+                                        block: 'rating',
+                                        elem: 'stats',
+                                        content: [
+                                            {
+                                                block: 'rating',
+                                                elem: 'stat-text',
+                                                content: _.trim(parseInt(q.answersCount || 0, 10) + ' 💬 <br>' + parseInt(q.likeCount || 0, 10)
+                                                    + ' 💌')
+                                            },
+                                            {
+                                                block: 'rating',
+                                                elem: 'fade'
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    elem: 'question-text',
+                                    content: q.question
                                 }
-                            },
-                            {
-                                elem: 'question-text',
-                                content: q.question
-                            }
-                        ]
-                    };
-                })
+                            ]
+                        };
+                    })
+                }
             },
             {
                 block: 'modal',
