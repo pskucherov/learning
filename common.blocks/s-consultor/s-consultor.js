@@ -49,8 +49,9 @@ modules.define(
                             content: q.question
                         },
                         {
-                            attrs: { id: likeBlockId },
-                            elem: 'like'
+                            block: 's-consultor',
+                            elem: 'like',
+                            attrs: { id: likeBlockId }
                         },
                         {
                             attrs: { id: qBlockId }
