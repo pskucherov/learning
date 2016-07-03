@@ -17,7 +17,10 @@
             mods : { theme : 'islands', size : 'l', type : 'link' }
         },
         {
-            block: 'rating'
+            block: 'rating',
+            mods: {
+                's-brain': 'yes'
+            }
         },
         {
             block: 'i-speechkit'
