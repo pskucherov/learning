@@ -71,7 +71,7 @@ modules.define(
                 BEMDOM.blocks['s-consultor-item'].un('click', this._onItemClick, this);
             },
 
-            destruct: function() {
+            _destruct: function() {
                 this.unbindEvents();
                 this.__base.apply(this, arguments);
             },

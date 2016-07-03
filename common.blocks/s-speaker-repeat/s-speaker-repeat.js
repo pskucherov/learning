@@ -86,7 +86,7 @@ modules.define(
                 return this;
             },
 
-            destruct: function() {
+            _destruct: function() {
                 this
                     .unbindEvents()
                     ._clearAudio()

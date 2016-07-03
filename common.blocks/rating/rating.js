@@ -41,7 +41,7 @@ modules.define(
                 window.socket.removeAllListeners('rating:rating');
             },
 
-            destruct: function() {
+            _destruct: function() {
                 this.unbindEvents();
                 this.__base.apply(this, arguments);
             },
