@@ -39,7 +39,8 @@ modules.define(
                 }.bind(this));
 
                 window.socket.on('s-consultor:question', function(q) {
-                    var qBlockId = 'vk_comments_question';
+                    var qBlockId = 'vk_comments_question',
+                        likeBlockId = 'vk_like_question';
 
                     this.setContent(BEMHTML.apply([
                         {
@@ -50,11 +51,14 @@ modules.define(
                         { tag: 'br' },
                         {
                             attrs: { id: qBlockId }
+                        },
+                        {
+                            attrs: { id: likeBlockId }
                         }
                     ]));
 
                     VK.Widgets.Comments(qBlockId, { width: 500, limit: 20 }, q._id);
-
+                    VK.Widgets.Like(likeBlockId, { type: 'button' }, q._id);
                 }.bind(this));
             },
 
@@ -77,8 +81,6 @@ modules.define(
              * @private
              */
             _showQuestionButtonClick: function(e) {
-                this.bindAll();
-
                 var params = this.elemParams('show-popup-button'),
                     mod = params && params.add;
 
@@ -169,6 +171,9 @@ modules.define(
         }, {
             live: function() {
                 this
+                    .liveBindTo('item show-popup-button', 'pointerclick', function(e) {
+                        this.bindAll();
+                    })
                     .liveBindTo('show-popup-button', 'pointerclick', function(e) {
                         this._showQuestionButtonClick(e);
                     });
