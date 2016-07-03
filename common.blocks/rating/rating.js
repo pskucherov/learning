@@ -4,6 +4,39 @@ modules.define(
     function(provide, BEMDOM, $, BEMHTML) {
 
         provide(BEMDOM.decl(this.name, {
+            onSetMod: {
+                js: {
+                    inited: function () {
+
+                        /**
+                         * Получение данных от сервера,
+                         * это был правильный ответ на вопрос или нет.
+                         *
+                         * @params {Boolean} isRight
+                         */
+                        window.socket.on('rating:rating', function (rating) {
+                            this._hideUser();
+                            rating.forEach(function (u) {
+
+                                this
+                                    ._setUser(u)
+                                    ._setFade(u);
+
+                            }.bind(this));
+
+                            if (rating.length > 3) {
+                                this.delMod(this.elem('user', 'pos', 100500), 'hidden');
+                            }
+                            if (rating.length > 4) {
+                                this.delMod(this.elem('dots'), 'hidden');
+                            }
+
+                        }.bind(this));
+
+                    }
+                }
+            },
+
             unbindEvents: function() {
                 window.socket.removeAllListeners('rating:rating');
             },
@@ -119,31 +152,6 @@ modules.define(
             live: function() {
                 var timer = [];
 
-                /**
-                 * Получение данных от сервера,
-                 * это был правильный ответ на вопрос или нет.
-                 *
-                 * @params {Boolean} isRight
-                 */
-                window.socket.on('rating:rating', function (rating) {
-                    this._hideUser();
-                    rating.forEach(function (u) {
-
-                        this
-                            ._setUser(u)
-                            ._setFade(u);
-
-                    }.bind(this));
-
-                    if (rating.length > 3) {
-                        this.delMod(this.elem('user', 'pos', 100500), 'hidden');
-                    }
-                    if (rating.length > 4) {
-                        this.delMod(this.elem('dots'), 'hidden');
-                    }
-
-                }.bind(this));
-
                 this
                     .liveBindTo('stats', 'mouseover pointerclick', function (e) {
                         var pos = this._getPos(e),
@@ -162,7 +170,7 @@ modules.define(
                         }.bind(this), 250);
                     });
 
-                return true;
+                return false;
             }
         }));
 
