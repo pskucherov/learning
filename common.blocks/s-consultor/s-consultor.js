@@ -48,12 +48,12 @@ modules.define(
                             elem: 'answer',
                             content: q.question
                         },
-                        { tag: 'br' },
                         {
-                            attrs: { id: qBlockId }
+                            attrs: { id: likeBlockId },
+                            elem: 'like'
                         },
                         {
-                            attrs: { id: likeBlockId }
+                            attrs: { id: qBlockId }
                         }
                     ]));
 
