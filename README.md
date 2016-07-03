@@ -14,21 +14,21 @@ npm start
 
 ### База данных
 
-Тестовая база данных расположена на удалённом сервере. Параметры для подключения уже прописаны в конфиге.
-Так как база для разработки является общей, не нужно рассчитывать, что в ней будет что-то долго храниться.
-
-Так как изначально использовался orm для mysql, после чего мигрировали на mongodb — часть новых методов orm не поддерживает,
-в следствии чего пришлось дописать в API проксирующий метод, который пробрасывает запрос из orm напрямую в БД.
-https://github.com/pskucherov/node-orm2/pull/1/files
+В качестве базы данных используется MongoDB через ORM.
+Параметры подключения находятся в файле [setting.js](https://github.com/pskucherov/learning/blob/master/common.blocks/app/settings.js)
 
 Синхронизация моделей, данных в БД
 ```sh
 node common.blocks/app/models/sync.js
 ```
 
+Так как изначально использовался orm для mysql, после чего мигрировали на mongodb — часть новых методов orm не поддерживает,
+в следствии чего пришлось дописать в API проксирующий метод, который пробрасывает запрос из orm напрямую в БД.
+https://github.com/pskucherov/node-orm2/pull/1/files
+
 ###### Технологии
 * [Orm]:  Object Relational Mapping 
-* [MongoDb]: ...
+* [MongoDB]: MongoDB
 
 ### Тестирование
 Запускаем тесты командой
@@ -71,7 +71,7 @@ jquery.ui.touch-punch.js -> common.blocks/i-jquery/__ui/_touch/i-jquery__ui_touc
 
 [issue в orm]: <https://github.com/dresende/node-orm2/issues/524>
 [Orm]: <http://dresende.github.io/node-orm2/>
-[MongoDb]: <https://docs.mongodb.com/manual/>
+[MongoDB]: <https://docs.mongodb.com/manual/>
 [Mocha]: <http://mochajs.org/>
 [Chai]: <http://chaijs.com/api/assert/>
 [Chai as Promised]: <https://github.com/domenic/chai-as-promised>
