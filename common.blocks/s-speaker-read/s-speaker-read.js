@@ -69,7 +69,7 @@ modules.define(
                 window.socket.removeAllListeners('s-speaker-read:save');
             },
 
-            _destruct: function() {
+            destruct: function() {
                 this.unbindEvents();
                 this.__base.apply(this, arguments);
             },

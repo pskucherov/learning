@@ -26,7 +26,7 @@ modules.define(
                 BEMDOM.blocks['s-brain'].un('up', this._showPlusPoint, this);
             },
 
-            _destruct: function() {
+            destruct: function() {
                 this.unbindEvents();
                 this.__base.apply(this, arguments);
             },

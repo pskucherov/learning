@@ -38,7 +38,7 @@ modules.define(
                 window.socket.removeAllListeners('select-poem:saveFirstStep');
             },
 
-            _destruct: function() {
+            destruct: function() {
                 this.unbindEvents();
                 this.__base.apply(this, arguments);
             },
