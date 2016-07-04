@@ -44,6 +44,7 @@ modules.define(
             unbindEvents: function() {
                 window.socket.removeAllListeners('select-poem:getPoemById');
                 window.socket.removeAllListeners('s-speaker-finish:progress');
+                VK.Observer.unsubscribe('widgets.like.shared', this._likeSubscribe.bind(this));
             },
 
             _destruct: function() {
@@ -73,15 +74,17 @@ modules.define(
                 });
                 */
 
-                VK.Observer.subscribe('widgets.like.shared', function() {
-                    window.socket.emit('s-speaker-finish:save', {
-                        poemId: this.currentPoemId,
-                        act: 's-speaker-finish'
-                    });
-                }.bind(this));
+                VK.Observer.subscribe('widgets.like.shared', this._likeSubscribe.bind(this));
 
                 //BEMDOM.update(this.elem('vk-share-button'), BEMDOM.blocks['vk'].getShareButton(title, descr));
                 return this;
+            },
+
+            _likeSubscribe: function() {
+                window.socket.emit('s-speaker-finish:save', {
+                    poemId: this.currentPoemId,
+                    act: 's-speaker-finish'
+                });
             },
 
             /**
