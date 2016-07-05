@@ -42,6 +42,8 @@ modules.define(
                     var qBlockId = 'vk_comments_question',
                         likeBlockId = 'vk_like_question';
 
+                    this.qId = q._id;
+
                     this.setContent(BEMHTML.apply([
                         {
                             block: 's-consultor',
@@ -67,8 +69,17 @@ modules.define(
                 }.bind(this));
             },
 
-            _likeSubscribe: function() {
-                console.log(arguments);
+            /**
+             * Отправка количества лайков у данного вопроса
+             *
+             * @param cnt
+             * @private
+             */
+            _likeSubscribe: function(cnt) {
+                window.socket.emit('s-consultor:setLikeCnt', {
+                    qId: this.qId,
+                    likes: cnt
+                });
             },
 
             unbindEvents: function() {
