@@ -62,9 +62,9 @@ modules.define(
 
                     VK.Widgets.Comments(qBlockId, { width: 500, limit: 20 }, q._id);
 
-                    VK.Observer.unsubscribe('widgets.like.shared', this._likeSubscribe.bind(this));
+                    VK.Observer.unsubscribe('widgets.like.liked', this._likeSubscribe.bind(this));
                     VK.Widgets.Like(likeBlockId, { type: 'button' }, q._id);
-                    VK.Observer.subscribe('widgets.like.shared', this._likeSubscribe.bind(this));
+                    VK.Observer.subscribe('widgets.like.liked', this._likeSubscribe.bind(this));
 
                 }.bind(this));
             },
@@ -85,7 +85,7 @@ modules.define(
             unbindEvents: function() {
                 window.socket.removeAllListeners('s-consultor:question');
                 window.socket.removeAllListeners('s-consultor:addedQuestion');
-                VK.Observer.unsubscribe('widgets.like.shared', this._likeSubscribe.bind(this));
+                VK.Observer.unsubscribe('widgets.like.liked', this._likeSubscribe.bind(this));
 
                 this.unbindFrom(this.elem('send-question'), 'pointerclick', this._sendQuestionButtonClick, this);
                 BEMDOM.blocks['s-consultor-item'].un('click', this._onItemClick, this);

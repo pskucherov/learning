@@ -88,4 +88,29 @@ Consultor.getById = function(cModel, id) {
     return deferred.promise();
 };
 
+/**
+ * Обновить количество лайков у вопроса
+ *
+ * @param cModel
+ * @param id
+ * @param count
+ * @returns {*}
+ */
+Consultor.updateLikeCount = function(cModel, id, count) {
+    var deferred = vow.defer();
+
+    cModel
+        .find({_id: utils.oId(id)})
+        .run(function (err, question) {
+            if (err) throw err;
+
+            if (question.length) {
+                question[0].likeCount = count;
+                question[0].save();
+            }
+        });
+
+    return deferred.promise();
+};
+
 module.exports = Consultor;

@@ -399,24 +399,28 @@ models(function (err, db) {
             /* BRAIN-TEST END */
 
             /* S-CONSULTOR START */
+            socket.on('s-consultor:sendQuestion', function(data) {
+                Consultor.create(db.models['s-consultor'], data.question, user._id)
+                    .then(function(question) {
+                        socket.emit('s-consultor:addedQuestion', true);
+                    })
+                    .fail(function() {
+                        socket.emit('s-consultor:addedQuestion', false);
+                    });
+            });
 
-                socket.on('s-consultor:sendQuestion', function(data) {
-                    Consultor.create(db.models['s-consultor'], data.question, user._id)
-                        .then(function(question) {
-                            socket.emit('s-consultor:addedQuestion', true);
-                        })
-                        .fail(function() {
-                            socket.emit('s-consultor:addedQuestion', false);
-                        });
-                });
+            socket.on('s-consultor:showQuestion', function(data) {
+                Consultor.getById(db.models['s-consultor'], data.id)
+                    .then(function(question) {
+                        socket.emit('s-consultor:question', question);
+                    });
+            });
 
-                socket.on('s-consultor:showQuestion', function(data) {
-                    Consultor.getById(db.models['s-consultor'], data.id)
-                        .then(function(question) {
-                            socket.emit('s-consultor:question', question);
-                        });
-                });
-
+            // Обновить количество лайков у вопроса
+            socket.on('s-consultor:setLikeCnt', function(data) {
+                // TODO: ajax обновление на странице
+                Consultor.updateLikeCount(db.models['s-consultor'], data.qId, data.likes);
+            });
             /* S-CONSULTOR END */
 
         });
