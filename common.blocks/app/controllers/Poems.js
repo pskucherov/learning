@@ -80,6 +80,7 @@ Poems._getLinesFromPoem = function(poemText) {
  * Получить стихотворение из БД по id
  *
  * @param pModel
+ * @param authorModel
  * @param poemId
  * @returns {*}
  */
