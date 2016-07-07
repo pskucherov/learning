@@ -421,6 +421,11 @@ models(function (err, db) {
                 // TODO: ajax обновление на странице
                 Consultor.updateLikeCount(db.models['s-consultor'], data.qId, data.likes);
             });
+
+            socket.on('s-consultor:setCommentsCount', function(data) {
+                // TODO: ajax обновление на странице
+                Consultor.updateCommentsCount(db.models['s-consultor'], data.qId, data.commentsCount);
+            });
             /* S-CONSULTOR END */
 
         });

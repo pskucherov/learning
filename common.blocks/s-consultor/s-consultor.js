@@ -60,13 +60,32 @@ modules.define(
                         }
                     ]));
 
+                    VK.Observer.unsubscribe('widgets.comments.new_comment', this._commentSubscribe.bind(this));
+                    VK.Observer.unsubscribe('widgets.comments.delete_comment', this._commentSubscribe.bind(this));
                     VK.Widgets.Comments(qBlockId, { width: 500, limit: 20 }, q._id);
+                    VK.Observer.unsubscribe('widgets.comments.new_comment', this._commentSubscribe.bind(this));
+                    VK.Observer.unsubscribe('widgets.comments.delete_comment', this._commentSubscribe.bind(this));
 
                     VK.Observer.unsubscribe('widgets.like.liked', this._likeSubscribe.bind(this));
+                    VK.Observer.unsubscribe('widgets.like.unliked', this._likeSubscribe.bind(this));
                     VK.Widgets.Like(likeBlockId, { type: 'button' }, q._id);
                     VK.Observer.subscribe('widgets.like.liked', this._likeSubscribe.bind(this));
+                    VK.Observer.subscribe('widgets.like.unliked', this._likeSubscribe.bind(this));
 
                 }.bind(this));
+            },
+
+            /**
+             * Отправка количества лайков у данного вопроса
+             *
+             * @param count
+             * @private
+             */
+            _commentSubscribe: function(count) {
+                window.socket.emit('s-consultor:setCommentsCount', {
+                    qId: this.qId,
+                    commentsCount: count
+                });
             },
 
             /**

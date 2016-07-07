@@ -113,4 +113,28 @@ Consultor.updateLikeCount = function(cModel, id, count) {
     return deferred.promise();
 };
 
+/**
+ * Обновить количество комментариев у вопроса
+ *
+ * @param cModel
+ * @param id
+ * @param count
+ * @returns {Promise}
+ */
+Consultor.updateCommentsCount = function(cModel, id, count) {
+    return new ((resolve, reject) => {
+        cModel
+            .find({_id: utils.oId(id)})
+            .run(function (err, question) {
+                if (err) throw err;
+
+                if (question.length) {
+                    question[0].answersCount = count;
+                    question[0].save();
+                }
+            });
+    };
+};
+
+
 module.exports = Consultor;
