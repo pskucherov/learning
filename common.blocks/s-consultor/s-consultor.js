@@ -63,8 +63,8 @@ modules.define(
                     VK.Observer.unsubscribe('widgets.comments.new_comment', this._commentSubscribe.bind(this));
                     VK.Observer.unsubscribe('widgets.comments.delete_comment', this._commentSubscribe.bind(this));
                     VK.Widgets.Comments(qBlockId, { width: 500, limit: 20 }, q._id);
-                    VK.Observer.unsubscribe('widgets.comments.new_comment', this._commentSubscribe.bind(this));
-                    VK.Observer.unsubscribe('widgets.comments.delete_comment', this._commentSubscribe.bind(this));
+                    VK.Observer.subscribe('widgets.comments.new_comment', this._commentSubscribe.bind(this));
+                    VK.Observer.subscribe('widgets.comments.delete_comment', this._commentSubscribe.bind(this));
 
                     VK.Observer.unsubscribe('widgets.like.liked', this._likeSubscribe.bind(this));
                     VK.Observer.unsubscribe('widgets.like.unliked', this._likeSubscribe.bind(this));

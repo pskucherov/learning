@@ -122,7 +122,7 @@ Consultor.updateLikeCount = function(cModel, id, count) {
  * @returns {Promise}
  */
 Consultor.updateCommentsCount = function(cModel, id, count) {
-    return new ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         cModel
             .find({_id: utils.oId(id)})
             .run(function (err, question) {
@@ -133,7 +133,7 @@ Consultor.updateCommentsCount = function(cModel, id, count) {
                     question[0].save();
                 }
             });
-    };
+    });
 };
 
 
