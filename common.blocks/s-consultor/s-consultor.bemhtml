@@ -25,3 +25,7 @@ block('s-consultor').elem('popup-add-question')(
     })
 
 );
+
+block('s-consultor').elem('answer-count').tag()('span');
+
+block('s-consultor').elem('like-count').tag()('span');

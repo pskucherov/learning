@@ -180,7 +180,6 @@ modules.define(
                 }));
 
                 return this;
-
             },
 
             /**

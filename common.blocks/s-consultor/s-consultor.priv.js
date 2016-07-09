@@ -24,7 +24,7 @@ BEMPRIV.decl('s-consultor', {
                         return {
                             block: 's-consultor',
                             elem: 'item',
-                            mix: {block: 's-consultor-item', js: {id: q._id}},
+                            mix: { block: 's-consultor-item', js: { id: q._id } },
                             content: [
                                 {
                                     block: 'rating',
@@ -39,8 +39,21 @@ BEMPRIV.decl('s-consultor', {
                                             {
                                                 block: 'rating',
                                                 elem: 'stat-text',
-                                                content: _.trim(parseInt(q.answersCount || 0, 10) + ' 💬 <br>' + parseInt(q.likeCount || 0, 10)
-                                                    + ' 💌')
+                                                content: [
+                                                    {
+                                                        block: 's-consultor',
+                                                        elem: 'answer-count',
+                                                        content: _.trim(parseInt(q.answersCount || 0, 10))
+                                                    },
+                                                    ' 💬',
+                                                    '<br>',
+                                                    {
+                                                        block: 's-consultor',
+                                                        elem: 'like-count',
+                                                        content: _.trim(parseInt(q.likeCount || 0, 10))
+                                                    },
+                                                    ' 💌'
+                                                ]
                                             },
                                             {
                                                 block: 'rating',
