@@ -114,24 +114,29 @@ models(function (err, db) {
                         userId = 'a12345678901',
                         questions = [];
 
-                        BrainTests.getRandomQuestionForUser(db, userId, classNum)
-                            .then(function (data) {
-                                questions.push(data._id);
+                    BrainTests.getRandomQuestionForUser(db, userId, classNum)
+                        .then(function (data) {
+                            questions.push(data._id);
+
+                            // Тест может только зарезолвится, если нет, то падает по таймауту
+                            let interval = setInterval(() => {
                                 BrainTests.getRandomQuestionForUser(db, userId, classNum)
                                     .then(function (data) {
                                         questions.push(data._id);
-                                        BrainTests.getRandomQuestionForUser(db, userId, classNum)
-                                            .then(function (data) {
-                                                questions.push(data._id);
-                                                deferred.resolve(_.uniq(questions).length);
-                                            });
                                     });
-                            });
+
+                                if (_.uniq(questions).length > 2) {
+                                    deferred.resolve(_.uniq(questions).length);
+                                    clearInterval(interval);
+                                }
+                            }, 75);
+
+                        });
 
                     return assert.eventually.isAtLeast(
                         deferred.promise(),
-                        2,
-                        'Arr length is at most 1'
+                        3,
+                        'Arr length is at most 2'
                     );
 
                 });
@@ -173,7 +178,7 @@ models(function (err, db) {
                                 BrainTests.getRandomQuestionForUser(db, userId, classNum)
                                     .then(function (data) {
                                         deferred.resolve(data._id);
-                                    });
+                                    }).catch((e) => deferred.resolve(e));
                             }]);
 
                     return assert.eventually.equal(
@@ -189,8 +194,6 @@ models(function (err, db) {
                     var deferred = vow.defer(),
                         classNum = 1,
                         userId = 'a12345678901';
-
-
 
                         BTestsModel.proxy('insertMany', 'brain-tests-answers', [
                             [
@@ -226,9 +229,7 @@ models(function (err, db) {
                                 }
                             ], function () {
                                 BrainTests.getRandomQuestionForUser(db, userId, classNum)
-                                    .fail(function () {
-                                        deferred.reject();
-                                    });
+                                    .catch(() => deferred.reject());
 
                             }]);
 
@@ -341,7 +342,6 @@ models(function (err, db) {
                     );
 
                 });
-
             });
 
         });
