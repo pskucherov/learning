@@ -25,33 +25,44 @@ var BrainTests = function() {
  * @returns {Promise}
  */
 BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
-    var deferred = vow.defer(),
-        query = { class: classNum };
+    return new Promise((resolve, reject) => {
 
-    db.models['brain-tests-answers'].count({ classNum: classNum, userId: utils.oId(userId) }, function(err, answerN) {
+        db.models['brain-tests'].count({ class: classNum }, (err, n) => {
 
-        db.models['brain-tests'].count(query, function (err, n) {
-            var r = Math.floor(Math.random() * n);
+            db.models['brain-tests-answers'].find({
+                classNum: classNum,
+                userId: utils.oId(userId)
+            }).only('questionId').run((err, data) => {
+                n -= data.length;
 
-            if (answerN >= n) {
-                return deferred.reject();
-            }
-
-            db.models['brain-tests'].find(query).limit(1).skip(r).run(function (err, data) {
-                if (_.isEmpty(data)) {
-                    deferred.reject([]);
+                if (n <= 0) {
+                    return reject();
                 }
 
-                // TODO: нормализовать данные с предметами
-                data[0].subj = {name: data[0].subj};
-                deferred.resolve(data[0]);
+                let r = Math.floor(Math.random() * (n <= 0 ? 0 : n - 1));
+
+                db.models['brain-tests'].find({
+                    class: classNum,
+                    _id: {
+                        $nin: _.map(data, function (a) {
+                            return utils.oId(a.questionId);
+                        })
+                    }
+                }).limit(1).skip(r).run(function (err, data) {
+                    if (!data.length) {
+                        return reject([]);
+                    }
+
+                    // TODO: нормализовать данные с предметами
+                    data[0].subj = { name: data[0].subj };
+                    return resolve(data[0]);
+                });
+
             });
 
         });
 
     });
-
-    return deferred.promise();
 };
 
 /**
