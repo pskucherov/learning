@@ -1,4 +1,4 @@
-# Learning
+# Learning [![Build Status](https://travis-ci.org/pskucherov/learning.svg?branch=master)](https://travis-ci.org/pskucherov/learning/builds)
 
 ### Установка
 ```sh
