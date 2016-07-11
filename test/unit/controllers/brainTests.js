@@ -119,7 +119,7 @@ models(function (err, db) {
                             questions.push(data._id);
 
                             // Тест может только зарезолвится, если нет, то падает по таймауту
-                            let interval = setInterval(() => {
+                            var interval = setInterval(() => {
                                 BrainTests.getRandomQuestionForUser(db, userId, classNum)
                                     .then(function (data) {
                                         questions.push(data._id);
