@@ -210,8 +210,7 @@ User.getByVKId = function(userModel, vkid) {
  *
  * @static
  */
-User.getById = function(userModel, id, fields) {
-    fields = '_id,vkid,first_name,photo_100';
+User.getById = function(userModel, id, fields = '_id,vkid,first_name,photo_100') {
     var deferred = vow.defer();
 
     // TODO: переписать на выборку нужных полей из БД

@@ -3,14 +3,14 @@ var chai = require('chai'),
 
 chai.use(chaiAsPromised);
 
-var assert = chai.assert,
+let assert = chai.assert,
     _ = require('lodash'),
     path = require('path'),
     express = require('express'),
     app = express(),
     vow = require('vow');
 
-var appDir = './common.blocks/app/',
+let appDir = './common.blocks/app/',
     utils = require(path.resolve(appDir + 'utils')),
     models = require(path.resolve(appDir + 'models/')),
     User = require(path.resolve(appDir + 'controllers/User'));

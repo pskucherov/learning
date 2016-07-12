@@ -39,7 +39,7 @@ BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
                     return reject();
                 }
 
-                var r = Math.floor(Math.random() * (n <= 0 ? 0 : n - 1));
+                let r = Math.floor(Math.random() * (n <= 0 ? 0 : n - 1));
 
                 db.models['brain-tests'].find({
                     class: classNum,

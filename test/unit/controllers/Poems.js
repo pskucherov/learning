@@ -2,14 +2,14 @@ var chai = require('chai'),
     chaiAsPromised = require('chai-as-promised');
 
 chai.use(chaiAsPromised);
-var assert = chai.assert,
+let assert = chai.assert,
     _ = require('lodash'),
     path = require('path'),
     express = require('express'),
     app = express(),
     vow = require('vow');
 
-var appDir = './common.blocks/app/',
+let appDir = './common.blocks/app/',
     models = require(path.resolve(appDir + 'models/')),
     Poems = require(path.resolve(appDir + 'controllers/Poems')),
     Authors = require(path.resolve(appDir + 'controllers/Authors'));
@@ -20,7 +20,7 @@ models(function (err, db) {
     db.sync(function (err) {
         if (err) throw err;
 
-        var pModel = db.models['poems'],
+        let pModel = db.models['poems'],
             aModel = db.models['authors'];
 
         describe('Controller: Poems', function () {
@@ -54,7 +54,7 @@ models(function (err, db) {
 
                 it('should create two line text in poem', function () {
 
-                    var deferred = vow.defer(),
+                    let deferred = vow.defer(),
                         uId = 'b12345678902';
 
                     Authors.create(aModel, 'a12345678901', uId).then(a => {
