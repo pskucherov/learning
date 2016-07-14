@@ -230,6 +230,24 @@ router.get(/^\/consultor\/?$/, function(req, res, next) {
 });
 
 /**
+ * Математика
+ */
+router.get(/^\/math\/?$/, function(req, res, next) {
+
+    if (!res.user || !res.user.isAuth) {
+        res.pageName = 'index';
+        req.session.redirPage = '/math';
+    } else {
+        res.pageName = 's-math-tasks';
+    }
+
+    req.session.pageName = 's-math-tasks';
+
+    next();
+
+});
+
+/**
  * Оратор
  */
 router.get(/^\/warden\/?$/, function(req, res, next) {
