@@ -174,12 +174,23 @@ router.get(/^\/?$/, function(req, res, next) {
 });
 
 /**
+ * Главная
+ */
+router.get(/^\/exit\/?$/, function(req, res, next) {
+    res.pageName = 'exit';
+    req.session.redirPage = '/';
+    req.session.pageName = 'index';
+
+    next();
+});
+
+/**
  * Оратор
  */
 router.get(/^\/speaker\/?$/, function(req, res, next) {
 
     if ((!res.user || !res.user.isAuth)) {
-        res.pageName = 'index';
+        res.pageName = 'exit';
         req.session.redirPage = '/speaker';
         next();
     } else {
@@ -202,7 +213,7 @@ router.get(/^\/speaker\/?$/, function(req, res, next) {
 router.get(/^\/consultor\/?$/, function(req, res, next) {
 
     if (!res.user || !res.user.isAuth) {
-        res.pageName = 'index';
+        res.pageName = 'exit';
         req.session.redirPage = '/consultor';
     } else {
         res.pageName = 's-consultor';
@@ -224,7 +235,7 @@ router.get(/^\/consultor\/?$/, function(req, res, next) {
 router.get(/^\/warden\/?$/, function(req, res, next) {
 
     if (!res.user || !res.user.isAuth) {
-        res.pageName = 'index';
+        res.pageName = 'exit';
         req.session.redirPage = '/warden';
     } else {
         res.pageName = 's-warden';
