@@ -210,10 +210,11 @@ modules.define(
         }, {
             live: function() {
                 this
-                    .liveBindTo('item show-popup-button', 'pointerclick', function(e) {
+                    .liveBindTo('item', 'pointerclick', function(e) {
                         this.bindAll();
                     })
                     .liveBindTo('show-popup-button', 'pointerclick', function(e) {
+                        this.bindAll();
                         this._showQuestionButtonClick(e);
                     });
 
