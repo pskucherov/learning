@@ -36,7 +36,7 @@ BrainTests.getRandomQuestionForUser = function(db, userId, classNum) {
                 n -= data.length;
 
                 if (n <= 0) {
-                    return reject();
+                    return reject([]);
                 }
 
                 let r = Math.floor(Math.random() * (n <= 0 ? 0 : n - 1));

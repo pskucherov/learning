@@ -374,12 +374,9 @@ models(function (err, db) {
                 });
 
                 BrainTests.getRandomQuestionForUser(db, user._id, classNum)
-                    .then(function (data) {
+                    .then((data) => {
                         socket.emit('s-brain:question', data);
-                    })
-                    .fail(function() {
-
-
+                    }, () => {
                         BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user._id, find.class, 1)
                             .then(function (rightAnswers) {
                                 BrainTests.getStatsForUserClass(db.models['brain-tests-answers'], user._id, find.class, 0)
@@ -390,8 +387,6 @@ models(function (err, db) {
                                         });
                                     });
                             });
-
-
                     });
 
             }

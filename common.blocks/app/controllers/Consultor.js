@@ -23,6 +23,7 @@ var Consultor = function() {
  * @returns {*}
  */
 Consultor.create = function(cModel, question, userId) {
+    // Меняя на new Promise не забудь поддержать fail
     var deferred = vow.defer();
 
     cModel.create({
@@ -52,6 +53,8 @@ Consultor.getAllQuestions = function(db) {
     ], function (err, data) {
         if (err) throw err;
 
+        // TODO: вот тут ошибка, если нет вопросов от пользователей, то всё пропало.
+        // Надо порефакторить и избавиться от запроса пользователей
         User.getByIdKeyValue(db.models['users'], _.map(data, u => utils.oId(u.userId))).then(users => {
 
             deferred.resolve(_.map(data, question => {
