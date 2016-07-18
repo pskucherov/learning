@@ -106,6 +106,14 @@ modules.define(
                 window.socket.removeAllListeners('s-consultor:addedQuestion');
                 VK.Observer.unsubscribe('widgets.like.liked', this._likeSubscribe.bind(this));
 
+                this.isInited = false;
+
+                // Уничтожаем попапы, а то они остаются в домноде,
+                // а там домноды с id, на которые вк подписывается
+                _.forEach(this.modals, function(block) {
+                    BEMDOM.destruct(block.domElem, true);
+                });
+
                 this.unbindFrom(this.elem('send-question'), 'pointerclick', this._sendQuestionButtonClick, this);
                 BEMDOM.blocks['s-consultor-item'].un('click', this._onItemClick, this);
             },
