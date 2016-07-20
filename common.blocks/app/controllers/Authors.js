@@ -22,18 +22,30 @@ var Authors = function() {
  * @returns {*}
  */
 Authors.create = function(aModel, author, userId) {
-    var deferred = vow.defer();
+    return new Promise((resolve, reject) => {
+        Authors
+            .getIdsByQuery(aModel, author, userId)
+            .then((ids) => {
+                let keys = Object.keys(ids);
 
-    aModel.create({
-        name: author,
-        userId: utils.oId(userId),
-        moderate: '0'
-    }, function (err, author) {
-        if (err) throw err;
-        deferred.resolve(author);
+                if (keys.length) {
+                    resolve({
+                        _id: keys[0],
+                        name: ids[keys[0]],
+                        userId: userId
+                    });
+                } else {
+                    aModel.create({
+                        name: author,
+                        userId: utils.oId(userId),
+                        moderate: '0'
+                    }, function (err, author) {
+                        if (err) throw err;
+                        resolve(author);
+                    });
+                }
+            });
     });
-
-    return deferred.promise();
 };
 
 /**
