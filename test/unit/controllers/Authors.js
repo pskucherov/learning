@@ -51,6 +51,21 @@ models(function (err, db) {
 
                 });
 
+                it('should not create new author', function () {
+                    var authorName = 'AName',
+                        userId = 'a12345678901';
+
+                    return Authors.create(authorModel, authorName, userId)
+                        .then((data) => {
+                            var createdId = data._id;
+
+                            return Authors.create(authorModel, authorName, userId)
+                                .then((data) => {
+                                    assert.equal(createdId, data._id);
+                                });
+                        });
+                });
+
                 it('should find by regexp query', function () {
 
                     var deferred = vow.defer(),
