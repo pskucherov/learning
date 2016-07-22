@@ -222,8 +222,11 @@ router.get(/^\/consultor\/?$/, function(req, res, next) {
     req.session.pageName = 's-consultor';
 
     Consultor.getAllQuestions(req.db)
-        .then(function(questions) {
+        .then((questions) => {
             res.consultorQuestions = questions;
+            next();
+        }, () => {
+            res.consultorQuestions = [];
             next();
         });
 

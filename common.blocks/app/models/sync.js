@@ -1,8 +1,8 @@
 var path = require('path'),
     models = require(path.resolve('./common.blocks/app/models/index')),
     _ = require('lodash'),
-    BM25 = require('fts-js');
-
+    BM25 = require('fts-js'),
+    utils = require('../utils');
 
 models(function (err, db) {
     if (err) throw err;
@@ -13,6 +13,26 @@ models(function (err, db) {
 
         db.sync(function (err) {
             if (err) throw err;
+
+            promises.push(new Promise((resolve, reject) => {
+                db.models['s-consultor'].find(/*{id: 1}*/).limit(1).run((err, consult) => {
+                    if (_.isEmpty(consult)) {
+                        db.models['s-consultor'].create({
+                            question: 'Вопрос',
+                            userId: utils.oId('a12345678901'),
+                            moderate: '1'
+                        }, function (err) {
+                            if (err) {
+                                reject(err);
+                            }
+                            resolve();
+                        });
+                    } else {
+                        resolve();
+                    }
+                });
+
+            }));
 
             promises.push(new Promise((resolve, reject) => {
                 db.models.subjects.find({/*id: 1*/}).limit(1).run(function (err, subj) {

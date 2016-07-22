@@ -211,22 +211,24 @@ User.getByVKId = function(userModel, vkid) {
  * @static
  */
 User.getById = function(userModel, id, fields = '_id,vkid,first_name,photo_100') {
-    var deferred = vow.defer();
+    return new Promise((resolve, reject) => {
 
-    // TODO: переписать на выборку нужных полей из БД
-    fields = utils.parseUserFields(fields);
+        // TODO: переписать на выборку нужных полей из БД
+        fields = utils.parseUserFields(fields);
 
-    userModel.find({ _id: { $in: utils.oId(id) } }).run(function(err, user) {
-        if (err) throw err;
+        userModel.find({_id: {$in: utils.oId(id)}}).run(function (err, user) {
+            if (err) throw err;
 
-        if (_.isEmpty(user)) {
-            deferred.reject([]);
-        } else {
-            deferred.resolve(user.map(function(u) { return _.pick(u, fields); }));
-        }
+            if (_.isEmpty(user)) {
+                reject([]);
+            } else {
+                resolve(user.map(function (u) {
+                    return _.pick(u, fields);
+                }));
+            }
+        });
+
     });
-
-    return deferred.promise();
 };
 
 /**
@@ -237,19 +239,21 @@ User.getById = function(userModel, id, fields = '_id,vkid,first_name,photo_100')
  * @static
  */
 User.getByIdKeyValue = function() {
-    var deferred = vow.defer();
+    return new Promise((resolve, reject) => {
 
-    User.getById.apply(this, arguments).then(user => {
-        var usersObj = {};
+        User.getById.apply(this, arguments).then(user => {
+            var usersObj = {};
 
-        for(var k in user) {
-            usersObj[utils.oId(user[k]._id)] = user[k];
-        }
+            for (var k in user) {
+                usersObj[utils.oId(user[k]._id)] = user[k];
+            }
 
-        deferred.resolve(usersObj);
+            resolve(usersObj);
+        }, () => {
+            reject({});
+        });
+
     });
-
-    return deferred.promise();
 };
 
 /**

@@ -46,28 +46,25 @@ Consultor.create = function(cModel, question, userId) {
  * @returns {Promise}
  */
 Consultor.getAllQuestions = function(db) {
-    var deferred = vow.defer();
+    return new Promise((resolve, reject) => {
 
-    db.models['s-consultor'].proxy('aggregate', 's-consultor', [[
-        { $sort : { created_at: -1 } }
-    ], function (err, data) {
-        if (err) throw err;
+        db.models['s-consultor'].proxy('aggregate', 's-consultor', [[
+            {$sort: {created_at: -1}}
+        ], function (err, data) {
+            if (err) throw err;
 
-        // TODO: вот тут ошибка, если нет вопросов от пользователей, то всё пропало.
-        // Надо порефакторить и избавиться от запроса пользователей
-        User.getByIdKeyValue(db.models['users'], _.map(data, u => utils.oId(u.userId))).then(users => {
+            // TODO: Надо порефакторить и избавиться от запроса пользователей
+            User.getByIdKeyValue(db.models['users'], _.map(data, u => utils.oId(u.userId))).then(users => {
 
-            deferred.resolve(_.map(data, question => {
-                question.user = users[utils.oId(question.userId)];
-                return question;
-            }));
-
-        });
-
-
-    }]);
-
-    return deferred.promise();
+                resolve(_.map(data, question => {
+                    question.user = users[utils.oId(question.userId)];
+                    return question;
+                }));
+            }, () => {
+                reject([]);
+            });
+        }]);
+    });
 };
 
 /**
@@ -138,6 +135,5 @@ Consultor.updateCommentsCount = function(cModel, id, count) {
             });
     });
 };
-
 
 module.exports = Consultor;
