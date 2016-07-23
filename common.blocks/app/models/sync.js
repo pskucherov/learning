@@ -14,8 +14,9 @@ models(function (err, db) {
         db.sync(function (err) {
             if (err) throw err;
 
+            /*
             promises.push(new Promise((resolve, reject) => {
-                db.models['s-consultor'].find(/*{id: 1}*/).limit(1).run((err, consult) => {
+                db.models['s-consultor'].find().limit(1).run((err, consult) => {
                     if (_.isEmpty(consult)) {
                         db.models['s-consultor'].create({
                             question: 'Вопрос',
@@ -33,6 +34,7 @@ models(function (err, db) {
                 });
 
             }));
+            */
 
             promises.push(new Promise((resolve, reject) => {
                 db.models.subjects.find({/*id: 1*/}).limit(1).run(function (err, subj) {
