@@ -1,0 +1,30 @@
+block('s-consultor-item')(
+
+    content()(function() {
+        return [
+            {
+                elem: 'user-picture',
+                tag: 'img',
+                attrs: { src: this.ctx.photo, alt: '' }
+            },
+            {
+                elem: 'question',
+                content: this.ctx.question
+            },
+            {
+                elem: 'stats',
+                content: [
+                    {
+                        elem: 'likes',
+                        content: this.ctx.likeCount
+                    },
+                    {
+                        elem: 'answers',
+                        content: this.ctx.answerCount
+                    }
+                ]
+            }
+        ];
+    })
+
+);

@@ -6,6 +6,11 @@ BEMPRIV.decl('s-consultor', {
         this.content([
             {
                 block: 's-consultor',
+                elem: 'title',
+                content: 'Есть вопросы? Спроси здесь!'
+            },
+            {
+                block: 's-consultor',
                 elem: 'show-popup-button',
                 js: { add: 's-consultor-question' },
                 content: {
@@ -17,59 +22,17 @@ BEMPRIV.decl('s-consultor', {
             {
                 block: 's-consultor',
                 elem: 'list',
-                content:
-                {
-                    block: 'rating',
-                    content: _.map(this.data.res.consultorQuestions, function(q) {
-                        return {
-                            block: 's-consultor',
-                            elem: 'item',
-                            mix: { block: 's-consultor-item', js: { id: q._id } },
-                            content: [
-                                {
-                                    block: 'rating',
-                                    elem: 'user',
-                                    attrs: {
-                                        style: "background-image: url(" + q.user.photo_100 + "); background-size: cover;"
-                                    },
-                                    content: {
-                                        block: 'rating',
-                                        elem: 'stats',
-                                        content: [
-                                            {
-                                                block: 'rating',
-                                                elem: 'stat-text',
-                                                content: [
-                                                    {
-                                                        block: 's-consultor',
-                                                        elem: 'answer-count',
-                                                        content: _.trim(parseInt(q.answersCount || 0, 10))
-                                                    },
-                                                    ' 💬',
-                                                    '<br>',
-                                                    {
-                                                        block: 's-consultor',
-                                                        elem: 'like-count',
-                                                        content: _.trim(parseInt(q.likeCount || 0, 10))
-                                                    },
-                                                    ' 💌'
-                                                ]
-                                            },
-                                            {
-                                                block: 'rating',
-                                                elem: 'fade'
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    elem: 'question-text',
-                                    content: q.question
-                                }
-                            ]
-                        };
-                    })
-                }
+                content: _.map(this.data.res.consultorQuestions, function(q) {
+                    return {
+                        block: 's-consultor-item',
+                        mix: [{ block: 's-consultor', elem: 'item' }],
+                        js: { id: q._id },
+                        photo: _.get(q, 'user.photo_100', ''),
+                        question: q.question,
+                        answerCount: parseInt(q.answersCount || 0, 10),
+                        likeCount: parseInt(q.likeCount || 0, 10)
+                    };
+                })
             },
             {
                 block: 'modal',
