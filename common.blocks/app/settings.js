@@ -11,12 +11,13 @@ if (fs.existsSync(_setting)) {
 // https://github.com/dresende/node-orm2/blob/master/examples/anontxt/config/settings.js
 var appId = 5076733,
     settings = {
-    vk: {
-        appId: appId,
-        appSecret: 'bEvkKDmoH9jk0pb1kE4s',
-        cookieName: 'vk_app_' + appId
-    },
-    database: 'mongodb://localhost:27017/learn-demo'
-};
+        vk: {
+            appId: appId,
+            appSecret: 'bEvkKDmoH9jk0pb1kE4s',
+            cookieName: 'vk_app_' + appId,
+            groupId: 83561592
+        },
+        database: 'mongodb://localhost:27017/learn-demo'
+    };
 
 module.exports = settings;

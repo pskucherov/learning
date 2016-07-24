@@ -6,7 +6,8 @@ var models = [
         'subjects',
         'complaints',
         'poems',
-        'consultor'
+        'consultor',
+        'vk-group-wall'
     ];
 
 var orm = require('orm'),
