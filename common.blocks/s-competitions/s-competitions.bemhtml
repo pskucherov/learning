@@ -1,0 +1,31 @@
+block('s-competitions').elem('popup-add-question')(
+
+    content()(function() {
+        return [
+            {
+                block: 's-competitions',
+                elem: 'add-question',
+                content: {
+                    block: 'textarea',
+                    mods: {
+                        theme: 'islands',
+                        size: 'm'
+                    },
+                    mix: { block: 's-competitions', elem: 'textarea' },
+                    placeholder: 'Введите свой вопрос'
+                }
+            },
+            {
+                block: 'button',
+                mods: { theme: 'islands', size: 'l' },
+                mix: { block: 's-competitions', elem: 'send-question' },
+                text: 'Отправить на модерацию'
+            }
+        ];
+    })
+
+);
+
+block('s-competitions').elem('answer-count').tag()('span');
+
+block('s-competitions').elem('like-count').tag()('span');

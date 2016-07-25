@@ -12,6 +12,7 @@
         { block: 's-speaker' },
         { block: 's-warden' },
         { block: 's-consultor' },
+        { block: 's-competitions' },
         { block: 'exit' },
 
         { block: 'i-vow' },

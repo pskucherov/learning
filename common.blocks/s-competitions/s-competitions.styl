@@ -1,0 +1,58 @@
+$root = '.s-competitions';
+
+{$root}
+  width 100%
+  height 100%
+  position relative
+  cursor default
+  text-align center
+  margin-top 50px
+
+  &__title
+    text-align center
+    font-size 22px
+
+  &__show-popup-button
+    margin-top 30px
+
+  &__modal .modal__content
+    text-align center
+    min-width 400px
+    min-height 190px
+
+    & .spin
+      top 70px
+
+  &__add-question
+    padding 50px 30px 0 30px
+
+    & {$root}__textarea
+      width: 100%
+
+  &__send-question.button
+    margin: 30px
+
+  &__answer
+    position relative
+    margin: 65px 0 33px 0
+
+  &__like
+    margin-bottom: 33px
+    float: right
+
+  &__list
+    margin-top 30px
+
+  &__item
+    display inline-block
+    margin 15px 15px
+    cursor pointer
+
+    rating__user
+      pointer-events none
+
+  &__question-text
+    text-overflow ellipsis
+    white-space nowrap
+    overflow hidden
+    max-width: 70px

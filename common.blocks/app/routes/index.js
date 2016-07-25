@@ -13,6 +13,7 @@ var express = require('express'),
 
     SpeakerLearnPoem = require('../controllers/SpeakerLearnPoem'),
     Authors = require('../controllers/Authors'),
+    Competitions = require('../controllers/Competitions'),
     Consultor = require('../controllers/Consultor');
 
 /**
@@ -230,6 +231,28 @@ router.get(/^\/consultor\/?$/, function(req, res, next) {
             next();
         });
 
+});
+
+/**
+ * Соревнования
+ */
+router.get(/^\/competitions\/?$/, function(req, res, next) {
+    if (!res.user || !res.user.isAuth) {
+        res.pageName = 'exit';
+        req.session.redirPage = '/competitions';
+    } else {
+        res.pageName = 's-competitions';
+    }
+
+    req.session.pageName = 's-competitions';
+
+    Competitions.aggregatePosts(req.models['vk-group-wall'])
+        .then((data) => {
+
+        });
+
+    res.consultorQuestions = [];
+    next();
 });
 
 /**
