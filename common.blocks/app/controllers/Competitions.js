@@ -24,13 +24,16 @@ Competitions.aggregatePosts = function(cModel) {
 
         cModel.proxy('aggregate', 'vk-group-wall', [[
             { $match: { from_id: { $gte: 0 } } },
-            /*{
+            {
                 $group : {
-                    from_id: "$userId"
+                    _id: { from_id: "$from_id" },
+                    totalLikes: { $sum: "$likesCount" },
+                    totalComments: { $sum: "$commentsCount" },
+                    totalReposts: { $sum: "$repostsCount" }
                 }
-            }*/
-            //{ $sort : { cnt: -1 } },
-            //{ $limit : 3 }
+            },
+            { $sort: { totalReposts: -1 } },
+            { $limit: 100 }
         ], function (err, data) {
             if (err) {
                 throw err;

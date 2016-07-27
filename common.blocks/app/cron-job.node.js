@@ -12,7 +12,7 @@ models((err, db) => {
     vk.request('wall.get', {
         owner_id: '-' + settings.vk.groupId,
         count: 100,
-        offset: 1000
+        offset: 0
     }, getWallPasts.bind(this, 0));
 
     /**
@@ -41,7 +41,7 @@ models((err, db) => {
 
         // Если есть ещё посты — делаем запрос, иначе закрываем соединение и выходим
         if (offset < respons.count) {
-            vk.request('wall.get', { owner_id: '-83561592', count: 100, offset: offset }, getWallPasts.bind(this, offset));
+            vk.request('wall.get', { owner_id: '-' + settings.vk.groupId, count: 100, offset: offset }, getWallPasts.bind(this, offset));
         } else {
             closeDb(promises);
         }
@@ -65,8 +65,8 @@ models((err, db) => {
                     from_id: post.from_id,
                     date: post.date,
                     commentsCount: post.comments.count,
-                    repostsCount: post.likes.count,
-                    likeCount: post.reposts.count
+                    repostsCount: post.reposts.count,
+                    likesCount: post.likes.count
                 };
 
                 if (_.isEmpty(data)) {
