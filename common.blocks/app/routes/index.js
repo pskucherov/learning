@@ -248,6 +248,17 @@ router.get(/^\/competitions\/?$/, function(req, res, next) {
 
     Competitions.aggregatePosts(req.models['vk-group-wall'])
         .then((data) => {
+            let usersIds = [];
+
+            _.forEach(data, (val, key) => {
+                usersIds.push(val._id.from_id);
+            });
+
+            User.getById(req.models['users'], usersIds)
+                .then((users) => {
+
+                    console.log(JSON.stringify(users));
+                });
 
         });
 
