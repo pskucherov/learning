@@ -40,8 +40,6 @@ Competitions.aggregatePosts = function(cModel) {
                 reject();
             }
 
-            console.log(data);
-
             resolve(data);
         }]);
 

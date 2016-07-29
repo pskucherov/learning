@@ -187,7 +187,9 @@ User.updateFieldsByVKId = function(userModel, vkid, fields) {
 User.getByVKId = function(userModel, vkid) {
     var deferred = vow.defer();
 
-    userModel.find({ vkid: vkid }).run(function(err, user) {
+    vkid = typeof vkid === 'number' ? [vkid] : vkid;
+
+    userModel.find({ vkid: { $in: vkid } }).run(function(err, user) {
         if (err) throw err;
 
         if (_.isEmpty(user)) {

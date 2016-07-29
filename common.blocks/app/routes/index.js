@@ -254,16 +254,42 @@ router.get(/^\/competitions\/?$/, function(req, res, next) {
                 usersIds.push(val._id.from_id);
             });
 
-            User.getById(req.models['users'], usersIds)
+            User.getByVKId(req.models['users'], usersIds)
                 .then((users) => {
 
-                    console.log(JSON.stringify(users));
+
+                    console.log(users);
+                    
+                    _.forEach(users, (val, key) => {
+
+                        console.log(1);
+
+                        let index = _.findIndex(data, (o) => {
+                            return o._id.from_id === val.vkid;
+                        });
+
+                        console.log(2);
+                        if (index === -1) {
+                            delete data[index];
+                        } else {
+                            data[index].user = val;
+                        }
+
+                        console.log(3);
+
+                    });
+
+
+                    console.log(data);
+
+                    res.competitionsData = data;
+                    next();
+
                 });
 
         });
 
-    res.consultorQuestions = [];
-    next();
+
 });
 
 /**
