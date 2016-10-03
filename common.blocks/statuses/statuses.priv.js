@@ -28,6 +28,8 @@ BEMPRIV.decl('statuses', {
                     'Чем больше читаешь, изучаешь, пересказываешь, тем выше рейтинг.',
                 defVal: 86
             },
+            /*
+            Выпилил раздел, так как он не интересен в техническом плане
             {
                 name: 's-consultor',
                 m: { name: 'Советчик', img: p + 'borschik:include:./lernt2_b.png' },
@@ -38,6 +40,7 @@ BEMPRIV.decl('statuses', {
                     'будут размещены на доске почёта.',
                 defVal: 40
             }
+            */
             /*,
             {
                 name: 's-warden',
