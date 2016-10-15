@@ -8,7 +8,7 @@ block('s-warden')(
                 content: this.ctx.title
             },
 
-            this.ctx.poems.map(function(poem) {
+            this.ctx.poems && this.ctx.poems.length ? this.ctx.poems.map(function(poem) {
                 return [
                     {
                         tag: 'h3',
@@ -18,17 +18,21 @@ block('s-warden')(
                         tag: 'h4',
                         content: poem.author.name
                     },
-                    poem.poem.map(function(p) {
+                    {
+                        tag: 'h5',
+                        content: poem._id
+                    },
+                    poem.poem && poem.poem.length ? poem.poem.map(function(p) {
                         return {
                             tag: 'p',
                             content: p.line
                         };
-                    }),
+                    }) : 'empty!',
                     {
                         tag: 'hr'
                     }
                 ];
-            })
+            }) : ''
 
          ];
 
