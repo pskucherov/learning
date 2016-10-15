@@ -6,7 +6,8 @@ BEMPRIV.decl('s-warden', {
         this.content([
             {
                 block: 's-warden',
-                elem: 'column',
+                elem: 'management',
+                mix: { block: 's-warden', elem: 'column' },
                 title: 'Управление',
                 items: [
                     {
@@ -43,6 +44,15 @@ BEMPRIV.decl('s-warden', {
                     elem: 'add-composition',
                     content: 'aaa composition'
                 }
+            },
+
+
+            {
+                block: 's-warden',
+                elem: 'poems',
+                mix: { block: 's-warden', elem: 'column' },
+                title: 'Непромодерированные стихи',
+                poems: this.data.res.poems
             }
         ]);
 

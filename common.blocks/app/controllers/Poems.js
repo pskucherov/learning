@@ -184,4 +184,45 @@ Poems.getPoemByNameAndAuthor = function(pModel, authorModel, name, author, userI
     return deferred.promise();
 };
 
+/**
+ * Получить все непромодерированные стихотворение из БД
+ *
+ * @param pModel
+ * @param authorModel
+ * @returns {*}
+ */
+Poems.getUnverified = function(pModel, authorModel) {
+    var deferred = vow.defer();
+
+    pModel.find({ moderate: '0' }).run(function (err, poems) {
+        if (err) throw err;
+
+        if (_.isEmpty(poems)) {
+            deferred.reject([]);
+        } else {
+
+            function getNext(i) {
+
+                if (!_.isEmpty(poems[i])) {
+                    Authors
+                        .getById(authorModel, poems[i].author_id)
+                        .then(function(author) {
+                            poems[i].author = author;
+
+                            getNext(i+1);
+                        });
+                } else {
+                    deferred.resolve(poems);
+                }
+            }
+
+            getNext(0);
+
+        }
+    });
+
+    return deferred.promise();
+};
+
+
 module.exports = Poems;

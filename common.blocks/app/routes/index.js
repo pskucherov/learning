@@ -306,7 +306,10 @@ router.get(/^\/warden\/?$/, function(req, res, next) {
 
     req.session.pageName = 's-warden';
 
-    next();
+    Poems.getUnverified(req.models['poems'], req.models['authors']).then((data) => {
+        res.poems = data;
+        next();
+    }, () => next());
 
 });
 

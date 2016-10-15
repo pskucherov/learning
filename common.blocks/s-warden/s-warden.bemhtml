@@ -1,38 +1,76 @@
-block('s-warden').elem('column').content()(function() {
+block('s-warden')(
 
-    return [
-        {
-            elem: 'title',
-            content: this.ctx.title
-        },
-        {
-            elem: 'content',
-            content: this.ctx.items.map(function(item) {
-                return {
-                    elem: 'item',
-                    mods: { add: item.mod },
-                    content: [
-                        {
-                            block: 'link',
-                            mix: [{block: 's-warden', elem: 'item-link'}],
-                            mods: {pseudo: true},
-                            content: item.text
-                        },
-                        ['added', 'moderation', 'rejected'].map(function(status) {
-                            return {
-                                block: 'link',
-                                mix: [{block: 's-warden', elem: 'status-link', mods: { status: status }}],
-                                mods: {pseudo: true},
-                                title: status === 'added'
-                                    ? 'Принято'
-                                    : status === 'moderation' ? 'На модерации' : 'Отклонено',
-                                content: '(' + item[status] + ')'
-                            };
-                        })
-                    ]
-                };
+    elem('poems').content()(function() {
+
+        return [
+            {
+                elem: 'title',
+                content: this.ctx.title
+            },
+
+            this.ctx.poems.map(function(poem) {
+                return [
+                    {
+                        tag: 'h3',
+                        content: poem.name
+                    },
+                    {
+                        tag: 'h4',
+                        content: poem.author.name
+                    },
+                    poem.poem.map(function(p) {
+                        return {
+                            tag: 'p',
+                            content: p.line
+                        };
+                    }),
+                    {
+                        tag: 'hr'
+                    }
+                ];
             })
-        }
-    ];
 
-});
+         ];
+
+    }),
+
+    elem('management').content()(function() {
+
+        return [
+            {
+                elem: 'title',
+                content: this.ctx.title
+            },
+            {
+                elem: 'content',
+                content: this.ctx.items.map(function(item) {
+                    return {
+                        elem: 'item',
+                        mods: { add: item.mod },
+                        content: [
+                            {
+                                block: 'link',
+                                mix: [{block: 's-warden', elem: 'item-link'}],
+                                mods: {pseudo: true},
+                                content: item.text
+                            },
+                            ['added', 'moderation', 'rejected'].map(function(status) {
+                                return {
+                                    block: 'link',
+                                    mix: [{block: 's-warden', elem: 'status-link', mods: { status: status }}],
+                                    mods: {pseudo: true},
+                                    title: status === 'added'
+                                        ? 'Принято'
+                                        : status === 'moderation' ? 'На модерации' : 'Отклонено',
+                                    content: '(' + item[status] + ')'
+                                };
+                            })
+                        ]
+                    };
+                })
+            }
+        ];
+
+    })
+
+);
