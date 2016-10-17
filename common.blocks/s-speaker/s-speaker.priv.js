@@ -39,7 +39,7 @@ BEMPRIV.decl('s-speaker', {
 
         this.js({
             poemId: _.get(this.data, 'res.speakerLearnPoem.poemId', 0),
-            steps: _.pluck(LINE_ACTION_MOD, 'act'),
+            steps: _.map(LINE_ACTION_MOD, 'act'),
             isFemale: this.data.isFemale
         });
 
