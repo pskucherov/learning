@@ -22,6 +22,11 @@ block('s-warden')(
                         tag: 'h5',
                         content: poem._id
                     },
+                    {
+                        block: 'link',
+                        url: '?del=' + poem._id,
+                        content: 'Удалить'
+                    },
                     poem.poem && poem.poem.length ? poem.poem.map(function(p) {
                         return {
                             tag: 'p',

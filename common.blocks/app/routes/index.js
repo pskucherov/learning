@@ -304,13 +304,18 @@ router.get(/^\/warden\/?$/, function(req, res, next) {
         res.pageName = 's-warden';
     }
 
-    req.session.pageName = 's-warden';
 
-    Poems.getUnverified(req.models['poems'], req.models['authors']).then((data) => {
-        res.poems = data;
-        next();
-    }, () => next());
-
+    if (!_.isEmpty(req.query.del)) {
+        Poems.delByIdWithAuthor(req.models['poems'], req.models['authors'], req.query.del).then((data) => {
+            res.redirect('/warden');
+        });
+    } else {
+        req.session.pageName = 's-warden';
+        Poems.getUnverified(req.models['poems'], req.models['authors']).then((data) => {
+            res.poems = data;
+            next();
+        }, () => next());
+    }
 });
 
 module.exports = router;

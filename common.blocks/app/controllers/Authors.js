@@ -130,4 +130,24 @@ Authors.getById = function(authorModel, authorId) {
     return deferred.promise();
 };
 
+/**
+ * Удалить автора по id
+ *
+ * @param authorModel
+ * @param authorId
+ */
+Authors.delById = function(authorModel, authorId) {
+    var deferred = vow.defer();
+
+    authorModel
+        .find({_id: utils.oId(authorId)})
+        .remove((err) => {
+            if (err) throw err;
+
+            deferred.resolve(true);
+        });
+
+    return deferred.promise();
+};
+
 module.exports = Authors;

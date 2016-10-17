@@ -80,6 +80,7 @@ Poems._getLinesFromPoem = function(poemText) {
  * Получить стихотворение из БД по id
  *
  * @param pModel
+ * @param authorModel
  * @param poemId
  * @returns {*}
  */
@@ -102,6 +103,60 @@ Poems.getById = function(pModel, authorModel, poemId) {
                     deferred.resolve(poemItem);
                 });
         }
+    });
+
+    return deferred.promise();
+};
+
+/**
+ * Удалить стихотворение по id,
+ * если такого автора больше нет, то и его удалить
+ *
+ * @param pModel
+ * @param authorModel
+ * @param poemId
+ * @returns {*}
+ */
+Poems.delByIdWithAuthor = function(pModel, authorModel, poemId) {
+    var deferred = vow.defer();
+
+    pModel.find({ _id: utils.oId(poemId) }).run((err, poem) => {
+        if (!_.isEmpty(poem)) {
+            poem = poem[0];
+
+            pModel.find({ author_id: utils.oId(poem.author_id) }).count((err, count) => {
+                // Значит найден только этот стих и автора так же можно удалить
+                if (count === 1) {
+                    Authors
+                        .delById(authorModel, poem.author_id)
+                        .then(() => {
+                            Poems.delById(pModel, poemId).then(() => deferred.resolve(true));
+                        });
+                } else {
+                    Poems.delById(pModel, poemId).then(() => deferred.resolve(true));
+                }
+            })
+
+        } else {
+            deferred.resolve(false);
+        }
+    });
+
+    return deferred.promise();
+};
+
+/**
+ * Удалить стихотворение по id
+ *
+ * @param pModel
+ * @param poemId
+ * @returns {*}
+ */
+Poems.delById = function(pModel, poemId) {
+    var deferred = vow.defer();
+
+    pModel.find({ _id: utils.oId(poemId) }).remove(() => {
+        deferred.resolve(true);
     });
 
     return deferred.promise();
