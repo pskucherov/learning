@@ -9,7 +9,7 @@ models(function (err, db) {
 
     let promises = [];
 
-    //db.drop(function() {
+    db.drop(function() {
 
         db.sync(function (err) {
             if (err) throw err;
@@ -491,6 +491,6 @@ models(function (err, db) {
                 });
         });
 
-    //});
+    });
 
 });

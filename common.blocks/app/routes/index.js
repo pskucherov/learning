@@ -306,7 +306,7 @@ router.get(/^\/warden\/?$/, function(req, res, next) {
 
 
     if (!_.isEmpty(req.query.del)) {
-        Poems.delByIdWithAuthor(req.models['poems'], req.models['authors'], req.query.del).then((data) => {
+        Poems.delByIdWithAuthor(req.models['poems'], req.models['authors'], req.models['speaker-learn-poem'], req.query.del).then((data) => {
             res.redirect('/warden');
         });
     } else {

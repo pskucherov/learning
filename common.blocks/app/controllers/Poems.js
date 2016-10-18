@@ -4,7 +4,8 @@ var vow = require('vow'),
     utils = require('../utils'),
     orm = require('orm'),
     BM25 = require('fts-js'),
-    Authors = require('./Authors');
+    Authors = require('./Authors'),
+    SLP = require('./SpeakerLearnPoem');
 
 /**
  * Контроллер, для работы со стихами
@@ -114,15 +115,19 @@ Poems.getById = function(pModel, authorModel, poemId) {
  *
  * @param pModel
  * @param authorModel
+ * @param slpModel
  * @param poemId
  * @returns {*}
  */
-Poems.delByIdWithAuthor = function(pModel, authorModel, poemId) {
+Poems.delByIdWithAuthor = function(pModel, authorModel, slpModel, poemId) {
     var deferred = vow.defer();
 
     pModel.find({ _id: utils.oId(poemId) }).run((err, poem) => {
         if (!_.isEmpty(poem)) {
             poem = poem[0];
+
+            // Удаляем из изучения данное стихотворение, иначе выполнение подвиснет
+            SLP.delByPoemId(slpModel, poemId);
 
             pModel.find({ author_id: utils.oId(poem.author_id) }).count((err, count) => {
                 // Значит найден только этот стих и автора так же можно удалить
@@ -135,7 +140,9 @@ Poems.delByIdWithAuthor = function(pModel, authorModel, poemId) {
                 } else {
                     Poems.delById(pModel, poemId).then(() => deferred.resolve(true));
                 }
-            })
+            });
+
+
 
         } else {
             deferred.resolve(false);

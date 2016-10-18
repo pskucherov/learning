@@ -124,4 +124,27 @@ SpeakerLearnPoem.getDataOfProgress = function(slpModel, userId) {
     return deferred.promise();
 };
 
+/**
+ * Удаляет запись из БД.
+ *
+ * @param {Model} slpModel - модель таблицы
+ * @param {String} poemId - poemId
+ * @returns {Deferred} - promise
+ *
+ * @static
+ */
+SpeakerLearnPoem.delByPoemId = function(slpModel, poemId) {
+    var deferred = vow.defer();
+
+    slpModel
+        .find({ poemId: utils.oId(poemId) })
+        .remove((err) => {
+            if (err) throw err;
+
+            deferred.resolve(true);
+        });
+
+    return deferred.promise();
+};
+
 module.exports = SpeakerLearnPoem;
