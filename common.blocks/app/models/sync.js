@@ -14,6 +14,9 @@ models(function (err, db) {
 
         db.models['speaker-learn-poem'].find().run((err, p) => {
             p.forEach((poem) => {
+                if (!poem.poemId || !poem.poemId.length) {
+                    return;
+                }
 
                 db.models['poems'].find({ _id: utils.oId(poem.poemId) }).count((err, count) => {
                     if (!count) {
