@@ -48,3 +48,11 @@
     display: block;
     margin: 150px auto;
 }
+
+@media only screen and (max-width: 500px)
+{
+    *
+    {
+        font-size: 21px !important;
+    }
+}
