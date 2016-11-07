@@ -12,11 +12,11 @@ block('s-warden')(
                 return [
                     {
                         tag: 'h3',
-                        content: poem.name
+                        content: encodeURIComponent(poem.name)
                     },
                     {
                         tag: 'h4',
-                        content: poem.author.name
+                        content: encodeURIComponent(poem.author.name)
                     },
                     {
                         tag: 'h5',
@@ -30,7 +30,7 @@ block('s-warden')(
                     poem.poem && poem.poem.length ? poem.poem.map(function(p) {
                         return {
                             tag: 'p',
-                            content: p.line
+                            content: encodeURIComponent(p.line)
                         };
                     }) : 'empty!',
                     {
