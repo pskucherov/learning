@@ -100,11 +100,6 @@ Poems.getById = function(pModel, authorModel, poemId) {
                 .getById(authorModel, poemItem.author_id)
                 .then(function(author) {
                     poemItem.author = author;
-
-                    console.log(poemItem.author_id, 'author');
-                    console.log(author);
-                    console.log(poemItem);
-
                     deferred.resolve(poemItem);
                 });
         }
@@ -162,9 +157,6 @@ Poems.delByIdWithAuthor = function(pModel, authorModel, slpModel, poemId) {
                     Poems.delById(pModel, poemId).then(() => deferred.resolve(true));
                 }
             });
-
-
-
         } else {
             deferred.resolve(false);
         }
