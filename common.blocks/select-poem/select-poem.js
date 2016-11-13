@@ -319,6 +319,7 @@ modules.define(
                         this._save();
                     })
                     .liveBindTo('button-random', 'pointerclick', function (e) {
+                        this._toggleForm();
                         window.socket.emit('select-poem:getRandom');
                     });
 
