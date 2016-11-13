@@ -227,6 +227,14 @@ models(function (err, db) {
                     });
             });
 
+            socket.on('select-poem:getRandom', function (id) {
+                Poems.getRandom(db.models['poems'], db.models['authors'])
+                    .then(function (poem) {
+                        if (err) throw err;
+                        socket.emit('select-poem:getPoemById', poem);
+                    });
+            });
+
             function createOrSaveProgress(params, answerName) {
                 SpeakerLearnPoem
                     .getDataOfProgressOrCreate(db.models['speaker-learn-poem'], params.poemId, params.act, user._id)

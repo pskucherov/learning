@@ -17,6 +17,9 @@ modules.define(
                         window.socket.on('select-poem:getPoem', this.setSelectedPoemInModal.bind(this));
 
                         window.socket.on('select-poem:getPoemById', function(poem) {
+                            console.log('here');
+                            console.log(poem);
+
                             poem && this.setSelectedPoemInModal(poem);
                             this._toggleForm();
                         }.bind(this));
@@ -53,14 +56,14 @@ modules.define(
 
                 if (_.isEmpty(poem)) {
                     this.currentPoemId = 0;
-                    this.__self.enableYaSearchButton();
+                    // this.__self.enableYaSearchButton();
                     this.__self.setMessageInPlaceholder();
                     return this;
                 }
 
                 var p = poem;
 
-                this.__self.disableYaSearchButton();
+                // this.__self.disableYaSearchButton();
 
                 this.currentPoemId = p._id;
 
@@ -106,7 +109,7 @@ modules.define(
                 this.__self.setPoemName('');
                 this.__self.setTextareaVal('');
                 this.__self.setPlaceholder('Здесь будет содержание');
-                this.__self.disableYaSearchButton();
+                // this.__self.disableYaSearchButton();
 
                 return this;
             },
@@ -314,6 +317,9 @@ modules.define(
                     })
                     .liveBindTo('button-save', 'pointerclick', function (e) {
                         this._save();
+                    })
+                    .liveBindTo('button-random', 'pointerclick', function (e) {
+                        window.socket.emit('select-poem:getRandom');
                     });
 
                 return false;

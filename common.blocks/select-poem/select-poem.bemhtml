@@ -80,6 +80,21 @@ block('select-poem')(
                         block: 'button',
                         mix: {
                             block: 'select-poem',
+                            elem: 'button-random',
+                            js: true
+                        },
+                        mods: {
+                            theme: 'islands',
+                            size: 'l',
+                            type: 'link'
+                        },
+                        text: 'Случайный стих'
+                    },
+                    /*
+                    {
+                        block: 'button',
+                        mix: {
+                            block: 'select-poem',
                             elem: 'button-search',
                             js: true
                         },
@@ -93,6 +108,7 @@ block('select-poem')(
                         },
                         text: 'Найти в Яндекс'
                     },
+                    */
                     {
                         block: 'button',
                         mix: {

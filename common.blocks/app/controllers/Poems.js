@@ -101,6 +101,10 @@ Poems.getById = function(pModel, authorModel, poemId) {
                 .then(function(author) {
                     poemItem.author = author;
 
+                    console.log(poemItem.author_id, 'author');
+                    console.log(author);
+                    console.log(poemItem);
+
                     deferred.resolve(poemItem);
                 });
         }
@@ -108,6 +112,23 @@ Poems.getById = function(pModel, authorModel, poemId) {
 
     return deferred.promise();
 };
+
+Poems.getRandom = function(pModel, authorModel) {
+    return new Promise((resolve, reject) => {
+        pModel.count((err, num) => {
+            let skip = Math.floor(Math.min(Math.random() * num, num - 1));
+
+            pModel.find().limit(1).skip(skip).run((err, p) => {
+                if (p && p[0] && p[0]._id) {
+                    Poems.getById(pModel, authorModel, p[0]._id).then(
+                        poem => resolve(poem),
+                        r => reject(r)
+                    );
+                }
+            });
+        });
+    });
+},
 
 /**
  * Удалить стихотворение по id,
