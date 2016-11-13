@@ -193,7 +193,7 @@ Poems.findPoemByAuthorANDQuery = function(pModel, authorModel, query, author, us
                     author_id: { $in: _.map(authorIds, function(a, k) { return utils.oId(k); }) },
                     $or: [{ userId: userId }, { moderate: '1' } ]
                 })
-                .only('_id', 'name', 'author_id')
+                //.only('_id', 'name', 'author_id')
                 .limit(15)
                 .run(function (err, poems) {
                     if (err) throw err;

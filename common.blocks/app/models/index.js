@@ -47,6 +47,8 @@ module.exports = function (cb) {
 
         db.settings.set('connection.debug', true);
         db.settings.set('connection.pool', true);
+        db.settings.set('connection.autoFetch', true);
+        db.settings.set('connection.reconnect', true);
 
         setup(db, cb);
     });
