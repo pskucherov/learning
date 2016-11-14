@@ -106,7 +106,7 @@ modules.define(
             _isPoemReady: function() {
                 var linesPos = this._getSortedLinesPos();
 
-                return _.every(this.elem('line', 'draggable', true), function(current) {
+                return _.every(this.findElem('line', 'draggable', true), function(current) {
                     current = $(current);
                     var i = this.getMod(current, 'num');
                     return linesPos[i] === current.offset().top;
@@ -123,7 +123,7 @@ modules.define(
             _getSortedLinesPos: function() {
                 var linesPos = [];
 
-                _.forEach(this.elem('line', 'draggable', true), function(item) {
+                _.forEach(this.findElem('line', 'draggable', true), function(item) {
                     linesPos.push($(item).offset().top);
                 }.bind(this));
 
@@ -141,7 +141,7 @@ modules.define(
             _showSortStatus: function() {
                 var linesPos = this._getSortedLinesPos();
 
-                _.forEach(this.elem('line', 'draggable', true), function(current) {
+                _.forEach(this.findElem('line', 'draggable', true), function(current) {
 
                     current = $(current);
 
@@ -230,8 +230,8 @@ modules.define(
 
                     this
                         .setMod(this.elem('hidden-line'), 'no-help', true)
-                        .delMod(this.elem('line'), 'wrong-pos')
-                        .delMod(this.elem('line'), 'right-pos');
+                        .delMod(this.findElem('line'), 'wrong-pos')
+                        .delMod(this.findElem('line'), 'right-pos');
 
                 }.bind(this), 5000);
 

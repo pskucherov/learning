@@ -92,7 +92,7 @@ block('s-speaker-sort-lines').elem('poems')(
                                             },
                                             content: {
                                                 elem: 'hidden-text',
-                                                content: item.line
+                                                content: item.line + '&nbsp;'
                                             }
                                         }
                                     ]
@@ -123,7 +123,10 @@ block('s-speaker-sort-lines').elem('poems')(
                                     content: {
                                         tag: 'span',
                                         elem: 'str',
-                                        content: item.line
+
+                                        // Костыль с пробелом, иначе в $.draggable ширина считается на 1px меньше,
+                                        // и предложение становится в две строки
+                                        content: item.line + '&nbsp;'
                                     }
                                 },
                                 item.nextEmpLine ? {
