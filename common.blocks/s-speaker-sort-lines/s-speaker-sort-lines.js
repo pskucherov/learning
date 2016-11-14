@@ -68,7 +68,6 @@ modules.define(
 
                 var p = poem;
 
-
                 BEMDOM.update(this.elem('poems'), BEMHTML.apply({
                     block: 's-speaker-sort-lines',
                     elem: 'poems',
@@ -77,12 +76,17 @@ modules.define(
                     poem: p.poem
                 }));
 
+                this._setDraggable();
+            },
+
+            _setDraggable: function() {
                 // Делаем возможным перетаскивать строки в пределах попапа
-                this.elem('line', 'draggable', true).draggable({
+                this.findElem('line', 'draggable', true).draggable({
                     containment: '.s-speaker-sort-lines__poems',
                     stop: this._onStopDrag.bind(this)
                 });
 
+                return this;
             },
 
             _onStopDrag: function() {
