@@ -71,7 +71,7 @@ modules.define(
                 this.__self.setAuthor(p.author.name);
 
                 this.__self.setTextareaVal(p.poem.map(function(item) {
-                        return item.line + (item.nextEmpLine ? '\n' : '');
+                        return item.line.replace(/&nbsp;/gmi, ' ') + (item.nextEmpLine ? '\n' : '');
                     }).join('\n')
                 );
 
