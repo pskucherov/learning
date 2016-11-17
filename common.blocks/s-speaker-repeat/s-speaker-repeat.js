@@ -126,7 +126,7 @@ modules.define(
                 this.poem = poem;
 
                 this.poem.poem.forEach(function(item) {
-                    this.bm.addDocument({ _id: item.line_num, body: item.line });
+                    this.bm.addDocument({ _id: item.line_num, body: this._onlyText(item.line) });
                 }.bind(this));
 
                 BEMDOM.update(this.elem('poem'), BEMHTML.apply({
@@ -144,6 +144,10 @@ modules.define(
 
             },
 
+            _onlyText: function(line) {
+                return line.replace(/[^а-яА-ЯёЁ\.,!-\s—\:]/gi, '');
+            },
+
             /**
              * Воспроизвести стих целиком
              * @returns {_speakPoem}
@@ -154,8 +158,8 @@ modules.define(
 
                 if (this.poem) {
                     this.poem.poem.forEach(function(item) {
-                        text += item.line + ', ';
-                    });
+                        text += this._onlyText(item.line) + ', ';
+                    }.bind(this));
                     this._speak(text);
                 }
 
@@ -345,6 +349,7 @@ modules.define(
                     var line;
                     console.log('text');
                     console.log(arguments);
+                    console.log(this.poem);
 
                     opts.resultCallBackBuf(text);
 
