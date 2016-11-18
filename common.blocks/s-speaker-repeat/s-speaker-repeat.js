@@ -158,7 +158,7 @@ modules.define(
 
                 if (this.poem) {
                     this.poem.poem.forEach(function(item) {
-                        text += this._onlyText(item.line) + ', ';
+                        text += item.line + ', ';
                     }.bind(this));
                     this._speak(text);
                 }
@@ -258,6 +258,8 @@ modules.define(
              * @private
              */
             _speak: function(text, onEnd) {
+
+                text = this._onlyText(text);
 
                 this.speakButton.setMod('checked', true);
                 this._stopLearning();
