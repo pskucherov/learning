@@ -17,6 +17,8 @@
         { block: 'exit' },
 
         { block: 'i-vow' },
-        { block: 'i-utils' }
+        { block: 'i-utils' },
+
+        { block: 'page-search' }
     ]
 })

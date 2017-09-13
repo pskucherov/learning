@@ -1,0 +1,54 @@
+block('page-texts')(
+    content()(function() {
+        return [
+            {
+              block: 'page-texts',
+              elem: 'title',
+              content: 'Добавить статью'
+            },
+            {
+             block: 'input',
+             mix: [{ block: 'page-texts',  elem: 'title-input' }],
+             mods: {
+                 theme: 'islands',
+                 size: 'l'
+             },
+             name: 'title',
+             placeholder: 'Заголовок'
+            },
+            {
+             block: 'input',
+             mix: [{ block: 'page-texts',  elem: 'description-input' }],
+             mods: {
+                 theme: 'islands',
+                 size: 'l'
+             },
+             name: 'description',
+             placeholder: 'Описание'
+            },
+            {
+              block: 'input',
+              mix: [{ block: 'page-texts',  elem: 'keywords-input' }],
+              mods: {
+                  theme: 'islands',
+                  size: 'l'
+              },
+              name: 'keywords',
+              placeholder: 'Ключевые слова'
+            },
+            {
+              block: 'textarea',
+              mix: [{ block: 'page-texts',  elem: 'article-textarea' }]
+            },
+            {
+              block: 'button',
+              mods: {
+                  theme: 'islands',
+                  size: 'l'
+              },
+              mix: [{ block: 'page-texts',  elem: 'send-button' }],
+              text: 'Отправить на модерацию'
+            }
+        ];
+    })
+);

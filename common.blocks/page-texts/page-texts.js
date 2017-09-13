@@ -4,7 +4,24 @@ modules.define(
     function(provide, BEMDOM, $, BEMHTML) {
 
         provide(BEMDOM.decl(this.name, {
+            _onSendButtonClick: function() {
+                console.log(this._getTitle());
 
+
+                debugger;
+
+                if (this._isValidForm()) {
+
+                }
+            },
+
+            _isValidForm: function() {
+                return true;
+            },
+
+            _getTitle: function() {
+                return this.findElem('title-input');
+            }
         }, {
             live: function() {
                 tinymce.init({
@@ -19,6 +36,11 @@ modules.define(
 
                     images_upload_url: '/upload/image'
                 });
+
+                this
+                    .liveBindTo('send-button', 'pointerclick', function (e) {
+                        this._onSendButtonClick(e);
+                    });
 
                 return true;
             }

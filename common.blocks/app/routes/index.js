@@ -337,7 +337,13 @@ router.get(/^\/articles\/?$/, function(req, res, next) {
     next();
 });
 
-
+/**
+ * Поиск.
+ */
+router.get(/^\/search/, function(req, res, next) {
+    res.pageName = 'page-search';
+    next();
+});
 
 
 /**
