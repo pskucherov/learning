@@ -16,6 +16,9 @@ var express = require('express'),
     Competitions = require('../controllers/Competitions'),
     Consultor = require('../controllers/Consultor');
 
+var multer = require('multer');
+var cyrillicToTranslit = require('cyrillic-to-translit-js');
+
 /**
  * Авторизация пользователя. Выполняется для всех и передаёт управление дальше.
  */
@@ -32,7 +35,7 @@ router.all(/.*/, function(req, res, next) {
 });
 
 /**
- * Удаляем куку и редиректим на главную.
+ * Страница выхода. Удаляем куку и редиректим на главную.
  */
 router.get(/^\/logout\/?$/, function(req, res) {
     res.clearCookie(cookieName, { path: '/', domain: req.headers.host });
@@ -73,7 +76,9 @@ router.post(/^\/ajax\/complaint-send\/?$/, function(req, res, next) {
 
 });
 
-
+/**
+ * Страница авторизации пользователя через ВК.
+ */
 router.get(/^\/verify\/?$/, function(req, res, next) {
 
     var protocol = req.headers.host.indexOf('.com') === -1 ? 'http' : 'https';
@@ -175,7 +180,7 @@ router.get(/^\/?$/, function(req, res, next) {
 });
 
 /**
- * Главная
+ * Выход
  */
 router.get(/^\/exit\/?$/, function(req, res, next) {
     res.pageName = 'exit';
@@ -315,6 +320,75 @@ router.get(/^\/warden\/?$/, function(req, res, next) {
             res.poems = data;
             next();
         }, () => next());
+    }
+});
+
+/**
+ * Добавление и редактирование текстов.
+ */
+router.get(/^\/articles\/?$/, function(req, res, next) {
+    if (!res.user || !res.user.isAuth) {
+        res.pageName = 'exit';
+        req.session.redirPage = '/articles';
+    } else {
+        res.pageName = 'page-texts';
+    }
+
+    next();
+});
+
+
+
+
+/**
+ * Загрузка изображения.
+ */
+router.post(/^\/upload\/image$/, function(req, res, next) {
+    if (!res.user || !res.user.isAuth) {
+        res.pageName = 'exit';
+        req.session.redirPage = '/articles';
+        next();
+    } else {
+
+        var storage = multer.diskStorage({
+            destination: function (req, file, callback) {
+                callback(null, './public/uploads');
+            },
+            filename: function (req, file, callback) {
+                callback(null, res.user._id + '_' + parseInt((new Date).getTime() / 1000, 10) + '_' + cyrillicToTranslit().transform(file.originalname, "_"));
+            },
+            fileFilter: function (req, file, cb) {
+                if (file.mimetype.substr(0, 5) !== 'image') {
+                    return cb('Разрешено загружать только изображения.');
+                }
+
+                if (file.size < 5 * 1024 * 1024) {
+                    return cb('Разрешено загружать изображения до 5 мегабайт.');
+                }
+
+                return cb(null, true);
+            }
+        });
+
+        var upload = multer({ storage }).single('file');
+
+        upload(req, res, function(err) {
+            if (err) {
+                return res.end('400', err);
+            }
+
+            console.log(req.file);
+            res.send('200', JSON.stringify({ location: `/uploads/${req.file.filename}` }));
+            return res.end();
+        });
+    }
+});
+
+router.get('*', function(req, res, next) {
+    if (!res.pageName) {
+        res.send('404', 404);
+    } else {
+        next();
     }
 });
 

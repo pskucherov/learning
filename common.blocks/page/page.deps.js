@@ -13,6 +13,7 @@
         { block: 's-warden' },
         { block: 's-consultor' },
         { block: 's-competitions' },
+        { block: 'page-texts' },
         { block: 'exit' },
 
         { block: 'i-vow' },

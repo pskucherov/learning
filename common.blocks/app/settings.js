@@ -17,7 +17,7 @@ var appId = 5076733,
             cookieName: 'vk_app_' + appId,
             groupId: 83561592
         },
-        database: 'mongodb://localhost:27017/learn-demo'
+        database: 'mongodb://localhost:27018/learn-demo'
     };
 
 module.exports = settings;
