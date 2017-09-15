@@ -8,7 +8,13 @@
 
 #ya-site-results {
     color: #000000;
-    background: transparent;
+    background: transparent !important;
+}
+
+#ya-site-results .b-loader__ext-wrapper,
+#ya-site-results .b-loader__paranja
+{
+    background: transparent !important;
 }
 
 #ya-site-form0 .ya-site-form__form .ya-site-form__submit
