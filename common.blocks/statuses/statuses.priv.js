@@ -10,6 +10,15 @@ BEMPRIV.decl('statuses', {
         var p = 'data:image/png;base64,';
         return [
             {
+                name: 'page-search',
+                m: { name: 'Сыщик', img: '/images/search.png' },
+                f: { name: 'Сыщица', img: '/images/search.png' },
+                url: '/search',
+                descr: 'Необходимо находить информацию, которая тебя интересует, либо помогать другим находить то, что они ищут. ' +
+                    'Чем больше найдено полезной информации для себя и других, тем выше рейтинг.',
+                defVal: 96
+            },
+            {
                 name: 's-brain',
                 m: { name: 'Умник', img: p + 'borschik:include:./botan15_b.png' },
                 f: { name: 'Умничка', img: p + 'borschik:include:./botan15_b.png' },

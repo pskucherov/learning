@@ -1,5 +1,7 @@
 BEMPRIV.decl('page-search', {
     init: function() {
+        this.js(true);
+
         this.content([
             this._getInput(),
             this._getResult()
