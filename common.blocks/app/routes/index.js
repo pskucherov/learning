@@ -345,6 +345,13 @@ router.get(/^\/search/, function(req, res, next) {
     next();
 });
 
+/**
+ * Подтверждение г-аналитики. Типа статический файл.
+ */
+router.get(/^\/googlefd88dd6fbba09a7a.html$/, function(req, res, next) {
+    res.send('200', 'google-site-verification: googlefd88dd6fbba09a7a.html');
+    return res.end();
+});
 
 /**
  * Загрузка изображения.
