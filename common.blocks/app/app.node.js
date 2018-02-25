@@ -436,7 +436,7 @@ models(function (err, db) {
             /* page-texts start */
             socket.on('page-texts:set-article', function(data) {
                 socket.emit('page-texts:set-article-response', 'here?' + data + Articles);
-                Articles.create(db.models['articles'], data)
+                Articles.create(db.models['articles'], data, user._id)
                     .then(function(aResponse) {
                         socket.emit('page-texts:set-article-response', aResponse);
                     });
