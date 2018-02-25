@@ -23,6 +23,7 @@ var fs = require('fs'),
     Consultor = require('./controllers/Consultor'),
     SpeakerLearnPoem = require('./controllers/SpeakerLearnPoem'),
     Authors = require('./controllers/Authors'),
+    Articles = require('./controllers/Articles'),
 
     settings = require('./settings'),
 
@@ -430,6 +431,18 @@ models(function (err, db) {
                 Consultor.updateCommentsCount(db.models['s-consultor'], data.qId, data.commentsCount);
             });
             /* S-CONSULTOR END */
+
+
+            /* page-texts start */
+            socket.on('page-texts:set-article', function(data) {
+                socket.emit('page-texts:set-article-response', 'here?' + data + Articles);
+                Articles.create(db.models['articles'], data)
+                    .then(function(aResponse) {
+                        socket.emit('page-texts:set-article-response', aResponse);
+                    });
+            });
+            /* page-texts end */
+
 
         });
 

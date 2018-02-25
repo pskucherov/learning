@@ -391,7 +391,7 @@ router.post(/^\/upload\/image$/, function(req, res, next) {
             }
 
             console.log(req.file);
-            res.send('200', JSON.stringify({ location: `/uploads/${req.file.filename}` }));
+            res.send('200', JSON.stringify({ location: `https://schoolnik.com/uploads/${req.file.filename}` }));
             return res.end();
         });
     }

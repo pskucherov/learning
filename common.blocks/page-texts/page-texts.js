@@ -4,23 +4,66 @@ modules.define(
     function(provide, BEMDOM, $, BEMHTML) {
 
         provide(BEMDOM.decl(this.name, {
-            _onSendButtonClick: function() {
-                console.log(this._getTitle());
-
-
-                debugger;
-
-                if (this._isValidForm()) {
-
+            onSetMod: {
+                js: {
+                    inited: function () {
+                        window.socket.on('page-texts:set-article-response', function(res) {
+                            this.setMod('hidden', 'yes');
+                        }.bind(this));
+                    }
                 }
             },
 
-            _isValidForm: function() {
+            unbindEvents: function() {
+                window.socket.removeAllListeners('page-texts:set-article-response');
+            },
+
+            _destruct: function() {
+                this.unbindEvents();
+                this.__base.apply(this, arguments);
+            },
+
+            _onSendButtonClick: function() {
+                var content = this._getContent();
+
+                if (this._isValidForm(content)) {
+                    window.socket.emit('page-texts:set-article', {
+                        content: content
+                    });
+                }
+            },
+
+            _getContent: function() {
+                return {
+                    title: this._getTitle(),
+                    keywords: this._getKeywords(),
+                    description: this._getDescrition(),
+                    text: this._getText()
+                };
+            },
+
+            _isValidForm: function(content) {
                 return true;
             },
 
             _getTitle: function() {
-                return this.findElem('title-input');
+                return this._getInputText(this.findElem('title-input'));
+            },
+
+            _getDescrition: function() {
+                return this._getInputText(this.findElem('description-input'));
+            },
+
+            _getKeywords: function() {
+                return this._getInputText(this.findElem('keywords-input'));
+            },
+
+            _getInputText: function(elem) {
+                return $(elem).find('.input__control').val();
+            },
+
+            _getText: function() {
+                return tinyMCE.activeEditor.getContent();
             }
         }, {
             live: function() {
