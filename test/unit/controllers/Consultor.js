@@ -1,51 +1,106 @@
 var chai = require('chai'),
-    chaiAsPromised = require('chai-as-promised'),
-    assert = chai.assert,
-    path = require('path');
+    chaiAsPromised = require('chai-as-promised');
 
 chai.use(chaiAsPromised);
 
-var appDir = path.resolve(__dirname, '../../../common.blocks/app'),
-    models = require(path.join(appDir, 'models')),
-    Consultor = require(path.join(appDir, 'controllers/Consultor'));
+var assert = chai.assert,
+    _ = require('lodash'),
+    path = require('path'),
+    vow = require('vow');
 
-describe('Controller: Consultor', function () {
+var appDir = './common.blocks/app/',
+    models = require(path.resolve(appDir + 'models/')),
+    Consultor = require(path.resolve(appDir + 'controllers/Consultor'));
+    User = require(path.resolve(appDir + 'controllers/User'));
 
-    var consultorModel;
+models(function (err, db) {
+    if (err) throw err;
 
-    before(function() {
-        return new Promise((resolve, reject) => {
-            models(function (err, db) {
-                if (err) throw reject(err);
+    db.sync(function (err) {
+        if (err) throw err;
 
-                db.sync(function (err) {
-                    if (err) throw reject(err);
-                    resolve(db.models['s-consultor']);
+        var VK_USER_ID = 100,
+            usersModel = db.models['users'],
+            consultorModel = db.models['s-consultor'];
+
+        describe('Controller: Consultor', function () {
+
+            before(function (done) {
+                this.timeout(10000);
+                User.deleteByVKId(usersModel, VK_USER_ID).then(function () {
+                    done();
+                });
+            });
+            beforeEach(function (done) {
+                this.timeout(10000);
+                consultorModel.find().remove(function () {
+                    done();
+                });
+            });
+
+            describe('Create consultor', function () {
+                it('should create consultor', function () {
+                    var defered = vow.defer(),
+                        question = 'Test question one',
+                        userId = 'a12345678901';
+
+                    Consultor.create(consultorModel, question, userId)
+                        .then(function (data) {
+                            defered.resolve(data);
+                        });
+
+                        return assert.isFulfilled(
+                            defered.promise(),
+                            'Should be resolved'
+                        );
                 });
 
-            });
-        }).then((model) => consultorModel = model);
-    });
+                it('should get all questions', function () {
+                    var defered = vow.defer(),
+                        question = 'Test question two';
 
-    beforeEach(function() {
-        return new Promise((resolve, reject) => {
-            consultorModel.find().remove(function(err) {
-                if (err) {
-                    reject(err);
-                }
-                resolve();
+                    User.createByVKId(usersModel, VK_USER_ID)
+                        .then(function () {
+                            User.getByVKId(usersModel, VK_USER_ID)
+                                .then(function (data) {
+                                    defered.resolve(data);
+                                    Consultor.create(consultorModel, question, data[0]._id)
+                                        .then(function () {
+                                            Consultor.getAllQuestions(db)
+                                                .then(function(questions) {
+                                                    defered.resolve(questions.length);
+                                                });
+                                        });
+                                });
+                        });
+
+                    return assert.eventually.lengthOf(
+                        defered.promise(),
+                        1,
+                        'Should be equal 1'
+                    );
+                });
+
+                it('should find consultor by id', function () {
+                    var defered = vow.defer(),
+                        question = 'Test question three',
+                        userId = 'a12345678901';
+
+                    Consultor.create(consultorModel, question, userId)
+                        .then(function (data) {
+                            Consultor.getById(consultorModel, data._id)
+                                .then(function (question) {
+                                    defered.resolve(!_.isEmpty(question));
+                                });
+                        });
+
+                    return assert.eventually.ok(
+                        defered.promise(),
+                        'Should be not empty'
+                    );
+                });
             });
         });
-    });
-
-    describe('create', function() {
-        it('should create question', function () {
-            var question = 'What\'s up?',
-                userId = 'a12345678901';
-
-            return Consultor
-                .create(consultorModel, question, userId)
-                .then((data) => assert.equal(data.question, question));
-        });
+        run();
     });
 });
