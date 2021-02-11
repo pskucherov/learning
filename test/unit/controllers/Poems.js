@@ -75,6 +75,28 @@ models(function (err, db) {
 
                 });
 
+                it('should find poem by _id', function () {
+                    var deferred = vow.defer(),
+                        uId = 'b12345678902';
+
+                    Authors.create(aModel, 'a12345678901', uId).then(a => {
+                        Poems.create(pModel, 'name', a._id, uId, 'текст стихотворения\n<Br>состоящий из нескольких строк ;":№%')
+                        .then(function (data) {
+                            Poems.getById(pModel, aModel, data._id)
+                                .then(function (poem) {
+                                    deferred.resolve(poem.poem);
+                                }, function (e) {
+                                    deferred.reject('Could not retrieve Poem from db (by id)');
+                                });
+                        });
+                });
+
+                    return assert.eventually.ok(
+                       deferred.promise(),
+                       'Should be not empty'
+                   );
+                });
+
             });
 
         });

@@ -108,7 +108,7 @@
                 "a" === nodeName ?
                 element.href || isTabIndexNotNaN :
                     isTabIndexNotNaN) &&
-                // the element and all of its ancestors must be visible
+            // the element and all of its ancestors must be visible
             visible( element );
     }
 
